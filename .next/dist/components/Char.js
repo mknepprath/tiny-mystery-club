@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
@@ -33,61 +37,97 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _jsxFileName = '/Users/mknepprath/GitHub/open-world/components/Char.js';
 
 
-var Char = function (_React$Component) {
-  (0, _inherits3.default)(Char, _React$Component);
+var Char = function (_Component) {
+  (0, _inherits3.default)(Char, _Component);
 
   function Char(props) {
     (0, _classCallCheck3.default)(this, Char);
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Char.__proto__ || (0, _getPrototypeOf2.default)(Char)).call(this, props));
 
-    var _this$props = _this.props,
-        mapSize = _this$props.mapSize,
-        spawn = _this$props.spawn;
+    var mapSize = props.mapSize,
+        spawn = props.spawn;
+
+    // Set NPC location based on spawn point.
+    // If no spawn point is provided, center it.
 
     _this.state = {
-      top: spawn ? spawn.top * 100 - 100 : mapSize * 50 - 50,
-      left: spawn ? spawn.left * 100 - 100 : mapSize * 50 - 50
+      clicked: false,
+      direction: null,
+      top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
+      left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2
     };
+
+    _this.onClickNPCHandler = _this.onClickNPCHandler.bind(_this);
     _this.tick = _this.tick.bind(_this);
     return _this;
   }
 
   (0, _createClass3.default)(Char, [{
+    key: 'onClickNPCHandler',
+    value: function onClickNPCHandler() {
+      this.setState({ clicked: true });
+    }
+  }, {
     key: 'tick',
     value: function tick() {
-      var mapSize = this.props.mapSize;
+      var _props = this.props,
+          mapSize = _props.mapSize,
+          map = _props.map;
       var _state = this.state,
           top = _state.top,
           left = _state.left;
 
+      // moveTypes:
+      // - 0 = up/down
+      // - 1 = left/right
+      // - 2 = don't move
+
       var moveType = Math.floor(Math.random() * 3);
+
       if (moveType === 0) {
-        var bottom = Math.floor(Math.random() * 2) === 0;
-        var _top = top;
-        if (bottom) {
-          if (top < (mapSize - 1) * 100) _top = top + 100;
+        var down = Math.floor(Math.random() * 2) === 0;
+        var nextTop = top;
+        if (down) {
+          // Moving down, so add to the distance from the top.
+          if (top < (mapSize - 1) * 100) nextTop = top + 100;
         } else {
-          if (top > 0) _top = top - 100;
+          // Moving up, so move closer to the top.
+          if (top > 0) nextTop = top - 100;
         }
-        this.setState({
-          top: _top,
-          direction: bottom ? 'bottom' : 'top'
-        });
+        // If there is nothing on the map in the location the NPC is moving to,
+        // then go ahead and update with the new position.
+        if (!map[nextTop / 100 + 1][left / 100 + 1]) {
+          this.setState({
+            top: nextTop,
+            direction: down ? 'Bottom' : 'Top'
+          });
+        }
       } else if (moveType === 1) {
         var right = Math.floor(Math.random() * 2) === 0;
-        var _left = left;
+        var nextLeft = left;
         if (right) {
-          if (left < (mapSize - 1) * 100) _left = left + 100;
+          // Moving right, so add to the distance from the left.
+          if (left < (mapSize - 1) * 100) nextLeft = left + 100;
         } else {
-          if (left > 0) _left = left - 100;
+          // Moving left, so move closer to the left.
+          if (left > 0) nextLeft = left - 100;
         }
-        this.setState({
-          left: _left,
-          direction: right ? 'right' : 'left'
-        });
+        // If there is nothing on the map in the location the NPC is moving to,
+        // then go ahead and update with the new position.
+        if (!map[top / 100 + 1][nextLeft / 100 + 1]) {
+          this.setState({
+            left: nextLeft,
+            direction: right ? 'Right' : 'Left'
+          });
+        }
       } else {
-        this.setState({ direction: undefined });
+        // Eventually switch this to change a separate state  property dictating
+        // whether to use the walking sprite or not. Direction should stay set so
+        // sprite knows which way to face.
+        this.setState({
+          direction: null
+        });
       }
     }
   }, {
@@ -103,34 +143,36 @@ var Char = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          mapSize = _props.mapSize,
-          color = _props.color;
+      var color = this.props.color;
       var _state2 = this.state,
-          top = _state2.top,
+          direction = _state2.direction,
           left = _state2.left,
-          direction = _state2.direction;
+          top = _state2.top;
 
+      var hasSpriteImage = !color;
       return _react2.default.createElement('div', {
+        onClick: this.onClickNPCHandler,
         style: (0, _defineProperty3.default)({
-          width: 100,
-          height: 100,
-          background: color || '#317692',
-          top: top,
-          left: left,
           position: 'absolute',
+          left: left,
+          top: top,
+          width: hasSpriteImage ? 100 : 80,
+          height: hasSpriteImage ? 100 : 80,
+          background: color || 'url(\'./static/assets/sprite2.gif\')',
           transition: 'top 1.5s, left 1.5s',
-          boxSizing: 'border-box'
-        }, 'border-' + direction, '25px solid #AB7692'), __source: {
+          boxShadow: this.state.clicked ? '0 0 10px orange' : null,
+          boxSizing: 'border-box',
+          margin: hasSpriteImage ? 0 : 10
+        }, 'border' + direction, hasSpriteImage ? null : '20px solid black'), __source: {
           fileName: _jsxFileName,
-          lineNumber: 55
+          lineNumber: 93
         }
       });
     }
   }]);
 
   return Char;
-}(_react2.default.Component);
+}(_react.Component);
 
-module.exports = Char;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHMvQ2hhci5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkNoYXIiLCJwcm9wcyIsIm1hcFNpemUiLCJzcGF3biIsInN0YXRlIiwidG9wIiwibGVmdCIsInRpY2siLCJiaW5kIiwibW92ZVR5cGUiLCJNYXRoIiwiZmxvb3IiLCJyYW5kb20iLCJib3R0b20iLCJfdG9wIiwic2V0U3RhdGUiLCJkaXJlY3Rpb24iLCJyaWdodCIsIl9sZWZ0IiwidW5kZWZpbmVkIiwiaW50ZXJ2YWwiLCJzZXRJbnRlcnZhbCIsImNsZWFySW50ZXJ2YWwiLCJjb2xvciIsIndpZHRoIiwiaGVpZ2h0IiwiYmFja2dyb3VuZCIsInBvc2l0aW9uIiwidHJhbnNpdGlvbiIsImJveFNpemluZyIsIm1vZHVsZSIsImV4cG9ydHMiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTyxBQUFTOzs7Ozs7Ozs7SUFFVixBO2dDQUNKOztnQkFBQSxBQUFhLE9BQU87d0NBQUE7O2tJQUFBLEFBQ1o7O3NCQUNxQixNQUZULEFBRWM7UUFGZCxBQUVWLHNCQUZVLEFBRVY7UUFGVSxBQUVELG9CQUZDLEFBRUQsQUFDakI7O1VBQUEsQUFBSztXQUNFLFFBQVEsTUFBQSxBQUFNLE1BQU4sQUFBWSxNQUFwQixBQUEwQixNQUFNLFVBQUEsQUFBVSxLQURwQyxBQUN5QyxBQUNwRDtZQUFNLFFBQVEsTUFBQSxBQUFNLE9BQU4sQUFBYSxNQUFyQixBQUEyQixNQUFNLFVBQUEsQUFBVSxLQUZuRCxBQUFhLEFBRTJDLEFBRXhEO0FBSmEsQUFDWDtVQUdGLEFBQUssT0FBTyxNQUFBLEFBQUssS0FBTCxBQUFVLEtBUEosQUFPbEI7V0FDRDs7Ozs7MkJBQ087VUFBQSxBQUNFLFVBQVksS0FEZCxBQUNtQixNQURuQixBQUNFO21CQUNjLEtBRmhCLEFBRXFCO1VBRnJCLEFBRUUsYUFGRixBQUVFO1VBRkYsQUFFTyxjQUZQLEFBRU8sQUFDYjs7VUFBTSxXQUFXLEtBQUEsQUFBSyxNQUFNLEtBQUEsQUFBSyxXQUFqQyxBQUFpQixBQUEyQixBQUM1QztVQUFJLGFBQUosQUFBaUIsR0FBRyxBQUNsQjtZQUFNLFNBQVMsS0FBQSxBQUFLLE1BQU0sS0FBQSxBQUFLLFdBQWhCLEFBQTJCLE9BQTFDLEFBQWlELEFBQ2pEO1lBQUksT0FBSixBQUFXLEFBQ1g7WUFBQSxBQUFJLFFBQVEsQUFDVjtjQUFJLE1BQU0sQ0FBQyxVQUFELEFBQVcsS0FBckIsQUFBMEIsS0FBSyxPQUFPLE1BQVAsQUFBYSxBQUM3QztBQUZELGVBRU8sQUFDTDtjQUFJLE1BQUosQUFBVSxHQUFHLE9BQU8sTUFBUCxBQUFhLEFBQzNCO0FBQ0Q7YUFBQSxBQUFLO2VBQVMsQUFDUCxBQUNMO3FCQUFXLFNBQUEsQUFBUyxXQUZ0QixBQUFjLEFBRW1CLEFBRWxDO0FBSmUsQUFDWjtBQVRKLGlCQVlXLGFBQUosQUFBaUIsR0FBRyxBQUN6QjtZQUFNLFFBQVEsS0FBQSxBQUFLLE1BQU0sS0FBQSxBQUFLLFdBQWhCLEFBQTJCLE9BQXpDLEFBQWdELEFBQ2hEO1lBQUksUUFBSixBQUFZLEFBQ1o7WUFBQSxBQUFJLE9BQU8sQUFDVDtjQUFJLE9BQU8sQ0FBQyxVQUFELEFBQVcsS0FBdEIsQUFBMkIsS0FBSyxRQUFRLE9BQVIsQUFBZSxBQUNoRDtBQUZELGVBRU8sQUFDTDtjQUFJLE9BQUosQUFBVyxHQUFHLFFBQVEsT0FBUixBQUFlLEFBQzlCO0FBQ0Q7YUFBQSxBQUFLO2dCQUFTLEFBQ04sQUFDTjtxQkFBVyxRQUFBLEFBQVEsVUFGckIsQUFBYyxBQUVpQixBQUVoQztBQUplLEFBQ1o7QUFURyxPQUFBLE1BWUEsQUFDTDthQUFBLEFBQUssU0FBUyxFQUFFLFdBQWhCLEFBQWMsQUFBYSxBQUM1QjtBQUNGOzs7O3dDQUNvQixBQUNuQjtXQUFBLEFBQUssV0FBVyxZQUFZLEtBQVosQUFBaUIsTUFBakMsQUFBZ0IsQUFBdUIsQUFDeEM7Ozs7MkNBQ3VCLEFBQ3RCO29CQUFjLEtBQWQsQUFBbUIsQUFDcEI7Ozs7NkJBQ1M7bUJBQ21CLEtBRG5CLEFBQ3dCO1VBRHhCLEFBQ0EsaUJBREEsQUFDQTtVQURBLEFBQ1MsZUFEVCxBQUNTO29CQUNnQixLQUZ6QixBQUU4QjtVQUY5QixBQUVBLGNBRkEsQUFFQTtVQUZBLEFBRUssZUFGTCxBQUVLO1VBRkwsQUFFVyxvQkFGWCxBQUVXLEFBQ25COzs7O2lCQUVJLEFBQ1MsQUFDUDtrQkFGRixBQUVVLEFBQ1I7c0JBQVksU0FIZCxBQUd1QixBQUNyQjtlQUpGLEFBS0U7Z0JBTEYsQUFNRTtvQkFORixBQU1ZLEFBQ1Y7c0JBUEYsQUFPYyxBQUNaO3FCQVJGLEFBUWE7QUFQWCxXQVFDLFlBVEgsQUFTZSxXQVZqQixBQUNFLEFBUzJCO29CQVY3QjtzQkFERixBQUNFLEFBYUg7QUFiRztBQUNFLE9BREY7Ozs7O0VBcERhLGdCQUFNLEE7O0FBb0V6QixPQUFBLEFBQU8sVUFBUCxBQUFpQiIsImZpbGUiOiJDaGFyLmpzIiwic291cmNlUm9vdCI6Ii9Vc2Vycy9ta25lcHByYXRoL0dpdEh1Yi9vcGVuLXdvcmxkIn0=
+exports.default = Char;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHMvQ2hhci5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkNoYXIiLCJwcm9wcyIsIm1hcFNpemUiLCJzcGF3biIsInN0YXRlIiwiY2xpY2tlZCIsImRpcmVjdGlvbiIsInRvcCIsImxlZnQiLCJvbkNsaWNrTlBDSGFuZGxlciIsImJpbmQiLCJ0aWNrIiwic2V0U3RhdGUiLCJtYXAiLCJtb3ZlVHlwZSIsIk1hdGgiLCJmbG9vciIsInJhbmRvbSIsImRvd24iLCJuZXh0VG9wIiwicmlnaHQiLCJuZXh0TGVmdCIsImludGVydmFsIiwic2V0SW50ZXJ2YWwiLCJjbGVhckludGVydmFsIiwiY29sb3IiLCJoYXNTcHJpdGVJbWFnZSIsInBvc2l0aW9uIiwid2lkdGgiLCJoZWlnaHQiLCJiYWNrZ3JvdW5kIiwidHJhbnNpdGlvbiIsImJveFNoYWRvdyIsImJveFNpemluZyIsIm1hcmdpbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTyxBQUFTOzs7Ozs7Ozs7SSxBQUVWO2dDQUNKOztnQkFBQSxBQUFhLE9BQU87d0NBQUE7O2tJQUFBLEFBQ1o7O1FBRFksQUFHVixVQUhVLEFBR1MsTUFIVCxBQUdWO1FBSFUsQUFHRCxRQUhDLEFBR1MsTUFIVCxBQUdELEFBRWpCOztBQUNBO0FBQ0E7O1VBQUEsQUFBSztlQUFRLEFBQ0YsQUFDVDtpQkFGVyxBQUVBLEFBQ1g7V0FBSyxRQUFRLE1BQUEsQUFBTSxNQUFOLEFBQVksTUFBcEIsQUFBMEIsTUFBTSxDQUFDLFVBQUEsQUFBVSxNQUFYLEFBQWlCLE9BSDNDLEFBR2tELEFBQzdEO1lBQU0sUUFBUSxNQUFBLEFBQU0sT0FBTixBQUFhLE1BQXJCLEFBQTJCLE1BQU0sQ0FBQyxVQUFBLEFBQVUsTUFBWCxBQUFpQixPQUoxRCxBQUFhLEFBSW9ELEFBR2pFO0FBUGEsQUFDWDs7VUFNRixBQUFLLG9CQUFvQixNQUFBLEFBQUssa0JBQUwsQUFBdUIsS0FBaEQsQUFDQTtVQUFBLEFBQUssT0FBTyxNQUFBLEFBQUssS0FBTCxBQUFVLEtBZkosQUFlbEI7V0FDRDs7Ozs7d0NBRW9CLEFBQ25CO1dBQUEsQUFBSyxTQUFTLEVBQUUsU0FBaEIsQUFBYyxBQUFXLEFBQzFCOzs7OzJCQUVPO21CQUNtQixLQURuQixBQUN3QjtVQUR4QixBQUNFLGlCQURGLEFBQ0U7VUFERixBQUNXLGFBRFgsQUFDVzttQkFDSyxLQUZoQixBQUVxQjtVQUZyQixBQUVFLGFBRkYsQUFFRTtVQUZGLEFBRU8sY0FGUCxBQUVPLEFBRWI7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O1VBQU0sV0FBVyxLQUFBLEFBQUssTUFBTSxLQUFBLEFBQUssV0FBakMsQUFBaUIsQUFBMkIsQUFFNUM7O1VBQUksYUFBSixBQUFpQixHQUFHLEFBQ2xCO1lBQU0sT0FBTyxLQUFBLEFBQUssTUFBTSxLQUFBLEFBQUssV0FBaEIsQUFBMkIsT0FBeEMsQUFBK0MsQUFDL0M7WUFBSSxVQUFKLEFBQWMsQUFDZDtZQUFBLEFBQUksTUFBTSxBQUNSO0FBQ0E7Y0FBSSxNQUFNLENBQUMsVUFBRCxBQUFXLEtBQXJCLEFBQTBCLEtBQUssVUFBVSxNQUFWLEFBQWdCLEFBQ2hEO0FBSEQsZUFHTyxBQUNMO0FBQ0E7Y0FBSSxNQUFKLEFBQVUsR0FBRyxVQUFVLE1BQVYsQUFBZ0IsQUFDOUI7QUFDRDtBQUNBO0FBQ0E7WUFBSSxDQUFDLElBQUksVUFBQSxBQUFVLE1BQWQsQUFBb0IsR0FBRyxPQUFBLEFBQU8sTUFBbkMsQUFBSyxBQUFvQyxJQUFJLEFBQzNDO2VBQUEsQUFBSztpQkFBUyxBQUNQLEFBQ0w7dUJBQVcsT0FBQSxBQUFPLFdBRnBCLEFBQWMsQUFFaUIsQUFFaEM7QUFKZSxBQUNaO0FBSUw7QUFsQkQsaUJBa0JXLGFBQUosQUFBaUIsR0FBRyxBQUN6QjtZQUFNLFFBQVEsS0FBQSxBQUFLLE1BQU0sS0FBQSxBQUFLLFdBQWhCLEFBQTJCLE9BQXpDLEFBQWdELEFBQ2hEO1lBQUksV0FBSixBQUFlLEFBQ2Y7WUFBQSxBQUFJLE9BQU8sQUFDVDtBQUNBO2NBQUksT0FBTyxDQUFDLFVBQUQsQUFBVyxLQUF0QixBQUEyQixLQUFLLFdBQVcsT0FBWCxBQUFrQixBQUNuRDtBQUhELGVBR08sQUFDTDtBQUNBO2NBQUksT0FBSixBQUFXLEdBQUcsV0FBVyxPQUFYLEFBQWtCLEFBQ2pDO0FBQ0Q7QUFDQTtBQUNBO1lBQUksQ0FBQyxJQUFJLE1BQUEsQUFBTSxNQUFWLEFBQWdCLEdBQUcsV0FBQSxBQUFXLE1BQW5DLEFBQUssQUFBb0MsSUFBSSxBQUMzQztlQUFBLEFBQUs7a0JBQVMsQUFDTixBQUNOO3VCQUFXLFFBQUEsQUFBUSxVQUZyQixBQUFjLEFBRWlCLEFBRWhDO0FBSmUsQUFDWjtBQUlMO0FBbEJNLE9BQUEsTUFrQkEsQUFDTDtBQUNBO0FBQ0E7QUFDQTthQUFBLEFBQUs7cUJBQUwsQUFBYyxBQUNELEFBRWQ7QUFIZSxBQUNaO0FBR0w7Ozs7d0NBQ29CLEFBQ25CO1dBQUEsQUFBSyxXQUFXLFlBQVksS0FBWixBQUFpQixNQUFqQyxBQUFnQixBQUF1QixBQUN4Qzs7OzsyQ0FDdUIsQUFDdEI7b0JBQWMsS0FBZCxBQUFtQixBQUNwQjs7Ozs2QkFDUztVQUFBLEFBQ0EsUUFBVSxLQURWLEFBQ2UsTUFEZixBQUNBO29CQUN5QixLQUZ6QixBQUU4QjtVQUY5QixBQUVBLG9CQUZBLEFBRUE7VUFGQSxBQUVXLGVBRlgsQUFFVztVQUZYLEFBRWlCLGNBRmpCLEFBRWlCLEFBRXpCOztVQUFNLGlCQUFpQixDQUF2QixBQUF3QixBQUN4Qjs7aUJBRWEsS0FEWCxBQUNnQixBQUNkOztvQkFBQSxBQUNZLEFBQ1Y7Z0JBRkYsQUFHRTtlQUhGLEFBSUU7aUJBQU8saUJBQUEsQUFBaUIsTUFKMUIsQUFJZ0MsQUFDOUI7a0JBQVEsaUJBQUEsQUFBaUIsTUFMM0IsQUFLaUMsQUFDL0I7c0JBQVksU0FOZCxBQU9FO3NCQVBGLEFBT2MsQUFDWjtxQkFBVyxLQUFBLEFBQUssTUFBTCxBQUFXLFVBQVgsQUFBcUIsb0JBUmxDLEFBUXNELEFBQ3BEO3FCQVRGLEFBU2EsQUFDWDtrQkFBUSxpQkFBQSxBQUFpQixJQVYzQixBQVUrQjtBQVQ3QixzQkFERixBQVdZLFdBQWMsaUJBQUEsQUFBaUIsT0FiN0MsQUFFRSxBQVdrRDtvQkFicEQ7c0JBREYsQUFDRSxBQWdCSDtBQWhCRztBQUNFLE9BREY7Ozs7O0FBMUZhLEEsQUE2R25COztrQkFBQSxBQUFlIiwiZmlsZSI6IkNoYXIuanMiLCJzb3VyY2VSb290IjoiL1VzZXJzL21rbmVwcHJhdGgvR2l0SHViL29wZW4td29ybGQifQ==

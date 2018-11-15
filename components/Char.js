@@ -1,45 +1,81 @@
 import React, { Component } from 'react'
 
-class Char extends React.Component {
+class Char extends Component {
   constructor (props) {
     super(props)
-    const { mapSize, spawn } = this.props
+
+    const { mapSize, spawn } = props
+
+    // Set NPC location based on spawn point.
+    // If no spawn point is provided, center it.
     this.state = {
-      top: spawn ? spawn.top * 100 - 100 : mapSize * 50 - 50,
-      left: spawn ? spawn.left * 100 - 100 : mapSize * 50 - 50
+      clicked: false,
+      direction: null,
+      top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
+      left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2
     }
+
+    this.onClickNPCHandler = this.onClickNPCHandler.bind(this)
     this.tick = this.tick.bind(this)
   }
+
+  onClickNPCHandler () {
+    this.setState({ clicked: true })
+  }
+
   tick () {
-    const { mapSize } = this.props
+    const { mapSize, map } = this.props
     const { top, left } = this.state
+
+    // moveTypes:
+    // - 0 = up/down
+    // - 1 = left/right
+    // - 2 = don't move
     const moveType = Math.floor(Math.random() * 3)
+
     if (moveType === 0) {
-      const bottom = Math.floor(Math.random() * 2) === 0
-      let _top = top
-      if (bottom) {
-        if (top < (mapSize - 1) * 100) _top = top + 100
+      const down = Math.floor(Math.random() * 2) === 0
+      let nextTop = top
+      if (down) {
+        // Moving down, so add to the distance from the top.
+        if (top < (mapSize - 1) * 100) nextTop = top + 100
       } else {
-        if (top > 0) _top = top - 100
+        // Moving up, so move closer to the top.
+        if (top > 0) nextTop = top - 100
       }
-      this.setState({
-        top: _top,
-        direction: bottom ? 'bottom' : 'top'
-      })
+      // If there is nothing on the map in the location the NPC is moving to,
+      // then go ahead and update with the new position.
+      if (!map[nextTop / 100 + 1][left / 100 + 1]) {
+        this.setState({
+          top: nextTop,
+          direction: down ? 'Bottom' : 'Top'
+        })
+      }
     } else if (moveType === 1) {
       const right = Math.floor(Math.random() * 2) === 0
-      let _left = left
+      let nextLeft = left
       if (right) {
-        if (left < (mapSize - 1) * 100) _left = left + 100
+        // Moving right, so add to the distance from the left.
+        if (left < (mapSize - 1) * 100) nextLeft = left + 100
       } else {
-        if (left > 0) _left = left - 100
+        // Moving left, so move closer to the left.
+        if (left > 0) nextLeft = left - 100
       }
-      this.setState({
-        left: _left,
-        direction: right ? 'right' : 'left'
-      })
+      // If there is nothing on the map in the location the NPC is moving to,
+      // then go ahead and update with the new position.
+      if (!map[top / 100 + 1][nextLeft / 100 + 1]) {
+        this.setState({
+          left: nextLeft,
+          direction: right ? 'Right' : 'Left'
+        })
+      }
     } else {
-      this.setState({ direction: undefined })
+      // Eventually switch this to change a separate state  property dictating
+      // whether to use the walking sprite or not. Direction should stay set so
+      // sprite knows which way to face.
+      this.setState({
+        direction: null
+      })
     }
   }
   componentDidMount () {
@@ -49,23 +85,28 @@ class Char extends React.Component {
     clearInterval(this.interval)
   }
   render () {
-    const { mapSize, color } = this.props
-    const { top, left, direction } = this.state
+    const { color } = this.props
+    const { direction, left, top } = this.state
+
+    const hasSpriteImage = !color
     return (
       <div
+        onClick={this.onClickNPCHandler}
         style={{
-          width: 100,
-          height: 100,
-          background: color || '#317692',
-          top,
-          left,
           position: 'absolute',
+          left,
+          top,
+          width: hasSpriteImage ? 100 : 80,
+          height: hasSpriteImage ? 100 : 80,
+          background: color || `url('./static/assets/sprite2.gif')`,
           transition: 'top 1.5s, left 1.5s',
+          boxShadow: this.state.clicked ? '0 0 10px orange' : null,
           boxSizing: 'border-box',
-          ['border-' + direction]: '25px solid #AB7692'
+          margin: hasSpriteImage ? 0 : 10,
+          [`border${direction}`]: hasSpriteImage ? null : '20px solid black'
         }} />
     )
   }
 }
 
-module.exports = Char
+export default Char

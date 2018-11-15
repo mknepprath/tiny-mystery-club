@@ -1,24 +1,55 @@
 import React, { Component } from 'react'
+import { Z_BLOCK } from 'zlib';
 
-class Map extends React.Component {
+class Map extends Component {
   componentDidMount () {
+    // Once mounted, scroll to center of map.
     const { size } = this.props
+
     const { innerWidth, innerHeight } = window
+
     window.scrollTo(
-      size * 50 - innerWidth / 2,
-      size * 50 - innerHeight / 2
+      (size * 100 - innerWidth) / 2,
+      (size * 100 - innerHeight) / 2
     )
   }
   render () {
     const { size } = this.props
+
     return (
-      <div style={{width: size * 100, height: size * 100, background: '#F3EBE9'}}>
-        {[...Array(Math.pow(size, 2))].map((e ,i) => {
-          return <div key={i} style={{width: 100, height: 100, float: 'left', background: i % 2 ? '#D4DBE4' : '#DCE2E9'}} />
+      <div
+        style={{
+          gridTemplateColumns: 'repeat(auto-fit, 100px)',
+          display: 'grid',
+          height: size * 100,
+          width: size * 100
+        }}
+      >
+        {[...Array(Math.pow(size, 2))].map((s, dex) => {
+          const bgLottery = Math.floor(Math.random() * 299)
+          let bgIndex = 1
+          if (bgLottery < 1) {
+            bgIndex = 2
+          } else if (bgLottery < 2) {
+            bgIndex = 5
+          } else if (bgLottery < 79) {
+            bgIndex = 3
+          } else if (bgLottery < 159) {
+            bgIndex = 4
+          } else if (bgLottery < 229) {
+            bgIndex = 6
+          }
+
+          return (
+            <div
+              key={`${dex}_${bgIndex}`}
+              style={{ background: `url('./static/assets/grass${bgIndex}.png')` }}
+            />
+          )
         })}
       </div>
     )
   }
 }
 
-module.exports = Map
+export default Map
