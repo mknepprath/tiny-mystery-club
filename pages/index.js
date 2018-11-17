@@ -5,6 +5,7 @@ import { initStore, startClock, addCount, serverRenderClock } from '../store'
 import withRedux from 'next-redux-wrapper'
 import Map from '../components/Map'
 import Char from '../components/Char'
+import Prize from '../components/Prize'
 import Rock from '../components/Rock'
 
 const npcs = [
@@ -97,6 +98,8 @@ class App extends Component {
         {rocks.map(spawn =>
           <Rock key={`${spawn.top}_${spawn.left}`} {...spawn} />
         )}
+
+        <Prize mapSize={mapSize} />
 
         <Map size={mapSize} />
       </div>

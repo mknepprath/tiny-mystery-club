@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
 
+const facing = {
+  'Bottom': 'down',
+  'Left': 'left',
+  'Right': 'right',
+  'Top': 'up'
+}
+
 class Char extends Component {
   constructor (props) {
     super(props)
@@ -12,7 +19,8 @@ class Char extends Component {
       clicked: false,
       direction: null,
       top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
-      left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2
+      left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2,
+      walking: false
     }
 
     this.onClickNPCHandler = this.onClickNPCHandler.bind(this)
@@ -47,8 +55,9 @@ class Char extends Component {
       // then go ahead and update with the new position.
       if (!map[nextTop / 100 + 1][left / 100 + 1]) {
         this.setState({
+          direction: down ? 'Bottom' : 'Top',
           top: nextTop,
-          direction: down ? 'Bottom' : 'Top'
+          walking: true
         })
       }
     } else if (moveType === 1) {
@@ -65,8 +74,9 @@ class Char extends Component {
       // then go ahead and update with the new position.
       if (!map[top / 100 + 1][nextLeft / 100 + 1]) {
         this.setState({
+          direction: right ? 'Right' : 'Left',
           left: nextLeft,
-          direction: right ? 'Right' : 'Left'
+          walking: true
         })
       }
     } else {
@@ -74,7 +84,7 @@ class Char extends Component {
       // whether to use the walking sprite or not. Direction should stay set so
       // sprite knows which way to face.
       this.setState({
-        direction: null
+        walking: false
       })
     }
   }
@@ -86,7 +96,7 @@ class Char extends Component {
   }
   render () {
     const { color } = this.props
-    const { direction, left, top } = this.state
+    const { direction, left, top, walking } = this.state
 
     const hasSpriteImage = !color
     return (
@@ -98,8 +108,8 @@ class Char extends Component {
           top,
           width: hasSpriteImage ? 100 : 80,
           height: hasSpriteImage ? 100 : 80,
-          background: color || `url('./static/assets/sprite2.gif')`,
-          transition: 'top 1.5s, left 1.5s',
+          background: color || `url('./static/assets/sprite-${facing[direction]}${walking ? '-walk' : ''}.gif')`,
+          transition: 'top 1s linear, left 1s linear',
           boxShadow: this.state.clicked ? '0 0 10px orange' : null,
           boxSizing: 'border-box',
           margin: hasSpriteImage ? 0 : 10,
