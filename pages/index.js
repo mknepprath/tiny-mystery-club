@@ -10,16 +10,6 @@ import Rock from '../components/Rock'
 
 const npcs = [
   {},
-  // { spawn: { top: 2, left: 3 }, color: '#E1AC6B' },
-  // { spawn: { top: 4, left: 9 }, color: '#EFE070' },
-  // { spawn: { top: 10, left: 30 }, color: '#63B0E3' },
-  // { spawn: { top: 19, left: 18 }, color: '#51A652' },
-  // { spawn: { top: 20, left: 23 }, color: '#FFFFFF' },
-  // { spawn: { top: 22, left: 16 }, color: '#B7B8BB' },
-  // { spawn: { top: 22, left: 36 }, color: '#DB7965' },
-  // { spawn: { top: 29, left: 14 }, color: '#5D4022' },
-  // { spawn: { top: 30, left: 10 }, color: '#615990' },
-  // { spawn: { top: 34, left: 33 }, color: '#D17F9A' },
   { spawn: { top: 2, left: 3 } },
   { spawn: { top: 4, left: 9 } },
   { spawn: { top: 10, left: 30 } },
@@ -69,6 +59,7 @@ class App extends Component {
     // Obscure the map and have parts be more visible due to fireflies lighting things as they move around @ night
     const mapSize = 39
 
+    // Should go in Redux so that objects can dictate which tiles are blocked
     let map = []
     const cols = [...Array(mapSize)]
     cols.forEach((h, i) => {

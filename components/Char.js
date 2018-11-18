@@ -18,8 +18,9 @@ class Char extends Component {
     this.state = {
       clicked: false,
       direction: null,
-      top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
       left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2,
+      spriteType: Math.floor(Math.random() * 2) ? 'sprite' : 'peng',
+      top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
       walking: false
     }
 
@@ -28,7 +29,7 @@ class Char extends Component {
   }
 
   onClickNPCHandler () {
-    this.setState({ clicked: true })
+    // this.setState({ clicked: true })
   }
 
   tick () {
@@ -95,10 +96,12 @@ class Char extends Component {
     clearInterval(this.interval)
   }
   render () {
+    // If a color is included, this becomes a null NPC.
     const { color } = this.props
-    const { direction, left, top, walking } = this.state
+    const { direction, left, spriteType, top, walking } = this.state
 
     const hasSpriteImage = !color
+
     return (
       <div
         onClick={this.onClickNPCHandler}
@@ -108,7 +111,7 @@ class Char extends Component {
           top,
           width: hasSpriteImage ? 100 : 80,
           height: hasSpriteImage ? 100 : 80,
-          background: color || `url('./static/assets/sprite-${facing[direction]}${walking ? '-walk' : ''}.gif')`,
+          background: color || `url('./static/assets/${spriteType}-${facing[direction]}${walking ? '-walk' : ''}.gif')`,
           transition: 'top 1s linear, left 1s linear',
           boxShadow: this.state.clicked ? '0 0 10px orange' : null,
           boxSizing: 'border-box',
