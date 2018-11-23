@@ -29,12 +29,12 @@ class NPC extends Component {
   }
 
   onClickNPCHandler () {
-    // this.setState({ clicked: true })
+    this.setState({ clicked: true })
   }
 
   tick () {
-    const { mapSize, map } = this.props
-    const { top, left } = this.state
+    const { map, mapSize } = this.props
+    const { left, top } = this.state
 
     // moveTypes:
     // - 0 = up/down
@@ -47,9 +47,11 @@ class NPC extends Component {
       let nextTop = top
       if (down) {
         // Moving down, so add to the distance from the top.
-        if (top < mapSize - 1) nextTop = top + 1
+        // Only if the NPC is not walking off the bottom of the page.
+        if (top + 1 < mapSize) nextTop = top + 1
       } else {
         // Moving up, so move closer to the top.
+        // Only if the NPC is not walking off the top of the page.
         if (top > 0) nextTop = top - 1
       }
       // If there is nothing on the map in the location the NPC is moving to,
@@ -66,7 +68,7 @@ class NPC extends Component {
       let nextLeft = left
       if (right) {
         // Moving right, so add to the distance from the left.
-        if (left < mapSize - 1) nextLeft = left + 1
+        if (left + 1 < mapSize) nextLeft = left + 1
       } else {
         // Moving left, so move closer to the left.
         if (left > 0) nextLeft = left - 1
@@ -81,9 +83,7 @@ class NPC extends Component {
         })
       }
     } else {
-      // Eventually switch this to change a separate state  property dictating
-      // whether to use the walking sprite or not. Direction should stay set so
-      // sprite knows which way to face.
+      // Direction of NPC doesn't change when they stop walking.
       this.setState({
         walking: false
       })
@@ -96,9 +96,14 @@ class NPC extends Component {
     clearInterval(this.interval)
   }
   render () {
-    // If a color is included, this becomes a null NPC.
-    const { color } = this.props
-    const { direction, left, spriteType, top, walking } = this.state
+    const {
+      clicked,
+      direction,
+      left,
+      spriteType,
+      top,
+      walking
+    } = this.state
 
     return (
       <div
@@ -109,9 +114,9 @@ class NPC extends Component {
           top: top * 100,
           width: 100,
           height: 100,
-          background: color || (direction ? `url('./static/assets/${spriteType}-${facing[direction]}${walking ? '-walk' : ''}.gif')` : ''),
+          backgroundImage: `url('./static/assets/${spriteType}-${facing[direction]}${walking ? '-walk' : ''}.gif')`,
           transition: 'top 1s linear, left 1s linear',
-          boxShadow: this.state.clicked ? '0 0 10px orange' : null,
+          boxShadow: clicked ? '0 0 1px orange' : null,
           boxSizing: 'border-box',
           [`border${direction}`]: '1px solid red'
         }} />
