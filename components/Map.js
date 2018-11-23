@@ -1,7 +1,35 @@
-import React, { Component } from 'react'
-import { Z_BLOCK } from 'zlib';
+import React, { PureComponent } from 'react'
 
-class Map extends Component {
+class Map extends PureComponent {
+  constructor (props) {
+    super(props)
+
+    const backgroundIds = [...Array(Math.pow(props.size, 2))].map(() => {
+      // Randomize grass tiles
+      const bgLottery = Math.floor(Math.random() * 299)
+
+      let backgroundId = 1
+
+      if (bgLottery < 1) {
+        backgroundId = 2
+      } else if (bgLottery < 2) {
+        backgroundId = 5
+      } else if (bgLottery < 79) {
+        backgroundId = 3
+      } else if (bgLottery < 159) {
+        backgroundId = 4
+      } else if (bgLottery < 229) {
+        backgroundId = 6
+      }
+
+      return backgroundId
+    })
+
+    this.state = {
+      backgroundIds
+    }
+  }
+
   componentDidMount () {
     // Once mounted, scroll to center of map.
     const { size } = this.props
@@ -13,8 +41,9 @@ class Map extends Component {
       (size * 100 - innerHeight) / 2
     )
   }
+
   render () {
-    const { size } = this.props
+    const { map, size } = this.props
 
     return (
       <div
@@ -25,25 +54,17 @@ class Map extends Component {
           width: size * 100
         }}
       >
-        {[...Array(Math.pow(size, 2))].map((s, dex) => {
-          const bgLottery = Math.floor(Math.random() * 299)
-          let bgIndex = 1
-          if (bgLottery < 1) {
-            bgIndex = 2
-          } else if (bgLottery < 2) {
-            bgIndex = 5
-          } else if (bgLottery < 79) {
-            bgIndex = 3
-          } else if (bgLottery < 159) {
-            bgIndex = 4
-          } else if (bgLottery < 229) {
-            bgIndex = 6
-          }
+        {this.state.backgroundIds.map((backgroundId, dex) => {
+          const top = Math.floor(dex / size)
+          const left = (dex % size)
 
           return (
             <div
-              key={`${dex}_${bgIndex}`}
-              style={{ background: `url('./static/assets/grass${bgIndex}.png')` }}
+              key={`${dex}_${backgroundId}`}
+              style={{
+                background: `url('./static/assets/grass${backgroundId}.png')`,
+                border: map[top][left] ? '1px solid red' : ''
+              }}
             />
           )
         })}

@@ -7,9 +7,9 @@ class Prize extends React.Component {
     super(props)
 
     this.state = {
-      left: randomSpawn(props.mapSize) * 100 - 100,
+      left: randomSpawn(props.mapSize),
       sprite: `url('./static/assets/prize.gif')`,
-      top: randomSpawn(props.mapSize) * 100 - 100
+      top: randomSpawn(props.mapSize)
     }
 
     this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
@@ -17,11 +17,22 @@ class Prize extends React.Component {
     this.onPrizeMouseOver = this.onPrizeMouseOver.bind(this)
   }
 
+  componentDidMount () {
+    this.props.blockTile(this.state.left, this.state.top)
+  }
+
   onPrizeClickHandler () {
+    this.props.updateScore()
+
+    const nextLeft = randomSpawn(this.props.mapSize)
+    const nextTop = randomSpawn(this.props.mapSize)
+
     this.setState({
-      left: randomSpawn(this.props.mapSize) * 100 - 100,
-      top: randomSpawn(this.props.mapSize) * 100 - 100
+      left: randomSpawn(nextLeft),
+      top: randomSpawn(nextTop)
     })
+
+    this.props.blockTile(nextLeft, nextTop)
   }
 
   onPrizeMouseOut () {
@@ -35,7 +46,6 @@ class Prize extends React.Component {
   }
 
   render () {
-    const { mapSize } = this.props
     const {
       left,
       sprite,
@@ -48,8 +58,8 @@ class Prize extends React.Component {
         onMouseOver={this.onPrizeMouseOver}
         style={{
           position: 'absolute',
-          left,
-          top,
+          left: left * 100,
+          top: top * 100,
           height: 100,
           width: 100,
           background: sprite,

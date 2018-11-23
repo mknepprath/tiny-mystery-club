@@ -7,7 +7,7 @@ const facing = {
   'Top': 'up'
 }
 
-class Char extends Component {
+class NPC extends Component {
   constructor (props) {
     super(props)
 
@@ -18,9 +18,9 @@ class Char extends Component {
     this.state = {
       clicked: false,
       direction: null,
-      left: spawn ? spawn.left * 100 - 100 : (mapSize * 100 - 100) / 2,
+      left: spawn ? spawn.left : Math.floor(mapSize / 2),
       spriteType: Math.floor(Math.random() * 2) ? 'sprite' : 'peng',
-      top: spawn ? spawn.top * 100 - 100 : (mapSize * 100 - 100) / 2,
+      top: spawn ? spawn.top : Math.floor(mapSize / 2),
       walking: false
     }
 
@@ -47,14 +47,14 @@ class Char extends Component {
       let nextTop = top
       if (down) {
         // Moving down, so add to the distance from the top.
-        if (top < (mapSize - 1) * 100) nextTop = top + 100
+        if (top < mapSize - 1) nextTop = top + 1
       } else {
         // Moving up, so move closer to the top.
-        if (top > 0) nextTop = top - 100
+        if (top > 0) nextTop = top - 1
       }
       // If there is nothing on the map in the location the NPC is moving to,
       // then go ahead and update with the new position.
-      if (!map[nextTop / 100 + 1][left / 100 + 1]) {
+      if (!map[nextTop][left]) {
         this.setState({
           direction: down ? 'Bottom' : 'Top',
           top: nextTop,
@@ -66,14 +66,14 @@ class Char extends Component {
       let nextLeft = left
       if (right) {
         // Moving right, so add to the distance from the left.
-        if (left < (mapSize - 1) * 100) nextLeft = left + 100
+        if (left < mapSize - 1) nextLeft = left + 1
       } else {
         // Moving left, so move closer to the left.
-        if (left > 0) nextLeft = left - 100
+        if (left > 0) nextLeft = left - 1
       }
       // If there is nothing on the map in the location the NPC is moving to,
       // then go ahead and update with the new position.
-      if (!map[top / 100 + 1][nextLeft / 100 + 1]) {
+      if (!map[top][nextLeft]) {
         this.setState({
           direction: right ? 'Right' : 'Left',
           left: nextLeft,
@@ -100,26 +100,23 @@ class Char extends Component {
     const { color } = this.props
     const { direction, left, spriteType, top, walking } = this.state
 
-    const hasSpriteImage = !color
-
     return (
       <div
         onClick={this.onClickNPCHandler}
         style={{
           position: 'absolute',
-          left,
-          top,
-          width: hasSpriteImage ? 100 : 80,
-          height: hasSpriteImage ? 100 : 80,
-          background: color || `url('./static/assets/${spriteType}-${facing[direction]}${walking ? '-walk' : ''}.gif')`,
+          left: left * 100,
+          top: top * 100,
+          width: 100,
+          height: 100,
+          background: color || (direction ? `url('./static/assets/${spriteType}-${facing[direction]}${walking ? '-walk' : ''}.gif')` : ''),
           transition: 'top 1s linear, left 1s linear',
           boxShadow: this.state.clicked ? '0 0 10px orange' : null,
           boxSizing: 'border-box',
-          margin: hasSpriteImage ? 0 : 10,
-          [`border${direction}`]: hasSpriteImage ? null : '20px solid black'
+          [`border${direction}`]: '1px solid red'
         }} />
     )
   }
 }
 
-export default Char
+export default NPC
