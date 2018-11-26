@@ -56,14 +56,14 @@ class Map extends PureComponent {
       >
         {this.state.backgroundIds.map((backgroundId, dex) => {
           const top = Math.floor(dex / size)
-          const left = (dex % size)
+          const left = dex % size
 
           return (
             <div
               key={`${dex}_${backgroundId}`}
               style={{
                 background: `url('./static/assets/grass${backgroundId}.png')`,
-                border: map[top][left] ? '1px solid red' : ''
+                // border: map[top][left] === 0 ? '1px solid red' : ''
               }}
             />
           )

@@ -1,11 +1,38 @@
 import React, { Component } from 'react'
 
+//TODO: Move to a utils file
+const shuffle = array => {
+  var currentIndex = array.length, temporaryValue, randomIndex
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+
+  return array
+}
+
+// TODO: Move to a constants file
 const facing = {
   'Bottom': 'down',
   'Left': 'left',
   'Right': 'right',
   'Top': 'up'
 }
+
+const sprites = [
+  'sprite',
+  'peng',
+  'lion'
+]
 
 class NPC extends Component {
   constructor (props) {
@@ -15,11 +42,12 @@ class NPC extends Component {
 
     // Set NPC location based on spawn point.
     // If no spawn point is provided, center it.
+    // Sprites face a random direction.
     this.state = {
       clicked: false,
-      direction: null,
+      direction: shuffle(Object.keys(facing))[0],
       left: spawn ? spawn.left : Math.floor(mapSize / 2),
-      spriteType: Math.floor(Math.random() * 2) ? 'sprite' : 'peng',
+      spriteType: shuffle(sprites)[0],
       top: spawn ? spawn.top : Math.floor(mapSize / 2),
       walking: false
     }
@@ -56,7 +84,12 @@ class NPC extends Component {
       }
       // If there is nothing on the map in the location the NPC is moving to,
       // then go ahead and update with the new position.
-      if (!map[nextTop][left]) {
+      if (map[nextTop][left]) {
+        this.props.flipTiles(
+          { left, top },
+          { left, top: nextTop }
+        )
+
         this.setState({
           direction: down ? 'Bottom' : 'Top',
           top: nextTop,
@@ -75,7 +108,12 @@ class NPC extends Component {
       }
       // If there is nothing on the map in the location the NPC is moving to,
       // then go ahead and update with the new position.
-      if (!map[top][nextLeft]) {
+      if (map[top][nextLeft]) {
+        this.props.flipTiles(
+          { left, top },
+          { left: nextLeft, top }
+        )
+
         this.setState({
           direction: right ? 'Right' : 'Left',
           left: nextLeft,
@@ -118,7 +156,7 @@ class NPC extends Component {
           transition: 'top 1s linear, left 1s linear',
           boxShadow: clicked ? '0 0 1px orange' : null,
           boxSizing: 'border-box',
-          [`border${direction}`]: '1px solid red'
+          // [`border${direction}`]: '1px solid red'
         }} />
     )
   }

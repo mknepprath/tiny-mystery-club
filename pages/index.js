@@ -11,17 +11,14 @@ import Rock from '../components/Rock'
 const MAP_SIZE = 39
 
 const npcs = [
-  { key: 'a' },
-  { key: 'b', spawn: { top: 2, left: 3 } },
-  { key: 'c', spawn: { top: 4, left: 9 } },
-  { key: 'd', spawn: { top: 10, left: 30 } },
-  { key: 'e', spawn: { top: 19, left: 18 } },
-  { key: 'f', spawn: { top: 20, left: 23 } },
+
   { key: 'g', spawn: { top: 22, left: 16 } },
   { key: 'h', spawn: { top: 22, left: 36 } },
   { key: 'i', spawn: { top: 29, left: 14 } },
   { key: 'j', spawn: { top: 30, left: 10 } },
-  { key: 'k', spawn: { top: 34, left: 33 } }
+  { key: 'r', spawn: { top: 32, left: 33 } },
+  { key: 's', spawn: { top: 33, left: 34 } },
+  { key: 't', spawn: { top: 35, left: 34 } }
 ]
 
 const rocks = [
@@ -51,7 +48,7 @@ class App extends Component {
     let map = []
 
     for (let i = 0; i < MAP_SIZE; i++ ) {
-      row[i] = 0
+      row[i] = 1
     }
 
     for (let i = 0; i < MAP_SIZE; i++ ) {
@@ -63,7 +60,7 @@ class App extends Component {
       score: 0
     }
 
-    this.blockTile = this.blockTile.bind(this)
+    this.flipTiles = this.flipTiles.bind(this)
     this.updateScore = this.updateScore.bind(this)
   }
 
@@ -73,7 +70,11 @@ class App extends Component {
     const nextMap = Array.from(this.state.map)
 
     rocks.forEach(spawn => {
-      nextMap[spawn.top][spawn.left] = 1
+      nextMap[spawn.top][spawn.left] = 0
+    })
+
+    npcs.forEach(({ spawn }) => {
+      nextMap[spawn.top][spawn.left] = 0
     })
 
     this.setState({
@@ -87,9 +88,10 @@ class App extends Component {
     clearInterval(this.timer)
   }
 
-  blockTile (left, top) {
-    const nextMap = Array.from(this.state.map)
-    nextMap[top][left] = 1
+  flipTiles (prevPosition, nextPosition) {
+    const nextMap = [...this.state.map]
+    if (prevPosition) nextMap[prevPosition.top][prevPosition.left] = 1
+    if (nextPosition) nextMap[nextPosition.top][nextPosition.left] = 0
 
     this.setState({
       map: nextMap
@@ -97,9 +99,7 @@ class App extends Component {
   }
 
   updateScore () {
-    const nextScore = this.state.score + 1
-
-    this.setState({ score: nextScore })
+    this.setState({ score: this.state.score + 1 })
   }
 
   render () {
@@ -125,6 +125,7 @@ class App extends Component {
 
         {npcs.map(({ key, spawn }) =>
           <NPC
+            flipTiles={this.flipTiles}
             key={key}
             map={map}
             mapSize={MAP_SIZE}
@@ -137,7 +138,8 @@ class App extends Component {
         )}
 
         <Prize
-          blockTile={this.blockTile}
+          flipTiles={this.flipTiles}
+          map={map}
           mapSize={MAP_SIZE}
           updateScore={this.updateScore}
         />

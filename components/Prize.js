@@ -1,15 +1,17 @@
 import React from 'react'
 
-const randomSpawn = mapSize => Math.floor(Math.random() * mapSize) + 1
+const randomSpawn = mapSize => Math.floor(Math.random() * mapSize)
 
 class Prize extends React.Component {
   constructor (props) {
     super(props)
 
+    // TODO: This causes an issue where the prize will appear
+    // briefly at the top left on reload.
     this.state = {
-      left: randomSpawn(props.mapSize),
+      left: 0,
       sprite: `url('./static/assets/prize.gif')`,
-      top: randomSpawn(props.mapSize)
+      top: 0
     }
 
     this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
@@ -18,21 +20,32 @@ class Prize extends React.Component {
   }
 
   componentDidMount () {
-    this.props.blockTile(this.state.left, this.state.top)
+    this.onPrizeClickHandler()
+  }
+
+  movePrize () {
+    let nextLeft
+    let nextTop
+
+    do {
+      nextLeft = randomSpawn(this.props.mapSize)
+      nextTop = randomSpawn(this.props.mapSize)
+    } while (this.props.map[nextTop][nextLeft] === 0)
+
+    this.props.flipTiles(
+      { left: this.state.left, top: this.state.top },
+      { left: nextLeft, top: nextTop }
+    )
+
+    this.setState({
+      left: nextLeft,
+      top: nextTop
+    })
   }
 
   onPrizeClickHandler () {
     this.props.updateScore()
-
-    const nextLeft = randomSpawn(this.props.mapSize)
-    const nextTop = randomSpawn(this.props.mapSize)
-
-    this.setState({
-      left: randomSpawn(nextLeft),
-      top: randomSpawn(nextTop)
-    })
-
-    this.props.blockTile(nextLeft, nextTop)
+    this.movePrize()
   }
 
   onPrizeMouseOut () {
