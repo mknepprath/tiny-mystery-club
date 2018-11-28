@@ -1,51 +1,43 @@
 import React from 'react'
 
-const randomSpawn = mapSize => Math.floor(Math.random() * mapSize)
+import { findUnblockedTile } from './utils'
 
 class Prize extends React.Component {
   constructor (props) {
     super(props)
 
+    const initialPosition = findUnblockedTile(this.props.map)
+
     // TODO: This causes an issue where the prize will appear
     // briefly at the top left on reload.
     this.state = {
-      left: 0,
+      left: initialPosition.left,
       sprite: `url('./static/assets/prize.gif')`,
-      top: 0
+      top: initialPosition.top
     }
+
+    props.flipTiles({
+      left: initialPosition.left,
+      top: initialPosition.top
+    })
 
     this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
     this.onPrizeMouseOut = this.onPrizeMouseOut.bind(this)
     this.onPrizeMouseOver = this.onPrizeMouseOver.bind(this)
   }
 
-  componentDidMount () {
-    this.onPrizeClickHandler()
-  }
-
-  movePrize () {
-    let nextLeft
-    let nextTop
-
-    do {
-      nextLeft = randomSpawn(this.props.mapSize)
-      nextTop = randomSpawn(this.props.mapSize)
-    } while (this.props.map[nextTop][nextLeft] === 0)
-
-    this.props.flipTiles(
-      { left: this.state.left, top: this.state.top },
-      { left: nextLeft, top: nextTop }
-    )
-
-    this.setState({
-      left: nextLeft,
-      top: nextTop
-    })
-  }
 
   onPrizeClickHandler () {
     this.props.updateScore()
-    this.movePrize()
+
+    const nextPosition = findUnblockedTile(this.props.map)
+
+    this.props.flipTiles(
+      nextPosition,
+      { left: this.state.left, top: this.state.top }
+    )
+
+    this.setState(nextPosition)
   }
 
   onPrizeMouseOut () {

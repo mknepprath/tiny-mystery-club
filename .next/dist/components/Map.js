@@ -32,39 +32,50 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _utils = require('./utils');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _jsxFileName = '/Users/mknepprath/GitHub/open-world/components/Map.js';
 
 
-var Map = function (_PureComponent) {
-  (0, _inherits3.default)(Map, _PureComponent);
+var Map = function (_React$PureComponent) {
+  (0, _inherits3.default)(Map, _React$PureComponent);
 
   function Map(props) {
     (0, _classCallCheck3.default)(this, Map);
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Map.__proto__ || (0, _getPrototypeOf2.default)(Map)).call(this, props));
 
-    var backgroundIds = [].concat((0, _toConsumableArray3.default)(Array(Math.pow(props.size, 2)))).map(function () {
+    var backgroundIds = [].concat((0, _toConsumableArray3.default)(Array(Math.pow(props.map.length, 2)))).map(function () {
+      var backgroundId = 'grass1.png';
+
       // Randomize grass tiles
       var bgLottery = Math.floor(Math.random() * 299);
 
-      var backgroundId = 1;
-
       if (bgLottery < 1) {
-        backgroundId = 2;
+        backgroundId = 'grass2.png';
       } else if (bgLottery < 2) {
-        backgroundId = 5;
+        backgroundId = 'grass5.png';
       } else if (bgLottery < 79) {
-        backgroundId = 3;
+        backgroundId = 'grass3.png';
       } else if (bgLottery < 159) {
-        backgroundId = 4;
+        backgroundId = 'grass4.png';
       } else if (bgLottery < 229) {
-        backgroundId = 6;
+        backgroundId = 'grass6.png';
       }
 
       return backgroundId;
     });
+
+    if (props.water) {
+      props.water.forEach(function (_ref) {
+        var spawn = _ref.spawn;
+
+        var index = (0, _utils.coordsToIndex)(spawn, props.map.length);
+        backgroundIds[index] = 'water.gif';
+      });
+    }
 
     _this.state = {
       backgroundIds: backgroundIds
@@ -76,52 +87,55 @@ var Map = function (_PureComponent) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       // Once mounted, scroll to center of map.
-      var size = this.props.size;
+      var map = this.props.map;
       var _window = window,
           innerWidth = _window.innerWidth,
           innerHeight = _window.innerHeight;
 
-      window.scrollTo((size * 100 - innerWidth) / 2, (size * 100 - innerHeight) / 2);
+      window.scrollTo((map.length * 100 - innerWidth) / 2, (map.length * 100 - innerHeight) / 2);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          map = _props.map,
-          size = _props.size;
+      var map = this.props.map;
 
       return _react2.default.createElement('div', {
         style: {
           gridTemplateColumns: 'repeat(auto-fit, 100px)',
           display: 'grid',
-          height: size * 100,
-          width: size * 100
+          height: map.length * 100,
+          width: map.length * 100
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 49
+          lineNumber: 58
         }
       }, this.state.backgroundIds.map(function (backgroundId, dex) {
-        var top = Math.floor(dex / size);
-        var left = dex % size;
+        var _indexToCoords = (0, _utils.indexToCoords)(dex, map.length),
+            left = _indexToCoords.left,
+            top = _indexToCoords.top;
 
         return _react2.default.createElement('div', {
           key: dex + '_' + backgroundId,
           style: {
-            background: 'url(\'./static/assets/grass' + backgroundId + '.png\')'
-            // border: map[top][left] === 0 ? '1px solid red' : ''
+            background: 'url(\'./static/assets/' + backgroundId + '\')',
+            // Below styles necessary for tile printout.
+            color: map[top][left] === 0 ? 'red' : '#318967',
+            fontFamily: 'sans-serif',
+            fontSize: 11,
+            fontWeight: 'bold'
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 62
+            lineNumber: 70
           }
-        });
+        }, left + 'x' + top + ', ' + dex);
       }));
     }
   }]);
 
   return Map;
-}(_react.PureComponent);
+}(_react2.default.PureComponent);
 
 exports.default = Map;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHMvTWFwLmpzIl0sIm5hbWVzIjpbIlJlYWN0IiwiUHVyZUNvbXBvbmVudCIsIk1hcCIsInByb3BzIiwiYmFja2dyb3VuZElkcyIsIkFycmF5IiwiTWF0aCIsInBvdyIsInNpemUiLCJtYXAiLCJiZ0xvdHRlcnkiLCJmbG9vciIsInJhbmRvbSIsImJhY2tncm91bmRJZCIsInN0YXRlIiwid2luZG93IiwiaW5uZXJXaWR0aCIsImlubmVySGVpZ2h0Iiwic2Nyb2xsVG8iLCJncmlkVGVtcGxhdGVDb2x1bW5zIiwiZGlzcGxheSIsImhlaWdodCIsIndpZHRoIiwiZGV4IiwidG9wIiwibGVmdCIsImJhY2tncm91bmQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLEFBQU8sQUFBUzs7Ozs7Ozs7O0lBRVYsQTsrQkFDSjs7ZUFBQSxBQUFhLE9BQU87d0NBQUE7O2dJQUFBLEFBQ1osQUFFTjs7UUFBTSwyREFBb0IsTUFBTSxLQUFBLEFBQUssSUFBSSxNQUFULEFBQWUsTUFBekIsQUFBSSxBQUFNLEFBQXFCLE1BQS9CLEFBQW9DLElBQUksWUFBTSxBQUNsRTtBQUNBO1VBQU0sWUFBWSxLQUFBLEFBQUssTUFBTSxLQUFBLEFBQUssV0FBbEMsQUFBa0IsQUFBMkIsQUFFN0M7O1VBQUksZUFBSixBQUFtQixBQUVuQjs7VUFBSSxZQUFKLEFBQWdCLEdBQUcsQUFDakI7dUJBQUEsQUFBZSxBQUNoQjtBQUZELGlCQUVXLFlBQUosQUFBZ0IsR0FBRyxBQUN4Qjt1QkFBQSxBQUFlLEFBQ2hCO0FBRk0sT0FBQSxVQUVJLFlBQUosQUFBZ0IsSUFBSSxBQUN6Qjt1QkFBQSxBQUFlLEFBQ2hCO0FBRk0sT0FBQSxVQUVJLFlBQUosQUFBZ0IsS0FBSyxBQUMxQjt1QkFBQSxBQUFlLEFBQ2hCO0FBRk0sT0FBQSxNQUVBLElBQUksWUFBSixBQUFnQixLQUFLLEFBQzFCO3VCQUFBLEFBQWUsQUFDaEI7QUFFRDs7YUFBQSxBQUFPLEFBQ1I7QUFuQkQsQUFBc0IsQUFxQnRCLEtBckJzQjs7VUFxQnRCLEFBQUs7cUJBeEJhLEFBd0JsQixBQUFhO0FBQUEsQUFDWDtXQUVIOzs7Ozt3Q0FFb0IsQUFDbkI7QUFEbUI7VUFBQSxBQUVYLE9BQVMsS0FGRSxBQUVHLE1BRkgsQUFFWDtvQkFGVyxBQUlpQjtVQUpqQixBQUlYLHFCQUpXLEFBSVg7VUFKVyxBQUlDLHNCQUpELEFBSUMsQUFFcEI7O2FBQUEsQUFBTyxTQUNMLENBQUMsT0FBQSxBQUFPLE1BQVIsQUFBYyxjQURoQixBQUM4QixHQUM1QixDQUFDLE9BQUEsQUFBTyxNQUFSLEFBQWMsZUFGaEIsQUFFK0IsQUFFaEM7Ozs7NkJBRVM7bUJBQ2MsS0FEZCxBQUNtQjtVQURuQixBQUNBLGFBREEsQUFDQTtVQURBLEFBQ0ssY0FETCxBQUNLLEFBRWI7OzZCQUNFLGNBQUE7OytCQUNTLEFBQ2dCLEFBQ3JCO21CQUZLLEFBRUksQUFDVDtrQkFBUSxPQUhILEFBR1UsQUFDZjtpQkFBTyxPQUxYLEFBQ1MsQUFJUztBQUpULEFBQ0w7O29CQUZKO3NCQUFBLEFBUUc7QUFSSDtBQUNFLE9BREYsT0FRRyxBQUFLLE1BQUwsQUFBVyxjQUFYLEFBQXlCLElBQUksVUFBQSxBQUFDLGNBQUQsQUFBZSxLQUFRLEFBQ25EO1lBQU0sTUFBTSxLQUFBLEFBQUssTUFBTSxNQUF2QixBQUFZLEFBQWlCLEFBQzdCO1lBQU0sT0FBTyxNQUFiLEFBQW1CLEFBRW5COzs7ZUFFSSxBQUFRLFlBRFYsQUFDaUIsQUFDZjs7d0RBQ0UsQUFBeUMsZUFDekM7QUFKSixBQUVTO0FBQUEsQUFDTDs7c0JBSEo7d0JBREYsQUFDRSxBQVFIO0FBUkc7QUFDRSxTQURGO0FBZFIsQUFDRSxBQVFHLEFBZ0JOOzs7OztBQXRFZSxBLEFBeUVsQjs7a0JBQUEsQUFBZSIsImZpbGUiOiJNYXAuanMiLCJzb3VyY2VSb290IjoiL1VzZXJzL21rbmVwcHJhdGgvR2l0SHViL29wZW4td29ybGQifQ==
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHMvTWFwLmpzIl0sIm5hbWVzIjpbIlJlYWN0IiwiY29vcmRzVG9JbmRleCIsImluZGV4VG9Db29yZHMiLCJNYXAiLCJwcm9wcyIsImJhY2tncm91bmRJZHMiLCJBcnJheSIsIk1hdGgiLCJwb3ciLCJtYXAiLCJsZW5ndGgiLCJiYWNrZ3JvdW5kSWQiLCJiZ0xvdHRlcnkiLCJmbG9vciIsInJhbmRvbSIsIndhdGVyIiwiZm9yRWFjaCIsInNwYXduIiwiaW5kZXgiLCJzdGF0ZSIsIndpbmRvdyIsImlubmVyV2lkdGgiLCJpbm5lckhlaWdodCIsInNjcm9sbFRvIiwiZ3JpZFRlbXBsYXRlQ29sdW1ucyIsImRpc3BsYXkiLCJoZWlnaHQiLCJ3aWR0aCIsImRleCIsImxlZnQiLCJ0b3AiLCJiYWNrZ3JvdW5kIiwiY29sb3IiLCJmb250RmFtaWx5IiwiZm9udFNpemUiLCJmb250V2VpZ2h0IiwiUHVyZUNvbXBvbmVudCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTzs7OztBQUVQLEFBQVMsQUFBZSxBQUFxQjs7Ozs7OztJQUV2QyxBOytCQUNKOztlQUFBLEFBQWEsT0FBTzt3Q0FBQTs7Z0lBQUEsQUFDWixBQUVOOztRQUFNLDJEQUFvQixNQUFNLEtBQUEsQUFBSyxJQUFJLE1BQUEsQUFBTSxJQUFmLEFBQW1CLFFBQTdCLEFBQUksQUFBTSxBQUEyQixNQUFyQyxBQUEwQyxJQUFJLFlBQU0sQUFDeEU7VUFBSSxlQUFKLEFBQW1CLEFBRW5COztBQUNBO1VBQU0sWUFBWSxLQUFBLEFBQUssTUFBTSxLQUFBLEFBQUssV0FBbEMsQUFBa0IsQUFBMkIsQUFFN0M7O1VBQUksWUFBSixBQUFnQixHQUFHLEFBQ2pCO3VCQUFBLEFBQWUsQUFDaEI7QUFGRCxpQkFFVyxZQUFKLEFBQWdCLEdBQUcsQUFDeEI7dUJBQUEsQUFBZSxBQUNoQjtBQUZNLE9BQUEsVUFFSSxZQUFKLEFBQWdCLElBQUksQUFDekI7dUJBQUEsQUFBZSxBQUNoQjtBQUZNLE9BQUEsVUFFSSxZQUFKLEFBQWdCLEtBQUssQUFDMUI7dUJBQUEsQUFBZSxBQUNoQjtBQUZNLE9BQUEsTUFFQSxJQUFJLFlBQUosQUFBZ0IsS0FBSyxBQUMxQjt1QkFBQSxBQUFlLEFBQ2hCO0FBRUQ7O2FBQUEsQUFBTyxBQUNSO0FBbkJELEFBQXNCLEFBcUJ0QixLQXJCc0I7O1FBcUJsQixNQUFKLEFBQVUsT0FBTyxBQUNmO1lBQUEsQUFBTSxNQUFOLEFBQVksUUFBUSxnQkFBZTtZQUFaLEFBQVksYUFBWixBQUFZLEFBQ2pDOztZQUFNLFFBQVEsMEJBQUEsQUFBYyxPQUFPLE1BQUEsQUFBTSxJQUF6QyxBQUFjLEFBQStCLEFBQzdDO3NCQUFBLEFBQWMsU0FBZCxBQUF1QixBQUN4QjtBQUhELEFBSUQ7QUFFRDs7VUFBQSxBQUFLO3FCQS9CYSxBQStCbEIsQUFBYTtBQUFBLEFBQ1g7V0FFSDs7Ozs7d0NBRW9CLEFBQ25CO0FBRG1CO1VBQUEsQUFFWCxNQUFRLEtBRkcsQUFFRSxNQUZGLEFBRVg7b0JBRlcsQUFJaUI7VUFKakIsQUFJWCxxQkFKVyxBQUlYO1VBSlcsQUFJQyxzQkFKRCxBQUlDLEFBRXBCOzthQUFBLEFBQU8sU0FDTCxDQUFDLElBQUEsQUFBSSxTQUFKLEFBQWEsTUFBZCxBQUFvQixjQUR0QixBQUNvQyxHQUNsQyxDQUFDLElBQUEsQUFBSSxTQUFKLEFBQWEsTUFBZCxBQUFvQixlQUZ0QixBQUVxQyxBQUV0Qzs7Ozs2QkFFUztVQUFBLEFBQ0EsTUFBUSxLQURSLEFBQ2EsTUFEYixBQUNBLEFBRVI7OzZCQUNFLGNBQUE7OytCQUNTLEFBQ2dCLEFBQ3JCO21CQUZLLEFBRUksQUFDVDtrQkFBUSxJQUFBLEFBQUksU0FIUCxBQUdnQixBQUNyQjtpQkFBTyxJQUFBLEFBQUksU0FMZixBQUNTLEFBSWU7QUFKZixBQUNMOztvQkFGSjtzQkFBQSxBQVFHO0FBUkg7QUFDRSxPQURGLE9BUUcsQUFBSyxNQUFMLEFBQVcsY0FBWCxBQUF5QixJQUFJLFVBQUEsQUFBQyxjQUFELEFBQWUsS0FBUTs2QkFDN0IsMEJBQUEsQUFBYyxLQUFLLElBRFUsQUFDN0IsQUFBdUI7WUFETSxBQUMzQyxzQkFEMkMsQUFDM0M7WUFEMkMsQUFDckMscUJBRHFDLEFBQ3JDLEFBRWQ7OytCQUNFLGNBQUE7ZUFDRSxBQUFRLFlBRFYsQUFDaUIsQUFDZjs7bURBQ0UsQUFBb0MsZUFEL0IsQUFFTDtBQUNBO21CQUFPLElBQUEsQUFBSSxLQUFKLEFBQVMsVUFBVCxBQUFtQixJQUFuQixBQUF1QixRQUh6QixBQUdpQyxBQUN0Qzt3QkFKSyxBQUlPLEFBQ1o7c0JBTEssQUFLSyxBQUNWO3dCQVJKLEFBRVMsQUFNTztBQU5QLEFBQ0w7O3NCQUhKO3dCQUFBLEFBV0k7QUFYSjtBQUNFLFNBREYsRUFBQSxhQUFBLEFBV1ksYUFaZCxBQUNFLEFBV29CLEFBR3ZCO0FBM0JMLEFBQ0UsQUFRRyxBQXFCTjs7Ozs7RUFsRmUsZ0JBQU0sQSxBQXFGeEI7O2tCQUFBLEFBQWUiLCJmaWxlIjoiTWFwLmpzIiwic291cmNlUm9vdCI6Ii9Vc2Vycy9ta25lcHByYXRoL0dpdEh1Yi9vcGVuLXdvcmxkIn0=

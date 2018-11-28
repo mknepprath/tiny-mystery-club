@@ -1,29 +1,38 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-class Map extends PureComponent {
+import { coordsToIndex, indexToCoords } from './utils'
+
+class Map extends React.PureComponent {
   constructor (props) {
     super(props)
 
-    const backgroundIds = [...Array(Math.pow(props.size, 2))].map(() => {
+    const backgroundIds = [...Array(Math.pow(props.map.length, 2))].map(() => {
+      let backgroundId = 'grass1.png'
+
       // Randomize grass tiles
       const bgLottery = Math.floor(Math.random() * 299)
 
-      let backgroundId = 1
-
       if (bgLottery < 1) {
-        backgroundId = 2
+        backgroundId = 'grass2.png'
       } else if (bgLottery < 2) {
-        backgroundId = 5
+        backgroundId = 'grass5.png'
       } else if (bgLottery < 79) {
-        backgroundId = 3
+        backgroundId = 'grass3.png'
       } else if (bgLottery < 159) {
-        backgroundId = 4
+        backgroundId = 'grass4.png'
       } else if (bgLottery < 229) {
-        backgroundId = 6
+        backgroundId = 'grass6.png'
       }
 
       return backgroundId
     })
+
+    if (props.water) {
+      props.water.forEach(({ spawn }) => {
+        const index = coordsToIndex(spawn, props.map.length)
+        backgroundIds[index] = 'water.gif'
+      })
+    }
 
     this.state = {
       backgroundIds
@@ -32,40 +41,45 @@ class Map extends PureComponent {
 
   componentDidMount () {
     // Once mounted, scroll to center of map.
-    const { size } = this.props
+    const { map } = this.props
 
     const { innerWidth, innerHeight } = window
 
     window.scrollTo(
-      (size * 100 - innerWidth) / 2,
-      (size * 100 - innerHeight) / 2
+      (map.length * 100 - innerWidth) / 2,
+      (map.length * 100 - innerHeight) / 2
     )
   }
 
   render () {
-    const { map, size } = this.props
+    const { map } = this.props
 
     return (
       <div
         style={{
           gridTemplateColumns: 'repeat(auto-fit, 100px)',
           display: 'grid',
-          height: size * 100,
-          width: size * 100
+          height: map.length * 100,
+          width: map.length * 100
         }}
       >
         {this.state.backgroundIds.map((backgroundId, dex) => {
-          const top = Math.floor(dex / size)
-          const left = dex % size
+          const { left, top } = indexToCoords(dex, map.length)
 
           return (
             <div
               key={`${dex}_${backgroundId}`}
               style={{
-                background: `url('./static/assets/grass${backgroundId}.png')`,
-                // border: map[top][left] === 0 ? '1px solid red' : ''
+                background: `url('./static/assets/${backgroundId}')`,
+                // Below styles necessary for tile printout.
+                color: map[top][left] === 0 ? 'red' : '#318967',
+                fontFamily: 'sans-serif',
+                fontSize: 11,
+                fontWeight: 'bold'
               }}
-            />
+            >
+            {`${left}x${top}, ${dex}`}
+            </div>
           )
         })}
       </div>

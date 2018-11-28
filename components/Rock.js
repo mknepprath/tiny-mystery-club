@@ -9,18 +9,23 @@ class Rock extends React.Component {
         ? `url('./static/assets/rock1.png')`
         : `url('./static/assets/rock2.png')`
     }
+
+    props.flipTiles({
+      left: props.spawn.left,
+      top: props.spawn.top
+    })
   }
 
   render () {
-    const { left, top } = this.props
+    const { spawn } = this.props
     const { backgroundImage } = this.state
 
     return (
       <div
         style={{
           position: 'absolute',
-          left: left * 100,
-          top: top * 100,
+          left: spawn.left * 100,
+          top: spawn.top * 100,
           height: 100,
           width: 100,
           backgroundImage
