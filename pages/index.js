@@ -9,7 +9,7 @@ import Prize from '../components/Prize'
 import Rock from '../components/Rock'
 
 import { NPCS, ROCKS, WATER } from '../components/constants'
-import { generateMap } from '../components/utils'
+import { flipTiles, generateMap } from '../components/utils'
 
 export const MAP_SIZE = 39
 
@@ -54,13 +54,8 @@ class App extends Component {
   }
 
   flipTiles (blockTiles, clearTiles) {
-    // Perhaps these args should be arrays...
-    const nextMap = [...this.state.map]
-    if (blockTiles) nextMap[blockTiles.top][blockTiles.left] = 0
-    if (clearTiles) nextMap[clearTiles.top][clearTiles.left] = 1
-
     this.setState({
-      map: nextMap
+      map: flipTiles(blockTiles, clearTiles, this.state.map)
     })
   }
 

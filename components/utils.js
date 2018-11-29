@@ -23,6 +23,16 @@ export const findUnblockedTile = map => {
   return spawn
 }
 
+export const flipTiles = (blockTiles, clearTiles, map) => {
+  // Perhaps these args should be arrays...
+  const nextMap = [...map]
+
+  if (blockTiles) nextMap[blockTiles.top][blockTiles.left] = 0
+  if (clearTiles) nextMap[clearTiles.top][clearTiles.left] = 1
+
+  return nextMap
+}
+
 /**
  * Generate a map matrix for tracking tiles.
  * @param {number} mapSize - The size of the map.

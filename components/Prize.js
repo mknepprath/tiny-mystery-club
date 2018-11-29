@@ -28,13 +28,15 @@ class Prize extends React.Component {
 
 
   onPrizeClickHandler () {
+    const { left, top } = this.state
+
     this.props.updateScore()
 
     const nextPosition = findUnblockedTile(this.props.map)
 
     this.props.flipTiles(
       nextPosition,
-      { left: this.state.left, top: this.state.top }
+      { left, top }
     )
 
     this.setState(nextPosition)
@@ -56,6 +58,7 @@ class Prize extends React.Component {
       sprite,
       top
     } = this.state
+
     return (
       <div
         onClick={this.onPrizeClickHandler}

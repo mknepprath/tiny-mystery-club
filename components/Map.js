@@ -2,7 +2,8 @@ import React from 'react'
 
 import { coordsToIndex, indexToCoords } from './utils'
 
-class Map extends React.PureComponent {
+// When not debugging, this can be React.PureComponent...
+class Map extends React.Component {
   constructor (props) {
     super(props)
 
@@ -78,7 +79,7 @@ class Map extends React.PureComponent {
                 fontWeight: 'bold'
               }}
             >
-            {`${left}x${top}, ${dex}`}
+            {`${top}x${left}, ${dex}`}
             </div>
           )
         })}
