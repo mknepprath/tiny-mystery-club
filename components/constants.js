@@ -5,14 +5,20 @@ export const FACING = {
   'Top': 'up'
 }
 
+export const SPRITES = [
+  'sprite',
+  'peng',
+  'lion'
+]
+
 export const NPCS = [
-  { key: 'a', spawn: { top: 22, left: 16 } },
-  { key: 'b', spawn: { top: 22, left: 36 } },
-  { key: 'c', spawn: { top: 29, left: 14 } },
-  { key: 'd', spawn: { top: 30, left: 10 } },
-  { key: 'e', spawn: { top: 32, left: 33 } },
-  { key: 'f', spawn: { top: 33, left: 34 } },
-  { key: 'g', spawn: { top: 35, left: 34 } }
+  { key: 'a', spawn: { top: 22, left: 16 }, spriteType: SPRITES[2] },
+  { key: 'b', spawn: { top: 22, left: 36 }, spriteType: SPRITES[2] },
+  { key: 'c', spawn: { top: 29, left: 14 }, spriteType: SPRITES[0] },
+  { key: 'd', spawn: { top: 30, left: 10 }, spriteType: SPRITES[1] },
+  { key: 'e', spawn: { top: 32, left: 33 }, spriteType: SPRITES[2] },
+  { key: 'f', spawn: { top: 33, left: 34 }, spriteType: SPRITES[0] },
+  { key: 'g', spawn: { top: 35, left: 34 }, spriteType: SPRITES[1] }
 ]
 
 export const ROCKS = [
@@ -23,12 +29,6 @@ export const ROCKS = [
   { spawn: { top: 21, left: 22 } },
   { spawn: { top: 23, left: 20 } },
   { spawn: { top: 38, left: 38 } }
-]
-
-export const SPRITES = [
-  'sprite',
-  'peng',
-  'lion'
 ]
 
 export const WATER = [

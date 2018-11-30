@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "module": "system",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "public",
+    "__tests__",
+    "__mocks__",
+    "__coverage__",
+    "docs",
+    "logs"
+  ],
+  "typeAcquisition": {
+    "enable": true
+  }
+}

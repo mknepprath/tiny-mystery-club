@@ -2,6 +2,8 @@ import React from 'react'
 
 import { coordsToIndex, indexToCoords } from './utils'
 
+import styles from './Map.css'
+
 // When not debugging, this can be React.PureComponent...
 class Map extends React.Component {
   constructor (props) {
@@ -40,26 +42,13 @@ class Map extends React.Component {
     }
   }
 
-  componentDidMount () {
-    // Once mounted, scroll to center of map.
-    const { map } = this.props
-
-    const { innerWidth, innerHeight } = window
-
-    window.scrollTo(
-      (map.length * 100 - innerWidth) / 2,
-      (map.length * 100 - innerHeight) / 2
-    )
-  }
-
   render () {
     const { map } = this.props
 
     return (
       <div
+        className={styles.map}
         style={{
-          gridTemplateColumns: 'repeat(auto-fit, 100px)',
-          display: 'grid',
           height: map.length * 100,
           width: map.length * 100
         }}
@@ -69,14 +58,11 @@ class Map extends React.Component {
 
           return (
             <div
+              className={styles.tile}
               key={`${dex}_${backgroundId}`}
               style={{
-                background: `url('./static/assets/${backgroundId}')`,
-                // Below styles necessary for tile printout.
-                color: map[top][left] === 0 ? 'red' : '#318967',
-                fontFamily: 'sans-serif',
-                fontSize: 11,
-                fontWeight: 'bold'
+                background: `url('/static/${backgroundId}')`,
+                color: map[top][left] === 0 ? 'red' : '#318967'
               }}
             >
             {`${top}x${left}, ${dex}`}

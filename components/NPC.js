@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
 import { shuffle } from './utils'
-import { FACING, SPRITES } from './constants'
+import { FACING } from './constants'
+
+import styles from './NPC.css'
 
 class NPC extends Component {
   constructor (props) {
@@ -12,9 +14,8 @@ class NPC extends Component {
     // Sprites face a random direction.
     this.state = {
       clicked: false,
-      direction: shuffle(Object.keys(FACING))[0],
+      direction: Object.keys(FACING)[0],
       left: props.spawn.left,
-      spriteType: shuffle(SPRITES)[0],
       top: props.spawn.top,
       walking: false
     }
@@ -100,6 +101,8 @@ class NPC extends Component {
     }
   }
   componentDidMount () {
+    this.setState({ direction: shuffle(Object.keys(FACING))[0] })
+
     this.interval = setInterval(this.tick, 1000)
   }
   componentWillUnmount () {
@@ -107,27 +110,26 @@ class NPC extends Component {
   }
   render () {
     const {
+      spriteType
+    } = this.props
+
+    const {
       clicked,
       direction,
       left,
-      spriteType,
       top,
       walking
     } = this.state
 
     return (
       <div
+        className={styles.npc}
         onClick={this.onClickNPCHandler}
         style={{
-          position: 'absolute',
           left: left * 100,
           top: top * 100,
-          width: 100,
-          height: 100,
-          backgroundImage: `url('./static/assets/${spriteType}-${FACING[direction]}${walking ? '-walk' : ''}.gif')`,
-          transition: 'top 1s linear, left 1s linear',
+          backgroundImage: `url('/static/${spriteType}-${FACING[direction]}${walking ? '-walk' : ''}.gif')`,
           boxShadow: clicked ? '0 0 1px orange' : null,
-          boxSizing: 'border-box',
           // [`border${direction}`]: '1px solid purple'
         }} />
     )

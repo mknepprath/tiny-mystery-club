@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
-import { bindActionCreators } from 'redux'
-import { initStore, startClock, addCount, serverRenderClock } from '../store'
-import withRedux from 'next-redux-wrapper'
 import Map from '../components/Map'
 import NPC from '../components/NPC'
 import Prize from '../components/Prize'
@@ -11,13 +8,6 @@ import { flipTiles, generateMap } from '../components/utils'
 const MAP_SIZE = 3
 
 class Room extends Component {
-  static getInitialProps ({ store, isServer }) {
-    store.dispatch(serverRenderClock(isServer))
-    store.dispatch(addCount())
-
-    return { isServer }
-  }
-
   constructor (props) {
     super(props)
 
@@ -28,14 +18,6 @@ class Room extends Component {
 
     this.flipTiles = this.flipTiles.bind(this)
     this.updateScore = this.updateScore.bind(this)
-  }
-
-  componentDidMount () {
-    this.timer = this.props.startClock()
-  }
-
-  componentWillUnmount () {
-    clearInterval(this.timer)
   }
 
   flipTiles (blockTiles, clearTiles) {
@@ -80,11 +62,4 @@ class Room extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addCount: bindActionCreators(addCount, dispatch),
-    startClock: bindActionCreators(startClock, dispatch)
-  }
-}
-
-export default withRedux(initStore, null, mapDispatchToProps)(Room)
+export default Room

@@ -2,6 +2,8 @@ import React from 'react'
 
 import { findUnblockedTile } from './utils'
 
+import styles from './Prize.css'
+
 class Prize extends React.Component {
   constructor (props) {
     super(props)
@@ -12,7 +14,6 @@ class Prize extends React.Component {
     // briefly at the top left on reload.
     this.state = {
       left: initialPosition.left,
-      sprite: `url('./static/assets/prize.gif')`,
       top: initialPosition.top
     }
 
@@ -22,8 +23,6 @@ class Prize extends React.Component {
     })
 
     this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
-    this.onPrizeMouseOut = this.onPrizeMouseOut.bind(this)
-    this.onPrizeMouseOver = this.onPrizeMouseOver.bind(this)
   }
 
 
@@ -42,16 +41,6 @@ class Prize extends React.Component {
     this.setState(nextPosition)
   }
 
-  onPrizeMouseOut () {
-    // Replace with CSS :hover
-    this.setState({ sprite: `url('./static/assets/prize.gif')` })
-  }
-
-  onPrizeMouseOver () {
-    // Replace with CSS :hover
-    this.setState({ sprite: `url('./static/assets/prize-sparkle.gif')` })
-  }
-
   render () {
     const {
       left,
@@ -61,17 +50,13 @@ class Prize extends React.Component {
 
     return (
       <div
+        className={styles.prize}
         onClick={this.onPrizeClickHandler}
         onMouseOut={this.onPrizeMouseOut}
         onMouseOver={this.onPrizeMouseOver}
         style={{
-          position: 'absolute',
           left: left * 100,
-          top: top * 100,
-          height: 100,
-          width: 100,
-          background: sprite,
-          cursor: 'pointer'
+          top: top * 100
         }}
       />
     )
