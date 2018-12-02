@@ -31,11 +31,12 @@ class Room extends Component {
   }
 
   render () {
-    const { map } = this.state
+    const { map, score } = this.state
 
     return (
       <div style={{ position: 'relative' }}>
         <Head>
+          <title>{`${devMode ? 'Dev' : 'Open'} World - Room` +  (score ? ` (${score})` : '')}</title>
           <link rel='stylesheet' type='text/css' href='./static/reset.css' />
         </Head>
 
@@ -43,10 +44,8 @@ class Room extends Component {
           <NPC
             flipTiles={this.flipTiles}
             map={map}
-            spawn={{
-              left: 2,
-              top: 2
-            }}
+            spawn={{ left: 2, top: 2 }}
+            spriteType='sprite'
           />
         </a>
 

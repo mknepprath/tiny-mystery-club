@@ -23,6 +23,7 @@ class App extends Component {
     })
 
     this.state = {
+      devMode: false,
       map,
       score: 0
     }
@@ -57,7 +58,7 @@ class App extends Component {
   }
 
   render () {
-    const { map } = this.state
+    const { devMode, map, score } = this.state
     // Ideas...
     // Each char should have a state that's impacted by what they're near, player can trigger things that affect how they're impacted
     // For now, maybe have them change color depending on feelings...
@@ -71,11 +72,13 @@ class App extends Component {
     return (
       <div style={{ position: 'relative' }}>
         <Head>
+          <title>{`${devMode ? 'Dev' : 'Open'} World` +  (score ? ` (${score})` : '')}</title>
           <link rel='stylesheet' type='text/css' href='./static/reset.css' />
         </Head>
 
         {NPCS.map(({ key, spawn, spriteType }) =>
           <NPC
+            devMode={devMode}
             flipTiles={this.flipTiles}
             key={key}
             map={map}
@@ -105,7 +108,11 @@ class App extends Component {
           updateScore={this.updateScore}
         />
 
-        <Map map={map} water={WATER} />
+        <Map
+          devMode={devMode}
+          map={map}
+          water={WATER}
+        />
       </div>
     )
   }

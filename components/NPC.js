@@ -110,6 +110,7 @@ class NPC extends Component {
   }
   render () {
     const {
+      devMode,
       spriteType
     } = this.props
 
@@ -129,9 +130,10 @@ class NPC extends Component {
           left: left * 100,
           top: top * 100,
           backgroundImage: `url('/static/${spriteType}-${FACING[direction]}${walking ? '-walk' : ''}.gif')`,
-          boxShadow: clicked ? '0 0 1px orange' : null,
-          // [`border${direction}`]: '1px solid purple'
-        }} />
+          boxShadow: (clicked && devMode) ? '0 0 2px red' : null,
+          [`border${direction}`]: devMode ? '2px solid red' : null
+        }}
+      />
     )
   }
 }

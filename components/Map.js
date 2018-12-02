@@ -43,7 +43,7 @@ class Map extends React.Component {
   }
 
   render () {
-    const { map } = this.props
+    const { devMode, map } = this.props
 
     return (
       <div
@@ -62,10 +62,10 @@ class Map extends React.Component {
               key={`${dex}_${backgroundId}`}
               style={{
                 background: `url('/static/${backgroundId}')`,
-                color: map[top][left] === 0 ? 'red' : '#318967'
+                color: devMode ? (map[top][left] === 0 ? 'red' : 'rgba(0, 0, 0, .2)') : null
               }}
             >
-            {`${top}x${left}, ${dex}`}
+            {devMode ? `${top}x${left}, ${dex}` : null}
             </div>
           )
         })}

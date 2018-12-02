@@ -25,7 +25,6 @@ class Prize extends React.Component {
     this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
   }
 
-
   onPrizeClickHandler () {
     const { left, top } = this.state
 
@@ -44,7 +43,6 @@ class Prize extends React.Component {
   render () {
     const {
       left,
-      sprite,
       top
     } = this.state
 
@@ -52,8 +50,6 @@ class Prize extends React.Component {
       <div
         className={styles.prize}
         onClick={this.onPrizeClickHandler}
-        onMouseOut={this.onPrizeMouseOut}
-        onMouseOver={this.onPrizeMouseOver}
         style={{
           left: left * 100,
           top: top * 100
