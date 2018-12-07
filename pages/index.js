@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Map from '../components/Map'
 import NPC from '../components/NPC'
@@ -11,7 +11,7 @@ import { flipTiles, generateMap } from '../components/utils'
 
 export const MAP_SIZE = 39
 
-class App extends Component {
+class App extends React.PureComponent {
   constructor (props) {
     super(props)
 

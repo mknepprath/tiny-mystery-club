@@ -123,13 +123,13 @@ class NPC extends Component {
     } = this.state
 
     return (
-      <div
+      <img
         className={styles.npc}
         onClick={this.onClickNPCHandler}
+        src={`static/${spriteType}-${FACING[direction]}${walking ? '-walk' : ''}.gif`}
         style={{
           left: left * 100,
           top: top * 100,
-          backgroundImage: `url('/static/${spriteType}-${FACING[direction]}${walking ? '-walk' : ''}.gif')`,
           boxShadow: (clicked && devMode) ? '0 0 2px red' : null,
           [`border${direction}`]: devMode ? '2px solid red' : null
         }}

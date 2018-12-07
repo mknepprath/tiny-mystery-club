@@ -43,7 +43,7 @@ class Map extends React.Component {
   }
 
   render () {
-    const { devMode, map } = this.props
+    const { devMode, interior, map } = this.props
 
     return (
       <div
@@ -61,7 +61,7 @@ class Map extends React.Component {
               className={styles.tile}
               key={`${dex}_${backgroundId}`}
               style={{
-                background: `url('/static/${backgroundId}')`,
+                background: `url('/static/${interior ? 'wood-floor.gif' : backgroundId}')`,
                 color: devMode ? (map[top][left] === 0 ? 'red' : 'rgba(0, 0, 0, .2)') : null
               }}
             >

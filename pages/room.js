@@ -12,6 +12,7 @@ class Room extends Component {
     super(props)
 
     this.state = {
+      devMode: false,
       map: generateMap(MAP_SIZE),
       score: 0
     }
@@ -31,7 +32,7 @@ class Room extends Component {
   }
 
   render () {
-    const { map, score } = this.state
+    const { devMode, map, score } = this.state
 
     return (
       <div style={{ position: 'relative' }}>
@@ -55,7 +56,11 @@ class Room extends Component {
           updateScore={this.updateScore}
         />
 
-        <Map map={map} />
+        <Map
+          devMode={devMode}
+          interior
+          map={map}
+        />
       </div>
     )
   }

@@ -18,23 +18,23 @@ class Rock extends React.Component {
 
   componentDidMount () {
     this.setState({
-      backgroundImage: Math.floor(Math.random() * 2)
-        ? `url('/static/rock1.png')`
-        : `url('/static/rock2.png')`
+      src: Math.floor(Math.random() * 2)
+        ? '/static/rock1.png'
+        : '/static/rock2.png'
     })
   }
 
   render () {
     const { spawn } = this.props
-    const { backgroundImage } = this.state
+    const { src } = this.state
 
     return (
-      <div
+      <img
         className={styles.rock}
+        src={src}
         style={{
           left: spawn.left * 100,
-          top: spawn.top * 100,
-          backgroundImage
+          top: spawn.top * 100
         }}
       />
     )
