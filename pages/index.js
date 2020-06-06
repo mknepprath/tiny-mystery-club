@@ -1,12 +1,12 @@
 import React from "react";
 import Head from "next/head";
-import Map from "../components/Map";
-import NPC from "../components/NPC";
-import Prize from "../components/Prize";
-import Rock from "../components/Rock";
+import Map from "components/map";
+import NPC from "components/npc";
+import Prize from "components/prize";
+import Rock from "components/rock";
 
-import { NPCS, ROCKS, WATER } from "../components/constants";
-import { flipTiles, generateMap } from "../components/utils";
+import { NPCS, ROCKS, WATER } from "components/constants";
+import { flipTiles, generateMap } from "components/utils";
 
 export const MAP_SIZE = 39;
 

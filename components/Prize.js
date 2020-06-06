@@ -2,7 +2,7 @@ import React from "react";
 
 import { findUnblockedTile } from "./utils";
 
-import styles from "./Prize.module.css";
+import styles from "./prize.module.css";
 
 class Prize extends React.Component {
   constructor(props) {

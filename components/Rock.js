@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./Rock.module.css";
+import styles from "./rock.module.css";
 
 class Rock extends React.Component {
   constructor(props) {

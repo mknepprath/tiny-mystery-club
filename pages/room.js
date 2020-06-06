@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Head from "next/head";
-import Map from "../components/Map";
-import NPC from "../components/NPC";
-import Prize from "../components/Prize";
-import { flipTiles, generateMap } from "../components/utils";
+import Map from "components/map";
+import NPC from "components/npc";
+import Prize from "components/prize";
+import { flipTiles, generateMap } from "components/utils";
 
 const MAP_SIZE = 3;
 

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { shuffle } from "./utils";
 import { FACING } from "./constants";
 
-import styles from "./NPC.module.css";
+import styles from "./npc.module.css";
 
 class NPC extends Component {
   constructor(props) {
