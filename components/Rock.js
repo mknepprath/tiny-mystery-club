@@ -1,32 +1,32 @@
-import React from 'react'
+import React from "react";
 
-import styles from './Rock.css'
+import styles from "./Rock.module.css";
 
 class Rock extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      backgroundImage: `url('/static/rock1.png')`
-    }
+      backgroundImage: `url('/static/rock1.png')`,
+    };
 
     props.flipTiles({
       left: props.spawn.left,
-      top: props.spawn.top
-    })
+      top: props.spawn.top,
+    });
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState({
       src: Math.floor(Math.random() * 2)
-        ? '/static/rock1.png'
-        : '/static/rock2.png'
-    })
+        ? "/static/rock1.png"
+        : "/static/rock2.png",
+    });
   }
 
-  render () {
-    const { spawn } = this.props
-    const { src } = this.state
+  render() {
+    const { spawn } = this.props;
+    const { src } = this.state;
 
     return (
       <img
@@ -34,11 +34,11 @@ class Rock extends React.Component {
         src={src}
         style={{
           left: spawn.left * 100,
-          top: spawn.top * 100
+          top: spawn.top * 100,
         }}
       />
-    )
+    );
   }
 }
 
-export default Rock
+export default Rock;

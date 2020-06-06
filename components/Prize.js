@@ -1,50 +1,44 @@
-import React from 'react'
+import React from "react";
 
-import { findUnblockedTile } from './utils'
+import { findUnblockedTile } from "./utils";
 
-import styles from './Prize.css'
+import styles from "./Prize.module.css";
 
 class Prize extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
-    const initialPosition = findUnblockedTile(this.props.map)
+    const initialPosition = findUnblockedTile(this.props.map);
 
     // TODO: This causes an issue where the prize will appear
     // briefly at the top left on reload.
     this.state = {
       left: initialPosition.left,
-      top: initialPosition.top
-    }
+      top: initialPosition.top,
+    };
 
     props.flipTiles({
       left: initialPosition.left,
-      top: initialPosition.top
-    })
+      top: initialPosition.top,
+    });
 
-    this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this)
+    this.onPrizeClickHandler = this.onPrizeClickHandler.bind(this);
   }
 
-  onPrizeClickHandler () {
-    const { left, top } = this.state
+  onPrizeClickHandler() {
+    const { left, top } = this.state;
 
-    this.props.updateScore()
+    this.props.updateScore();
 
-    const nextPosition = findUnblockedTile(this.props.map)
+    const nextPosition = findUnblockedTile(this.props.map);
 
-    this.props.flipTiles(
-      nextPosition,
-      { left, top }
-    )
+    this.props.flipTiles(nextPosition, { left, top });
 
-    this.setState(nextPosition)
+    this.setState(nextPosition);
   }
 
-  render () {
-    const {
-      left,
-      top
-    } = this.state
+  render() {
+    const { left, top } = this.state;
 
     return (
       <div
@@ -52,11 +46,11 @@ class Prize extends React.Component {
         onClick={this.onPrizeClickHandler}
         style={{
           left: left * 100,
-          top: top * 100
+          top: top * 100,
         }}
       />
-    )
-    }
+    );
   }
+}
 
-export default Prize
+export default Prize;
