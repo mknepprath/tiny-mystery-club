@@ -1,9 +1,12 @@
-// next.config.js
-const withCSS = require('@zeit/next-css')
-module.exports = withCSS({
-  cssModules: true,
-  cssLoaderOptions: {
-    importLoaders: 1,
-    localIdentName: "[local]___[hash:base64:5]",
-  }
-})
+const { join } = require("path");
+
+module.exports = {
+  webpack(config, options) {
+    const paths = ["components"];
+    paths.forEach(
+      (path) => (config.resolve.alias[path] = join(__dirname, path))
+    );
+
+    return config;
+  },
+};

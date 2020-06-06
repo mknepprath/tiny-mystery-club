@@ -1,52 +1,55 @@
-import React, { Component } from 'react'
-import Head from 'next/head'
-import Map from '../components/Map'
-import NPC from '../components/NPC'
-import Prize from '../components/Prize'
-import { flipTiles, generateMap } from '../components/utils'
+import React, { Component } from "react";
+import Head from "next/head";
+import Map from "components/map";
+import NPC from "components/npc";
+import Prize from "components/prize";
+import { flipTiles, generateMap } from "components/utils";
 
-const MAP_SIZE = 3
+const MAP_SIZE = 3;
 
 class Room extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
       devMode: false,
       map: generateMap(MAP_SIZE),
-      score: 0
-    }
+      score: 0,
+    };
 
-    this.flipTiles = this.flipTiles.bind(this)
-    this.updateScore = this.updateScore.bind(this)
+    this.flipTiles = this.flipTiles.bind(this);
+    this.updateScore = this.updateScore.bind(this);
   }
 
-  flipTiles (blockTiles, clearTiles) {
+  flipTiles(blockTiles, clearTiles) {
     this.setState({
-      map: flipTiles(blockTiles, clearTiles, this.state.map)
-    })
+      map: flipTiles(blockTiles, clearTiles, this.state.map),
+    });
   }
 
-  updateScore () {
-    this.setState({ score: this.state.score + 1 })
+  updateScore() {
+    this.setState({ score: this.state.score + 1 });
   }
 
-  render () {
-    const { devMode, map, score } = this.state
+  render() {
+    const { devMode, map, score } = this.state;
 
     return (
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <Head>
-          <title>{`${devMode ? 'Dev' : 'Open'} World - Room` +  (score ? ` (${score})` : '')}</title>
-          <link rel='stylesheet' type='text/css' href='./static/reset.css' />
+          <title>
+            {`${devMode ? "Dev" : "Open"} World - Room` +
+              (score ? ` (${score})` : "")}
+          </title>
+          <link rel="stylesheet" type="text/css" href="./static/reset.css" />
         </Head>
 
-        <a href='/'>
+        <a href="/">
           <NPC
             flipTiles={this.flipTiles}
             map={map}
             spawn={{ left: 2, top: 2 }}
-            spriteType='sprite'
+            spriteType="sprite"
           />
         </a>
 
@@ -56,14 +59,10 @@ class Room extends Component {
           updateScore={this.updateScore}
         />
 
-        <Map
-          devMode={devMode}
-          interior
-          map={map}
-        />
+        <Map devMode={devMode} interior map={map} />
       </div>
-    )
+    );
   }
 }
 
-export default Room
+export default Room;
