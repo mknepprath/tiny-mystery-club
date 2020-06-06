@@ -1,9 +1,0 @@
-.npc {
-  position: absolute;
-
-  width: 100px;
-  height: 100px;
-  box-sizing: border-box;
-
-  transition: top 1s linear, left 1s linear;
-}
