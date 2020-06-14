@@ -18,16 +18,6 @@ export default class MyDocument extends Document {
       <html lang="en">
         <Head>
           <link rel="icon" href="/favicon.png" />
-          <link rel="manifest" href="/manifest.json" />
-          <link
-            rel="icon"
-            sizes="192x192"
-            href="/assets/android-chrome-192x192.png"
-          />
-          <link
-            rel="apple-touch-icon"
-            href="/assets/apple-touch-icon-152x152.png"
-          />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
           <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
