@@ -33,6 +33,10 @@ export default class MyDocument extends Document {
           <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="627" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="#349E76"
+          />
         </Head>
         <body>
           <Main />
