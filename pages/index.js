@@ -8,7 +8,12 @@ import Rock from "components/rock";
 import { NPCS, ROCKS, WATER } from "components/constants";
 import { flipTiles, generateMap } from "components/utils";
 
-export const MAP_SIZE = 39;
+const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "localhost:3000"
+    : "https://tinymystery.club";
+
+export const MAP_SIZE = 59;
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -82,6 +87,12 @@ class App extends React.PureComponent {
               (score ? ` (${score})` : "")}
           </title>
           <link rel="stylesheet" type="text/css" href="./static/reset.css" />
+          <link rel="icon" href="/favicon.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+          <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="627" />
         </Head>
 
         {NPCS.map(({ key, spawn, spriteType }) => (

@@ -118,11 +118,7 @@ class NPC extends Component {
           left: left * 100,
           top: top * 100,
           boxShadow: clicked && devMode ? "0 0 16px red" : null,
-          borderBottom: devMode ? "1px solid red" : "none",
-          borderLeft: devMode ? "1px solid red" : "none",
-          borderRight: devMode ? "1px solid red" : "none",
-          borderTop: devMode ? "1px solid red" : "none",
-          [`border${direction}`]: devMode ? "4px solid red" : null,
+          [`border${direction}`]: devMode ? "4px solid red" : "none",
         }}
         suppressHydrationWarning
       />

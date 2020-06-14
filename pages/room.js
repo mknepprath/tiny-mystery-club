@@ -5,6 +5,11 @@ import NPC from "components/npc";
 import Prize from "components/prize";
 import { flipTiles, generateMap } from "components/utils";
 
+const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "localhost:3000"
+    : "https://tinymystery.club";
+
 const MAP_SIZE = 3;
 
 class Room extends Component {
@@ -48,6 +53,12 @@ class Room extends Component {
               (score ? ` (${score})` : "")}
           </title>
           <link rel="stylesheet" type="text/css" href="./static/reset.css" />
+          <link rel="icon" href="/favicon.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+          <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="627" />
         </Head>
 
         <a href="/">
