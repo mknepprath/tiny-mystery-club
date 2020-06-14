@@ -26,7 +26,7 @@ class App extends React.PureComponent {
       map[spawn.top][spawn.left] = 0;
     });
 
-    let devMode = false;
+    let devMode;
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       devMode = urlParams.get("devMode");

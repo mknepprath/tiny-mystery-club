@@ -16,7 +16,7 @@ class Room extends Component {
   constructor(props) {
     super(props);
 
-    let devMode = false;
+    let devMode;
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       devMode = urlParams.get("devMode");
