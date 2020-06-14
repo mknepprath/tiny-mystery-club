@@ -48,6 +48,7 @@ class Prize extends React.Component {
           left: left * 100,
           top: top * 100,
         }}
+        suppressHydrationWarning
       />
     );
   }

@@ -11,8 +11,14 @@ class Room extends Component {
   constructor(props) {
     super(props);
 
+    let devMode = false;
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      devMode = urlParams.get("devMode");
+    }
+
     this.state = {
-      devMode: false,
+      devMode: devMode != null,
       map: generateMap(MAP_SIZE),
       score: 0,
     };
@@ -38,7 +44,7 @@ class Room extends Component {
       <div style={{ position: "relative" }}>
         <Head>
           <title>
-            {`${devMode ? "Dev" : "Open"} World - Room` +
+            {`Tiny Mystery ${devMode ? "Sandbox" : "Club"} - Room` +
               (score ? ` (${score})` : "")}
           </title>
           <link rel="stylesheet" type="text/css" href="./static/reset.css" />

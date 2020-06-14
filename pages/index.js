@@ -21,8 +21,14 @@ class App extends React.PureComponent {
       map[spawn.top][spawn.left] = 0;
     });
 
+    let devMode = false;
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      devMode = urlParams.get("devMode");
+    }
+
     this.state = {
-      devMode: false,
+      devMode: devMode != null,
       map,
       score: 0,
     };
@@ -72,7 +78,8 @@ class App extends React.PureComponent {
       <div style={{ position: "relative" }}>
         <Head>
           <title>
-            {`${devMode ? "Dev" : "Open"} World` + (score ? ` (${score})` : "")}
+            {`Tiny Mystery ${devMode ? "Sandbox" : "Club"}` +
+              (score ? ` (${score})` : "")}
           </title>
           <link rel="stylesheet" type="text/css" href="./static/reset.css" />
         </Head>

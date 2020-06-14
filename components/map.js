@@ -13,17 +13,17 @@ class Map extends React.Component {
       let backgroundId = "grass1.png";
 
       // Randomize grass tiles
-      const bgLottery = Math.floor(Math.random() * 299);
+      const backgroundLottery = Math.floor(Math.random() * 299);
 
-      if (bgLottery < 1) {
+      if (backgroundLottery < 1) {
         backgroundId = "grass2.png";
-      } else if (bgLottery < 2) {
+      } else if (backgroundLottery < 2) {
         backgroundId = "grass5.png";
-      } else if (bgLottery < 79) {
+      } else if (backgroundLottery < 79) {
         backgroundId = "grass3.png";
-      } else if (bgLottery < 159) {
+      } else if (backgroundLottery < 159) {
         backgroundId = "grass4.png";
-      } else if (bgLottery < 229) {
+      } else if (backgroundLottery < 229) {
         backgroundId = "grass6.png";
       }
 
@@ -70,6 +70,7 @@ class Map extends React.Component {
                     : "rgba(0, 0, 0, .2)"
                   : null,
               }}
+              suppressHydrationWarning
             >
               {devMode ? `${top}x${left}, ${dex}` : null}
             </div>
