@@ -86,20 +86,9 @@ class App extends React.PureComponent {
             {`Tiny Mystery ${devMode ? "Sandbox" : "Club"}` +
               (score ? ` (${score})` : "")}
           </title>
-          <link rel="stylesheet" type="text/css" href="./static/reset.css" />
-          <link rel="icon" href="/favicon.png" />
-          <link rel="manifest" href="/manifest.json" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="#349E76"
-          />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
-          <meta property="twitter:title" content="Tiny Mystery Club" />
           <meta property="og:title" content="Tiny Mystery Club" />
-          <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="627" />
+          <meta name="description" content="A React RPG." />
+          <link rel="stylesheet" type="text/css" href="./static/reset.css" />
         </Head>
 
         {NPCS.map(({ key, spawn, spriteType }) => (

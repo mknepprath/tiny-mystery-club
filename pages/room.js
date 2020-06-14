@@ -52,15 +52,8 @@ class Room extends Component {
             {`Tiny Mystery ${devMode ? "Sandbox" : "Club"} - Room` +
               (score ? ` (${score})` : "")}
           </title>
-          <link rel="stylesheet" type="text/css" href="./static/reset.css" />
-          <link rel="icon" href="/favicon.png" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
-          <meta property="twitter:title" content="Tiny Mystery Club - Room" />
           <meta property="og:title" content="Tiny Mystery Club - Room" />
-          <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="627" />
+          <meta name="description" content="A React RPG." />
         </Head>
 
         <a href="/">
