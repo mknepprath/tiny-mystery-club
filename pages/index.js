@@ -8,11 +8,6 @@ import Rock from "components/rock";
 import { NPCS, ROCKS, WATER } from "components/constants";
 import { flipTiles, generateMap } from "components/utils";
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "localhost:3000"
-    : "https://tinymystery.club";
-
 export const MAP_SIZE = 59;
 
 class App extends React.PureComponent {

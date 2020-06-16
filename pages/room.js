@@ -5,11 +5,6 @@ import NPC from "components/npc";
 import Prize from "components/prize";
 import { flipTiles, generateMap } from "components/utils";
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "localhost:3000"
-    : "https://tinymystery.club";
-
 const MAP_SIZE = 3;
 
 class Room extends Component {
