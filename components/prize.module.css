@@ -4,10 +4,12 @@
   height: 100px;
   width: 100px;
 
-  background-image: url('/static/prize.gif');
+  background-image: url("/static/prize.gif");
   cursor: pointer;
+
+  transition: top 1s linear, left 1s linear;
 }
 
 .prize:hover {
-  background-image: url('/static/prize-sparkle.gif');
+  background-image: url("/static/prize-sparkle.gif");
 }

@@ -1,129 +1,102 @@
-import React, { Component } from "react";
+import React from "react";
+import { useRouter } from "next/router";
 
+import GameContext from "./game-context";
+import useInterval from "../hooks/useInterval";
+import { FACING, MOVE } from "./constants";
 import { shuffle } from "./utils";
-import { FACING } from "./constants";
 
 import styles from "./npc.module.css";
 
-class NPC extends Component {
-  constructor(props) {
-    super(props);
+export default function NPC(props) {
+  const [state, dispatch] = React.useContext(GameContext);
 
-    // Set NPC location based on spawn point.
-    // If no spawn point is provided, center it.
-    // Sprites face a random direction.
-    this.state = {
-      clicked: false,
-      direction: Object.keys(FACING)[0],
-      left: props.spawn.left,
-      top: props.spawn.top,
-      walking: false,
+  const router = useRouter();
+
+  const [clicked, setClicked] = React.useState(false);
+  function onClickNPCHandler() {
+    setClicked((clicked) => !clicked);
+    props.onClick();
+  }
+
+  const [direction, setDirection] = React.useState(Object.keys(FACING)[0]);
+  const [coordinates, setCoordinates] = React.useState(props.spawn);
+  const [walking, setWalking] = React.useState(false);
+
+  React.useEffect(() => {
+    setDirection(shuffle(Object.keys(FACING))[0]);
+    dispatch({
+      type: "TOGGLE_TILES",
+      coordinates: props.spawn,
+      mapName: router.pathname,
+      unblocked: false,
+    });
+  }, []);
+
+  useInterval(() => {
+    const nextCoordinates = {
+      x: coordinates.x,
+      y: coordinates.y,
     };
 
-    props.flipTiles({
-      left: props.spawn.left,
-      top: props.spawn.top,
-    });
+    const moveType = Object.values(MOVE)[Math.floor(Math.random() * 5)];
+    if (moveType != null) setDirection(moveType);
 
-    this.onClickNPCHandler = this.onClickNPCHandler.bind(this);
-    this.tick = this.tick.bind(this);
-  }
-
-  onClickNPCHandler() {
-    this.setState({ clicked: true });
-  }
-
-  tick() {
-    const { map } = this.props;
-    const { left, top } = this.state;
-
-    // moveTypes:
-    // - 0 = up/down
-    // - 1 = left/right
-    // - 2 = don't move
-    const moveType = Math.floor(Math.random() * 3);
-
-    if (moveType === 0) {
-      const down = Math.floor(Math.random() * 2) === 0;
-      let nextTop = top;
-      if (down) {
-        // Moving down, so add to the distance from the top.
-        // Only if the NPC is not walking off the bottom of the page.
-        if (top + 1 < map.length) nextTop = top + 1;
-      } else {
-        // Moving up, so move closer to the top.
-        // Only if the NPC is not walking off the top of the page.
-        if (top > 0) nextTop = top - 1;
-      }
-      // If there is nothing on the map in the location the NPC is moving to,
-      // then go ahead and update with the new position.
-      if (map[nextTop][left]) {
-        this.props.flipTiles({ left, top: nextTop }, { left, top });
-
-        this.setState({
-          direction: down ? "Bottom" : "Top",
-          top: nextTop,
-          walking: true,
-        });
-      }
-    } else if (moveType === 1) {
-      const right = Math.floor(Math.random() * 2) === 0;
-      let nextLeft = left;
-      if (right) {
-        // Moving right, so add to the distance from the left.
-        if (left + 1 < map.length) nextLeft = left + 1;
-      } else {
-        // Moving left, so move closer to the left.
-        if (left > 0) nextLeft = left - 1;
-      }
-      // If there is nothing on the map in the location the NPC is moving to,
-      // then go ahead and update with the new position.
-      if (map[top][nextLeft]) {
-        this.props.flipTiles({ left: nextLeft, top }, { left, top });
-
-        this.setState({
-          direction: right ? "Right" : "Left",
-          left: nextLeft,
-          walking: true,
-        });
-      }
-    } else {
-      // Direction of NPC doesn't change when they stop walking.
-      this.setState({
-        walking: false,
-      });
+    switch (moveType) {
+      case MOVE.DOWN:
+        nextCoordinates.y =
+          coordinates.y + 1 < props.mapSize ? coordinates.y + 1 : coordinates.y;
+        break;
+      case MOVE.LEFT:
+        nextCoordinates.x =
+          coordinates.x > 0 ? coordinates.x - 1 : coordinates.x;
+        break;
+      case MOVE.RIGHT:
+        nextCoordinates.x =
+          coordinates.x + 1 < props.mapSize ? coordinates.x + 1 : coordinates.x;
+        break;
+      case MOVE.UP:
+        nextCoordinates.y =
+          coordinates.y > 0 ? coordinates.y - 1 : coordinates.y;
+        break;
+      default:
+        break;
     }
-  }
-  componentDidMount() {
-    this.setState({ direction: shuffle(Object.keys(FACING))[0] });
 
-    this.interval = setInterval(this.tick, 1000);
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  render() {
-    const { devMode, spriteType } = this.props;
+    if (state.maps[router.pathname][nextCoordinates.y][nextCoordinates.x]) {
+      setWalking(true);
+      dispatch({
+        type: "TOGGLE_TILES",
+        coordinates,
+        mapName: router.pathname,
+        unblocked: true,
+      });
+      setCoordinates(nextCoordinates);
+      dispatch({
+        type: "TOGGLE_TILES",
+        coordinates: nextCoordinates,
+        mapName: router.pathname,
+        unblocked: false,
+      });
+    } else {
+      setWalking(false);
+    }
+  }, 1000);
 
-    const { clicked, direction, left, top, walking } = this.state;
-
-    return (
-      <img
-        className={styles.npc}
-        onClick={this.onClickNPCHandler}
-        src={`static/${spriteType}-${FACING[direction]}${
-          walking ? "-walk" : ""
-        }.gif`}
-        style={{
-          left: left * 100,
-          top: top * 100,
-          boxShadow: clicked && devMode ? "0 0 16px red" : null,
-          [`border${direction}`]: devMode ? "4px solid red" : "none",
-        }}
-        suppressHydrationWarning
-      />
-    );
-  }
+  return (
+    <img
+      className={styles.npc}
+      onClick={onClickNPCHandler}
+      src={`static/${props.spriteType}-${FACING[direction]}${
+        walking ? "-walk" : ""
+      }.gif`}
+      style={{
+        left: coordinates.x * 100,
+        top: coordinates.y * 100,
+        boxShadow: clicked && props.devMode ? "0 0 16px red" : null,
+        [`border${direction}`]: props.devMode ? "4px solid red" : "none",
+      }}
+      suppressHydrationWarning
+    />
+  );
 }
-
-export default NPC;

@@ -1,41 +1,48 @@
 export const FACING = {
-  'Bottom': 'down',
-  'Left': 'left',
-  'Right': 'right',
-  'Top': 'up'
-}
+  Bottom: "down",
+  Left: "left",
+  Right: "right",
+  Top: "up",
+};
 
-export const SPRITES = [
-  'sprite',
-  'peng',
-  'lion'
-]
+export const MOVE = {
+  DOWN: "Bottom",
+  LEFT: "Left",
+  RIGHT: "Right",
+  UP: "Top",
+};
 
 export const NPCS = [
-  { key: 'a', spawn: { top: 22, left: 16 }, spriteType: SPRITES[2] },
-  { key: 'b', spawn: { top: 22, left: 36 }, spriteType: SPRITES[2] },
-  { key: 'c', spawn: { top: 29, left: 14 }, spriteType: SPRITES[0] },
-  { key: 'd', spawn: { top: 30, left: 10 }, spriteType: SPRITES[1] },
-  { key: 'e', spawn: { top: 32, left: 33 }, spriteType: SPRITES[2] },
-  { key: 'f', spawn: { top: 33, left: 34 }, spriteType: SPRITES[0] },
-  { key: 'g', spawn: { top: 35, left: 34 }, spriteType: SPRITES[1] }
-]
+  { spawn: { y: 8, x: 32 }, spriteType: "lion" },
+  { spawn: { y: 20, x: 20 }, spriteType: "peng" },
+  { spawn: { y: 40, x: 5 }, spriteType: "sprite" },
+  // { spawn: { y: 21, x: 21 }, spriteType: "lion" },
+  // { spawn: { y: 22, x: 19 }, spriteType: "peng" },
+  // { spawn: { y: 22, x: 20 }, spriteType: "sprite" },
+  // { spawn: { y: 22, x: 21 }, spriteType: "peng" },
+];
 
 export const ROCKS = [
-  { spawn: { top: 19, left: 20 } },
-  { spawn: { top: 20, left: 18 } },
-  { spawn: { top: 20, left: 22 } },
-  { spawn: { top: 21, left: 19 } },
-  { spawn: { top: 21, left: 22 } },
-  { spawn: { top: 23, left: 20 } },
-  { spawn: { top: 38, left: 38 } }
-]
+  { spawn: { y: 19, x: 19 }, variant: 2 },
+  { spawn: { y: 19, x: 20 }, variant: 1 },
+  { spawn: { y: 19, x: 21 }, variant: 1 },
+  { spawn: { y: 20, x: 18 }, variant: 1 },
+  { spawn: { y: 20, x: 22 }, variant: 2 },
+  { spawn: { y: 21, x: 19 }, variant: 1 },
+  { spawn: { y: 21, x: 20 }, variant: 2 },
+  { spawn: { y: 21, x: 22 }, variant: 2 },
+  { spawn: { y: 22, x: 22 }, variant: 2 },
+  { spawn: { y: 23, x: 20 }, variant: 1 },
+  { spawn: { y: 23, x: 21 }, variant: 1 },
+  { spawn: { y: 38, x: 38 }, variant: 2 },
+];
 
 export const WATER = [
-  { spawn: { left: 15, top: 13 } },
-  { spawn: { left: 16, top: 13 } },
-  { spawn: { left: 17, top: 13 } },
-  { spawn: { left: 14, top: 14 } },
-  { spawn: { left: 15, top: 14 } },
-  { spawn: { left: 16, top: 14 } }
-]
+  { spawn: { x: 15, y: 12 } },
+  { spawn: { x: 15, y: 13 } },
+  { spawn: { x: 16, y: 13 } },
+  { spawn: { x: 17, y: 13 } },
+  { spawn: { x: 14, y: 14 } },
+  { spawn: { x: 15, y: 14 } },
+  { spawn: { x: 16, y: 14 } },
+];

@@ -1,0 +1,12 @@
+.map {
+  grid-template-columns: repeat(auto-fit, 100px);
+  display: grid;
+  pointer-events: none;
+  position: absolute;
+}
+
+.tile {
+  font-size: 0.6rem;
+  line-height: calc(var(--pixel) * 10);
+  text-align: center;
+}

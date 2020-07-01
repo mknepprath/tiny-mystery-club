@@ -1,15 +1,21 @@
 import React from "react";
+import { useRouter } from "next/router";
 
+import GameContext from "./game-context";
 import { coordsToIndex, indexToCoords } from "./utils";
+import { ROCKS, WATER } from "./constants";
 
 import styles from "./map.module.css";
 
-// When not debugging, this can be React.PureComponent...
-class Map extends React.Component {
-  constructor(props) {
-    super(props);
+// When not debugging, this can be 100% STATIC. I think.
 
-    const backgroundIds = [...Array(Math.pow(props.map.length, 2))].map(() => {
+export default function Map(props) {
+  const [, dispatch] = React.useContext(GameContext);
+  const router = useRouter();
+
+  const [backgroundIds, setBackgroundIds] = React.useState();
+  React.useEffect(() => {
+    let backgroundIds = [...Array(Math.pow(props.mapSize, 2))].map(() => {
       let backgroundId = "grass1.png";
 
       // Randomize grass tiles
@@ -29,56 +35,51 @@ class Map extends React.Component {
 
       return backgroundId;
     });
-
     if (props.water) {
       props.water.forEach(({ spawn }) => {
-        const index = coordsToIndex(spawn, props.map.length);
+        const index = coordsToIndex(spawn, props.mapSize);
         backgroundIds[index] = "water.gif";
       });
     }
+    setBackgroundIds(backgroundIds);
 
-    this.state = {
-      backgroundIds,
-    };
-  }
+    // block rocks, water, one-off link rock
+    // TODO: also this should not go here... I'm not sure where it should go
+    // - Eh
+    // - This shouldn't be a dispatch at all, these should get added when hydrating state
+    [...ROCKS, ...WATER, { spawn: { x: 6, y: 7 } }].forEach(({ spawn }) => {
+      dispatch({
+        type: "TOGGLE_TILES",
+        coordinates: spawn,
+        mapName: router.pathname,
+        unblocked: false,
+      });
+    });
+  }, []);
 
-  render() {
-    const { devMode, interior, map } = this.props;
+  if (!backgroundIds) return null;
 
-    return (
-      <div
-        className={styles.map}
-        style={{
-          height: map.length * 100,
-          width: map.length * 100,
-        }}
-      >
-        {this.state.backgroundIds.map((backgroundId, dex) => {
-          const { left, top } = indexToCoords(dex, map.length);
-
-          return (
-            <div
-              className={styles.tile}
-              key={`${dex}_${backgroundId}`}
-              style={{
-                background: `url('/static/${
-                  interior ? "wood-floor.gif" : backgroundId
-                }')`,
-                color: devMode
-                  ? map[top][left] === 0
-                    ? "red"
-                    : "rgba(0, 0, 0, .2)"
-                  : null,
-              }}
-              suppressHydrationWarning
-            >
-              {devMode ? `${top}x${left}, ${dex}` : null}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
+  return (
+    <div
+      className={styles.map}
+      style={{
+        height: props.mapSize * 100,
+        width: props.mapSize * 100,
+      }}
+    >
+      {backgroundIds.map((backgroundId, index) => {
+        return (
+          <div
+            key={`${index}_${backgroundId}`}
+            style={{
+              background: `url('/static/${
+                props.interior ? "wood-floor.gif" : backgroundId
+              }')`,
+            }}
+            suppressHydrationWarning
+          />
+        );
+      })}
+    </div>
+  );
 }
-
-export default Map;

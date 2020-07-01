@@ -1,0 +1,22 @@
+:root {
+  --pixel: 5px;
+  --black: rgba(46, 44, 49, 1);
+}
+
+@font-face {
+  font-family: "Pixelar Regular W01 Regular";
+  src: url("/fonts/4d8bd4f0-ce40-4f34-a0b8-49bc51024ea8.woff2") format("woff2"),
+    url("/fonts/9c200a14-d264-405c-86bf-d27b840e86be.woff") format("woff");
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Pixelar Regular W01 Regular", -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+  color: var(--black);
+  font-size: 1.8rem;
+  line-height: 1rem;
+}

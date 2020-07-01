@@ -1,0 +1,27 @@
+.mapContainer {
+  position: relative;
+}
+
+.speech {
+  border: calc(var(--pixel) * 2) solid var(--black);
+  border-image: url(/static/speech-border.png) 10 round;
+  position: fixed;
+  bottom: calc(var(--pixel) * 2);
+  left: calc(var(--pixel) * 2);
+  right: calc(var(--pixel) * 2);
+}
+
+.contents {
+  background-color: #ffffff;
+  padding: 0 5px 10px;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.33);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
