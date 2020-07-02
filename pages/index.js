@@ -47,9 +47,11 @@ export default React.memo(function App() {
           mapSize={MAP_SIZE}
           onClick={() => {
             if (spriteType === "sprite") {
-              setSpeech("I am talking to u now,,, can u find my trophy?");
+              setSpeech(
+                "I am talking to u now,,, can u find my trophy? its a tiny mystery"
+              );
             } else if (spriteType === "peng") {
-              setSpeech("do u no where the magic rock is bc I wnat to go home");
+              setSpeech("do u no where the magic teleporting rock is");
             } else if (spriteType === "lion") {
               setSpeech("roar hey");
             }

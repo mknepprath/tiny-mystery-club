@@ -97,8 +97,12 @@ export default React.memo(function Room() {
             setSpeech("y is htere a peng in my house");
           } else if (state.points < 3) {
             setSpeech("thx for finding the trophy but i lost it again");
+          } else if (state.points < 100) {
+            setSpeech(
+              `wow u found my trophy ${state.points} times,,,,, u really solved htis tiny mystery`
+            );
           } else {
-            setSpeech(`wow u found my trophy ${state.points} times,,,,,`);
+            setSpeech("u can stop solving the msytery now thx");
           }
         }}
         spawn={{ x: 0, y: 1 }}
