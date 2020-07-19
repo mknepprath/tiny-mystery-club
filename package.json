@@ -18,6 +18,6 @@
     "eslint": "^7.4.0",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   }
 }
