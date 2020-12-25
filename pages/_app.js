@@ -1,4 +1,4 @@
-// import App from 'next/app'
+import React from "react";
 import GameContext from "components/game-context";
 import { generateBooleanMap } from "components/utils";
 
