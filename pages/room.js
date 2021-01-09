@@ -112,7 +112,7 @@ export default React.memo(function Room() {
       <Prize />
 
       {devMode ? <MapDebug mapSize={MAP_SIZE} /> : null}
-      <Map devMode={devMode} interior mapSize={MAP_SIZE} />
+      <Map cypressAttr="room-page" devMode={devMode} interior mapSize={MAP_SIZE} />
 
       {speech ? (
         <>

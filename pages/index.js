@@ -69,14 +69,14 @@ export default React.memo(function App() {
         />
       ))}
 
-      <a href="/room">
+      <a data-cy="room-link" href="/room">
         <Rock spawn={{ x: 6, y: 7 }} variant={1} />
       </a>
 
       <Prize />
 
       {devMode ? <MapDebug mapSize={MAP_SIZE} /> : null}
-      <Map devMode={devMode} mapSize={MAP_SIZE} water={WATER} />
+      <Map cypressAttr="index-page" devMode={devMode} mapSize={MAP_SIZE} water={WATER} />
 
       {speech ? (
         <>

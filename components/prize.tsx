@@ -25,6 +25,7 @@ export default function Prize() {
   return (
     <div
       className={styles.prize}
+      data-cy="prize"
       onClick={() => {
         dispatch({
           type: "TOGGLE_TILES",
