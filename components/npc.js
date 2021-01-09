@@ -34,7 +34,7 @@ export default function NPC(props) {
   }, []);
 
   useInterval(() => {
-    console.log('ping')
+    // console.log('ping')
     const nextCoordinates = {
       x: coordinates.x,
       y: coordinates.y,
