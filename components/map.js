@@ -62,6 +62,7 @@ export default function Map(props) {
   return (
     <div
       className={styles.map}
+      data-cy={props.cypressAttr}
       style={{
         height: props.mapSize * 100,
         width: props.mapSize * 100,

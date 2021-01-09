@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "npm run cypress:run",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "next": "^10.0.5",
@@ -15,6 +18,7 @@
   "devDependencies": {
     "@types/node": "^14.14.20",
     "@types/react": "^17.0.0",
+    "cypress": "^6.2.1",
     "eslint": "^7.17.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
