@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/node": "^15.14.0",
     "@types/react": "^17.0.19",
-    "cypress": "^7.7.0",
+    "cypress": "^8.3.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
