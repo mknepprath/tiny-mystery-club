@@ -5,6 +5,7 @@ export default defineConfig({
   defaultCommandTimeout: 20000,
   video: false,
   projectId: '7om57s',
+
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
@@ -13,5 +14,6 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:3000',
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}',
+    testIsolation: false,
   },
 })
