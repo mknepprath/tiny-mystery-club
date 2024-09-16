@@ -17,7 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.5.4",
-    "@types/react": "^18.3.5",
+    "@types/react": "^18.3.6",
     "cypress": "^13.14.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.36.1",
