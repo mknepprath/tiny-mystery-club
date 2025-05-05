@@ -19,7 +19,7 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "cypress": "^14.3.2",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "typescript": "^5.8.3"
