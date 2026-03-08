@@ -17,36 +17,96 @@ const CLUE_DESCRIPTIONS_M2 = {
   confession: "rex panicked when shown the crystal evidence",
 };
 
+const CLUE_DESCRIPTIONS_M3 = {
+  melody: "fern hears music comin from the lake at nite",
+  instrument: "a broken flute found near the rocky hills",
+  wetTrail: "wet trail leadin from the village to the lake",
+  underwater: "strange sounds comin from beneath the lake",
+};
+
+const MYSTERIES = [
+  {
+    key: "m1",
+    title: "The Missing Trophy",
+    clueDescriptions: CLUE_DESCRIPTIONS,
+    getClues: (state) => state.clues,
+    isSolved: (state) => state.solved,
+    isActive: () => true,
+    total: 5,
+  },
+  {
+    key: "m2",
+    title: "The Whispering Shadows",
+    clueDescriptions: CLUE_DESCRIPTIONS_M2,
+    getClues: (state) => state.mystery2.clues,
+    isSolved: (state) => state.mystery2.solved,
+    isActive: (state) => state.mystery2.active || state.mystery2.solved,
+    total: 4,
+  },
+  {
+    key: "m3",
+    title: "The Vanishing Music",
+    clueDescriptions: CLUE_DESCRIPTIONS_M3,
+    getClues: (state) => state.mystery3.clues,
+    isSolved: (state) => state.mystery3.solved,
+    isActive: (state) => state.mystery3.active || state.mystery3.solved,
+    total: 4,
+  },
+];
+
+function getCurrentMysteryIndex(state) {
+  if (state.mystery3?.active && !state.mystery3?.solved) return 2;
+  if (state.mystery2.active && !state.mystery2.solved) return 1;
+  return 0;
+}
+
 export default function ClueJournal() {
   const [state, dispatch] = React.useContext(GameContext);
   const [open, setOpen] = React.useState(false);
-
-  const clueCount = Object.values(state.clues).filter(Boolean).length;
-  const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
 
   function handlePresent(clueKey) {
     dispatch({ type: "SET_PRESENTING", payload: clueKey });
     setOpen(false);
   }
 
-  // Determine which clue description to show in the presenting banner
-  const allClueDescriptions = { ...CLUE_DESCRIPTIONS, ...CLUE_DESCRIPTIONS_M2 };
+  const allClueDescriptions = { ...CLUE_DESCRIPTIONS, ...CLUE_DESCRIPTIONS_M2, ...CLUE_DESCRIPTIONS_M3 };
 
-  // Determine badge text
+  // Determine current mystery for badge
+  const currentIdx = getCurrentMysteryIndex(state);
+  const currentMystery = MYSTERIES[currentIdx];
+  const currentClues = currentMystery.getClues(state);
+  const currentClueCount = Object.values(currentClues).filter(Boolean).length;
+
   let badgeText;
-  if (state.mystery2.active || state.mystery2.solved) {
-    badgeText = state.mystery2.solved
-      ? "All Cases Solved!"
-      : `Case 2: ${m2ClueCount}/4`;
+  if (state.mystery3?.solved) {
+    badgeText = "All Cases Solved!";
+  } else if (state.mystery3?.active) {
+    badgeText = `Case 3: ${currentClueCount}/${currentMystery.total}`;
+  } else if (state.mystery2.active && !state.mystery2.solved) {
+    badgeText = `Case 2: ${currentClueCount}/${currentMystery.total}`;
+  } else if (state.mystery2.solved) {
+    badgeText = "Cases 1&2 Solved!";
   } else {
-    badgeText = `Clues: ${clueCount}/5`;
+    badgeText = `Clues: ${currentClueCount}/${currentMystery.total}`;
   }
+
+  // Sort mysteries so current/active is first
+  const activeMysteries = MYSTERIES.filter((m) => m.isActive(state));
+  const sorted = [...activeMysteries].sort((a, b) => {
+    const aIdx = MYSTERIES.indexOf(a);
+    const bIdx = MYSTERIES.indexOf(b);
+    const aIsCurrent = aIdx === currentIdx;
+    const bIsCurrent = bIdx === currentIdx;
+    if (aIsCurrent) return -1;
+    if (bIsCurrent) return 1;
+    return bIdx - aIdx; // more recent mysteries next
+  });
 
   return (
     <>
       <button className={styles.badge} onClick={() => setOpen(true)} title="click to open clue journal">
         {badgeText}
-        {!open && clueCount === 0 && !state.mystery2.active && (
+        {!open && currentClueCount === 0 && !state.solved && !state.mystery2.active && (
           <span className={styles.badgeHint}>tap here</span>
         )}
       </button>
@@ -71,61 +131,46 @@ export default function ClueJournal() {
           />
           <div className={styles.modal}>
             <div className={styles.modalContents}>
-              {/* Mystery 1 */}
-              <p className={styles.title}>
-                {state.mystery2.active || state.mystery2.solved
-                  ? `Mystery 1: ${state.solved ? "Solved" : "The Missing Trophy"}`
-                  : "clue journal"}
-              </p>
-              <ul className={styles.clueList}>
-                {Object.entries(CLUE_DESCRIPTIONS).map(([key, desc]) => (
-                  <li
-                    key={key}
-                    className={`${styles.clueItem} ${
-                      !state.clues[key] ? styles.undiscovered : ""
-                    } ${state.solved ? styles.solvedClue : ""}`}
-                  >
-                    <span>{state.clues[key] ? `- ${desc}` : "- ???"}</span>
-                    {state.clues[key] && !state.solved && (
-                      <button
-                        className={styles.showButton}
-                        onClick={() => handlePresent(key)}
-                      >
-                        Show
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
+              {sorted.map((mystery, i) => {
+                const clues = mystery.getClues(state);
+                const solved = mystery.isSolved(state);
+                const isCurrent = MYSTERIES.indexOf(mystery) === currentIdx;
+                const mysteryNum = MYSTERIES.indexOf(mystery) + 1;
 
-              {/* Mystery 2 */}
-              {(state.mystery2.active || state.mystery2.solved) && (
-                <>
-                  <p className={styles.title} style={{ marginTop: 14 }}>
-                    Mystery 2: {state.mystery2.solved ? "Solved" : "The Whispering Shadows"}
-                  </p>
-                  <ul className={styles.clueList}>
-                    {Object.entries(CLUE_DESCRIPTIONS_M2).map(([key, desc]) => (
-                      <li
-                        key={key}
-                        className={`${styles.clueItem} ${
-                          !state.mystery2.clues[key] ? styles.undiscovered : ""
-                        } ${state.mystery2.solved ? styles.solvedClue : ""}`}
-                      >
-                        <span>{state.mystery2.clues[key] ? `- ${desc}` : "- ???"}</span>
-                        {state.mystery2.clues[key] && !state.mystery2.solved && (
-                          <button
-                            className={styles.showButton}
-                            onClick={() => handlePresent(key)}
-                          >
-                            Show
-                          </button>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
+                return (
+                  <div key={mystery.key}>
+                    {i > 0 && <hr className={styles.divider} />}
+                    <p className={styles.title}>
+                      {activeMysteries.length > 1
+                        ? `Mystery ${mysteryNum}: ${solved ? "Solved" : mystery.title}`
+                        : "clue journal"}
+                      {isCurrent && !solved && activeMysteries.length > 1 && (
+                        <span className={styles.currentTag}> (current)</span>
+                      )}
+                    </p>
+                    <ul className={styles.clueList}>
+                      {Object.entries(mystery.clueDescriptions).map(([key, desc]) => (
+                        <li
+                          key={key}
+                          className={`${styles.clueItem} ${
+                            !clues[key] ? styles.undiscovered : ""
+                          } ${solved ? styles.solvedClue : ""}`}
+                        >
+                          <span>{clues[key] ? `- ${desc}` : "- ???"}</span>
+                          {clues[key] && !solved && (
+                            <button
+                              className={styles.showButton}
+                              onClick={() => handlePresent(key)}
+                            >
+                              Show
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>

@@ -25,12 +25,16 @@ export const NPCS = [
 
 export const NPC_DIALOGUE = {
   fern: (state) => {
+    if (state.mystery3?.solved) return "the forest is singin again... bubbles music is actually kinda nice when it aint stolen";
+    if (state.mystery3?.active) return "i keep hearin music at nite... its comin from the lake. the rocks are vibin but im worried";
     if (state.mystery2.solved) return "the crystal came from deep in the forest... it belonged to the rocks. rex should return it";
     if (state.mystery2.active) return "somethin feels off in the forest lately... the rocks are uneasy. i can feel it in the moss";
     if (state.solved) return "the forest is peaceful again now that the mystery is solved";
     return "the forest is nice,,, i like the rocks they are my friends";
   },
   rex: (state) => {
+    if (state.mystery3?.solved) return "bubbles was stealin instruments?? and i thought MY crystal thing was bad lol";
+    if (state.mystery3?.active) return "someones been takin stuff from the rocky hills... i saw scratch marks on the rocks where my drum used to sit";
     if (state.mystery2.solved) return "ok fine... i found the crystal in the forest. i just thought it was pretty... i didnt know it was scarin everyone. sorry...";
     if (state.mystery2.active) {
       const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
@@ -44,6 +48,13 @@ export const NPC_DIALOGUE = {
     return "i heard a loud noise last nite comin from the village... probably nothin tho";
   },
   bubbles: (state) => {
+    if (state.mystery3?.solved) return "ok ok i took the instruments... i just wanted to make a lil underwater orchestra... the acoustics down there r amazing tho";
+    if (state.mystery3?.active) {
+      const m3ClueCount = Object.values(state.mystery3.clues).filter(Boolean).length;
+      if (m3ClueCount >= 3) return "music?? instruments?? i dont know what ur talkin about haha... *nervous bubbling*";
+      if (m3ClueCount >= 1) return "la la la just swimmin around... nothin to see here... definitely not hidin anythin underwater haha";
+      return "the pond is so peaceful... i could stay here forever... just me and the... water...";
+    }
     if (state.mystery2.solved) return "rex had a crystal?? lions are so weird sometimes...";
     if (state.mystery2.active) return "have u seen the shadows at nite?? theyre super creepy... i stay in the pond now";
     if (state.solved) return "wow cant believe it was waddles all along...";
@@ -52,6 +63,8 @@ export const NPC_DIALOGUE = {
     return "the pond is nice today... wish the lake was this calm";
   },
   marlo: (state) => {
+    if (state.mystery3?.solved) return "three mysteries solved... this town needs to get it together honestly";
+    if (state.mystery3?.active) return "i keep hearin music at nite comin from the lake... its actually kinda pretty but also... where r all the instruments goin??";
     if (state.mystery2.solved) return "mysteries keep happenin around here... good thing we got a detective";
     if (state.mystery2.active) return "the shadows are freakin me out... i saw one near the forest last nite and almost fainted";
     if (state.solved) return "i knew it!! i knew what i saw that nite";
@@ -62,12 +75,16 @@ export const NPC_DIALOGUE = {
     return "i saw somone waddling near town hall last nite... they were carryin somethin shiny. they went toward the lake";
   },
   pip: (state) => {
+    if (state.mystery3?.solved) return "bubbles had a whole orchestra down there?? thats actually kinda cool... but also theft";
+    if (state.mystery3?.active) return "i found a wet trail leadin from the village toward the lake... someone keeps draggin somethin heavy that way";
     if (state.mystery2.solved) return "rex had a CRYSTAL?? that explains the shadows!!";
     if (state.mystery2.active) return "i saw weird shadows movin around last nite... they were comin from the forest direction. it was real creepy";
     if (state.solved) return "u actually solved it!! ur like a real detective!!";
     return "i dont know whats goin on but everyone seems upset... did somethin happen??";
   },
   grumbles: (state) => {
+    if (state.mystery3?.solved) return "an underwater concert?? pengs r weird. but i kinda wanna hear it ngl";
+    if (state.mystery3?.active) return "my favorite nappin rock had a flute sittin on it and now its GONE. who takes a flute from a nappin rock??";
     if (state.mystery2.solved) return "rex and his shiny rocks... typical lion behavior honestly";
     if (state.mystery2.active) return "those shadows better stay away from me... i aint scared tho... ok maybe a lil scared";
     if (state.solved) return "see i told u it wasnt me!! ...not that anyone accused me... right??";
@@ -76,6 +93,8 @@ export const NPC_DIALOGUE = {
     return "haha wouldnt it be funny if i took the trophy... jk jk... unless?";
   },
   puddle: (state) => {
+    if (state.mystery3?.solved) return "bubbles... i KNEW she was up to somethin. she kept askin me to cover for her swims";
+    if (state.mystery3?.active) return "bubbles has been spendin a LOT of time underwater lately... like way more than normal. she keeps divin down and comin back up all happy";
     if (state.mystery2.solved) return "glad the shadow thing is over... i was havin nightmares";
     if (state.mystery2.active) return "the shadows are scarin everyone at the lake... even the fish are hidin";
     if (state.solved) return "i cant believe waddles did that... but im glad the mystery is solved";
@@ -86,6 +105,8 @@ export const NPC_DIALOGUE = {
     return "waddles has been actin real weird lately... she keeps goin behind the waterfall and wont tell me why";
   },
   waddles: (state) => {
+    if (state.mystery3?.solved) return "bubbles stealin stuff?? wow who woulda thought... *looks around nervously*";
+    if (state.mystery3?.active) return "instruments goin missin?? ha well at least its not ME this time right... RIGHT??";
     if (state.mystery2.solved) return "at least im not the troublemaker this time haha... sorry rex";
     if (state.mystery2.active) return "shadows?? finally someone else is in trouble and not me lol";
     if (state.solved)
@@ -99,12 +120,16 @@ export const NPC_DIALOGUE = {
   },
   // Interior NPCs
   rory: (state) => {
+    if (state.mystery3?.solved) return "THREE mysteries solved!! u r officially the towns greatest detective!! i should make u a badge";
+    if (state.mystery3?.active) return "instruments keep vanishin!! the town band cant practice!! pls figure out whats goin on";
     if (state.mystery2.solved) return "both mysteries solved!! ur the best detective this town has ever seen!!";
     if (state.mystery2.active) return "any leads on the shadow situation?? ppl are gettin real nervous...";
     if (state.solved) return "the trophy is back!! thank u so much!!";
     return "the golden trophy is GONE!! someone stole it!! pls help us find who did it";
   },
   dusty: (state) => {
+    if (state.mystery3?.solved) return "underwater acoustics... fascinatin. i should write a book about this case";
+    if (state.mystery3?.active) return "my reading lamp keeps disappearin... wait thats not an instrument. but SOMETHIN is fishy around here";
     if (state.mystery2.solved) return "crystals that project shadows... i think i read about those once. ancient stuff";
     if (state.mystery2.active) return "the lights in here keep flickerin... i cant read my books like this. somethin strange is goin on";
     if (state.solved) return "the books always held the answer... history repeats itself";
@@ -232,9 +257,84 @@ export const NPC_REACTIONS_M2 = {
   },
 };
 
+export const NPC_REACTIONS_M3 = {
+  bubbles: {
+    melody: "m-music?? i dont hear any music haha... must be the wind...",
+    instrument: "a broken flute?? oh no thats terrible... who would do such a thing... *sweating*",
+    wetTrail: "wet trails?? well i AM a peng we r always wet... thats not evidence of anythin!!",
+    underwater: "underwater sounds?? thats just... uh... fish. very musical fish.",
+    default: "la la la i dont know anythin about anythin...",
+  },
+  puddle: {
+    melody: "music from the lake?? now that u mention it i have heard somethin at nite... i thought i was dreamin",
+    instrument: "a broken flute?? someone really doesnt want these instruments found...",
+    wetTrail: "a wet trail to the lake... and bubbles has been divin a lot... oh no",
+    underwater: "sounds underwater?? bubbles has been down there for HOURS lately...",
+    default: "hmm im startin to think bubbles knows more than shes lettin on...",
+  },
+  waddles: {
+    melody: "music?? i been hearin it too. kinda catchy honestly",
+    instrument: "someone broke a flute?? thats messed up even by my standards",
+    wetTrail: "wet trail to the lake huh... thats a peng trail for sure... but it wasnt ME this time i swear",
+    default: "glad im not the suspect for once lol",
+  },
+  rex: {
+    melody: "music at nite?? yea i heard it from the rocky hills... thought grumbles was snorin again",
+    instrument: "a flute from the rocky hills?? grumbles was complainin about his stuff goin missin",
+    wetTrail: "wet trail... so its someone who swims a lot... narrows it down",
+    default: "i dunno much about music honestly",
+  },
+  fern: {
+    melody: "the forest hears the music too... its comin from deep in the lake",
+    instrument: "someone is collectin instruments... the rocks whisper about it",
+    underwater: "the water sings now... someone has made a place of music beneath the waves",
+    default: "the forest knows the music comes from the water...",
+  },
+  pip: {
+    wetTrail: "yea thats the trail i found!! it goes straight to the lake shore",
+    instrument: "a broken flute?? whoever is takin these isnt bein careful with em",
+    melody: "i heard the music too!! its def comin from the lake area",
+    default: "this mystery is wild... instruments just vanishin??",
+  },
+  marlo: {
+    melody: "music from the lake at nite... beautiful but suspicious",
+    instrument: "instruments goin missin from all over town... someone is collectin them",
+    wetTrail: "a wet trail... so its a water creature... interesting",
+    default: "another mystery... u got this detective",
+  },
+  grumbles: {
+    instrument: "THATS FROM MY NAPPIN ROCK!! someone stole the flute right off it!!",
+    melody: "i been hearin that music too... its keepin me awake and thats UNFORGIVABLE",
+    wetTrail: "wet footprints?? its a peng!! ...or a very wet lion. but probably a peng",
+    default: "whoever is doin this is messin with my naps and thats a crime",
+  },
+  rory: {
+    melody: "music from the lake?? the town band hasnt practiced in weeks cuz all their instruments r gone!!",
+    instrument: "evidence of the stolen instruments!! keep searchin!!",
+    wetTrail: "a wet trail... so the thief lives near water... interesting...",
+    underwater: "sounds comin from underwater?? maybe thats where all the instruments went!!",
+    default: "find all the clues and report back!!",
+  },
+  dusty: {
+    melody: "music underwater... i read about aquatic acoustics once. sound travels beautifully through water",
+    instrument: "someone is buildin a collection... but for what purpose?",
+    underwater: "underwater music... fascinatin. the pressure would actually enhance the resonance...",
+    default: "hmm let me think... actually i forgot what i was thinkin about",
+  },
+};
+
 const MYSTERY_2_CLUE_KEYS = ["shadows", "flickering", "crystal", "confession"];
+const MYSTERY_3_CLUE_KEYS = ["melody", "instrument", "wetTrail", "underwater"];
 
 export function getNpcReaction(npcId, clueKey) {
+  // Check if this is a mystery 3 clue
+  if (MYSTERY_3_CLUE_KEYS.includes(clueKey)) {
+    const reactions = NPC_REACTIONS_M3[npcId];
+    if (!reactions) return "hmm... i dont really know anythin about that";
+    if (reactions[clueKey]) return reactions[clueKey];
+    if (reactions.default) return reactions.default;
+    return "hmm... i dont really know anythin about that";
+  }
   // Check if this is a mystery 2 clue
   if (MYSTERY_2_CLUE_KEYS.includes(clueKey)) {
     const reactions = NPC_REACTIONS_M2[npcId];

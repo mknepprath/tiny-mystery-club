@@ -133,6 +133,17 @@
   text-overflow: ellipsis;
 }
 
+.divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.currentTag {
+  font-size: 1.1rem;
+  color: #c90;
+}
+
 .cancelPresent {
   background: none;
   border: none;

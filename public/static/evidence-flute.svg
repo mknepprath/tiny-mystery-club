@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" shape-rendering="crispEdges">
+  <!-- broken flute on ground -->
+  <!-- flute body piece 1 -->
+  <rect x="3" y="10" width="6" height="2" fill="#c4a35a"/>
+  <rect x="3" y="12" width="6" height="1" fill="#a68940"/>
+  <!-- flute holes -->
+  <rect x="4" y="10" width="1" height="1" fill="#8b7332"/>
+  <rect x="6" y="10" width="1" height="1" fill="#8b7332"/>
+  <rect x="8" y="10" width="1" height="1" fill="#8b7332"/>
+  <!-- break point -->
+  <rect x="9" y="9" width="1" height="1" fill="#a68940"/>
+  <rect x="10" y="10" width="1" height="1" fill="#c4a35a"/>
+  <!-- flute body piece 2 (broken off, angled) -->
+  <rect x="11" y="8" width="5" height="2" fill="#c4a35a"/>
+  <rect x="11" y="10" width="5" height="1" fill="#a68940"/>
+  <rect x="12" y="8" width="1" height="1" fill="#8b7332"/>
+  <rect x="14" y="8" width="1" height="1" fill="#8b7332"/>
+  <!-- crack lines -->
+  <rect x="9" y="10" width="1" height="2" fill="#665530"/>
+  <rect x="10" y="9" width="1" height="1" fill="#665530"/>
+  <!-- ground debris -->
+  <rect x="5" y="14" width="1" height="1" fill="#9b8860"/>
+  <rect x="8" y="15" width="1" height="1" fill="#9b8860"/>
+  <rect x="13" y="13" width="1" height="1" fill="#9b8860"/>
+  <rect x="11" y="15" width="1" height="1" fill="#9b8860"/>
+</svg>

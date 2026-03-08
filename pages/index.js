@@ -69,14 +69,12 @@ export default React.memo(function App() {
     if (id === "pip" && state.mystery2.active && !state.mystery2.clues.shadows) {
       dispatch({ type: "DISCOVER_CLUE_2", payload: "shadows" });
     }
-    // Rex confession when player has 2+ mystery 2 clues and talks to him
-    if (id === "rex" && state.mystery2.active && !state.mystery2.clues.confession) {
-      const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
-      if (m2ClueCount >= 2) {
-        // Rex's nervous dialogue is already handled in NPC_DIALOGUE
-        // but we don't auto-trigger confession from normal dialogue
-        // confession requires presenting crystal evidence specifically
-      }
+    // Discover mystery 3 clues
+    if (id === "fern" && state.mystery3?.active && !state.mystery3.clues.melody) {
+      dispatch({ type: "DISCOVER_CLUE_3", payload: "melody" });
+    }
+    if (id === "pip" && state.mystery3?.active && !state.mystery3.clues.wetTrail) {
+      dispatch({ type: "DISCOVER_CLUE_3", payload: "wetTrail" });
     }
   }
 
@@ -87,7 +85,21 @@ export default React.memo(function App() {
     setSpeech("u found a shard of some kind of crystal... its warm to the touch and catches the light in a weird way");
   }
 
-  const isNight = state.mystery2.active && !state.mystery2.solved;
+  function handleFluteClick() {
+    if (!state.mystery3.clues.instrument) {
+      dispatch({ type: "DISCOVER_CLUE_3", payload: "instrument" });
+    }
+    setSpeech("a broken flute... someone dropped it here in a hurry. there are scratch marks on the rocks nearby too");
+  }
+
+  function handleUnderwaterClick() {
+    if (!state.mystery3.clues.underwater) {
+      dispatch({ type: "DISCOVER_CLUE_3", payload: "underwater" });
+    }
+    setSpeech("u can hear faint music comin from under the water... its muffled but definitely instruments playin together. someone built somethin down there");
+  }
+
+  const isNight = (state.mystery2.active && !state.mystery2.solved) || (state.mystery3?.active && !state.mystery3?.solved);
 
   return (
     <div style={{ position: "relative" }}>
@@ -160,6 +172,64 @@ export default React.memo(function App() {
               imageRendering: "pixelated",
             }}
             alt="crystal shard"
+          />
+        </div>
+      )}
+
+      {/* Mystery 3: Broken flute near rocky hills */}
+      {state.mystery3?.active && !state.mystery3?.solved && (
+        <div
+          onClick={handleFluteClick}
+          style={{
+            position: "absolute",
+            left: 38 * 100,
+            top: 7 * 100,
+            width: 100,
+            height: 100,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 4,
+          }}
+        >
+          <img
+            src="/static/evidence-flute.svg"
+            style={{
+              width: 60,
+              height: 60,
+              imageRendering: "pixelated",
+            }}
+            alt="broken flute"
+          />
+        </div>
+      )}
+
+      {/* Mystery 3: Underwater sounds near lake */}
+      {state.mystery3?.active && !state.mystery3?.solved && (
+        <div
+          onClick={handleUnderwaterClick}
+          style={{
+            position: "absolute",
+            left: 22 * 100,
+            top: 40 * 100,
+            width: 100,
+            height: 100,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 4,
+          }}
+        >
+          <img
+            src="/static/evidence-underwater.svg"
+            style={{
+              width: 60,
+              height: 60,
+              imageRendering: "pixelated",
+            }}
+            alt="underwater sounds"
           />
         </div>
       )}

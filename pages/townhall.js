@@ -42,6 +42,12 @@ export default React.memo(function TownHall() {
     state.mystery2.clues.crystal &&
     state.mystery2.clues.confession;
 
+  const allM3CluesFound =
+    state.mystery3?.clues.melody &&
+    state.mystery3?.clues.instrument &&
+    state.mystery3?.clues.wetTrail &&
+    state.mystery3?.clues.underwater;
+
   function handleRoryClick() {
     // Evidence presentation mode
     if (state.presentingClue) {
@@ -51,9 +57,75 @@ export default React.memo(function TownHall() {
       return;
     }
 
-    // Mystery 2 solved
+    // Mystery 3 solved
+    if (state.mystery3?.solved) {
+      setSpeech("THREE mysteries solved!! u r officially the towns greatest detective!! i should make u a badge");
+      return;
+    }
+
+    // Mystery 3 accusation
+    if (state.mystery3?.active && allM3CluesFound) {
+      setSpeech({
+        text: "who has been stealin all the instruments??",
+        choices: [
+          {
+            label: "bubbles the peng",
+            onSelect: () => {
+              setSpeech({
+                text: "and what was she doin with them??",
+                choices: [
+                  {
+                    label: "buildin an underwater concert",
+                    onSelect: () => {
+                      dispatch({ type: "SOLVE_MYSTERY_3" });
+                      setSpeech("AN UNDERWATER CONCERT?? case closed!! bubbles has been stealin instruments to build a secret orchestra beneath the lake!! the music everyone heard was her rehearsals!! mystery solved!!");
+                    },
+                  },
+                  {
+                    label: "sellin them",
+                    onSelect: () =>
+                      setSpeech("hmm thats not quite right... think about the music comin from the lake"),
+                  },
+                  {
+                    label: "destroyin them",
+                    onSelect: () =>
+                      setSpeech("hmm thats not quite right... think about the music comin from the lake"),
+                  },
+                ],
+              });
+            },
+          },
+          {
+            label: "waddles the peng",
+            onSelect: () =>
+              setSpeech("waddles has been on her best behavior since the trophy incident... think about who spends all their time in the water"),
+          },
+          {
+            label: "grumbles the lion",
+            onSelect: () =>
+              setSpeech("grumbles is a VICTIM here... his flute was stolen!! think about who was actin nervous about the instruments"),
+          },
+        ],
+      });
+      return;
+    }
+
+    // Mystery 3 active but not all clues
+    if (state.mystery3?.active) {
+      setSpeech("instruments keep vanishin!! the town band cant practice!! pls figure out whats goin on");
+      return;
+    }
+
+    // Mystery 2 solved, trigger mystery 3
+    if (state.mystery2.solved && !state.mystery3?.active) {
+      dispatch({ type: "START_MYSTERY_3" });
+      setSpeech("u solved the shadow mystery!! but now we got ANOTHER problem... instruments keep disappearin all over town. ppl hear strange music from the lake at nite. can u investigate??");
+      return;
+    }
+
+    // Mystery 2 solved (already triggered m3)
     if (state.mystery2.solved) {
-      setSpeech("both mysteries solved!! ur the best detective this town has ever seen!!");
+      setSpeech("any luck findin those missin instruments??");
       return;
     }
 
