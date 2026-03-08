@@ -589,6 +589,22 @@ export const ROCKS = [
 ];
 
 export const WATER = [
+  // Waterfall stream near cave (cave entrance at x:8, y:42)
+  { spawn: { x: 8, y: 40 } },
+  { spawn: { x: 7, y: 41 } },
+  { spawn: { x: 8, y: 41 } },
+  { spawn: { x: 9, y: 41 } },
+  { spawn: { x: 7, y: 42 } },
+  { spawn: { x: 9, y: 42 } },
+  { spawn: { x: 8, y: 43 } },
+  { spawn: { x: 7, y: 44 } },
+  { spawn: { x: 8, y: 44 } },
+  { spawn: { x: 9, y: 44 } },
+  { spawn: { x: 7, y: 45 } },
+  { spawn: { x: 8, y: 45 } },
+  { spawn: { x: 9, y: 45 } },
+  { spawn: { x: 8, y: 46 } },
+
   // Original pond
   { spawn: { x: 15, y: 12 } },
   { spawn: { x: 15, y: 13 } },

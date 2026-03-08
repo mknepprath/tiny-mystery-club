@@ -79,7 +79,13 @@ export default function Map(props) {
             key={`${index}_${backgroundId}`}
             style={{
               background: `url('/static/${
-                props.interior ? "wood-floor.gif" : backgroundId
+                props.interior
+                  ? backgroundId === "water.gif"
+                    ? "water.gif"
+                    : props.interior === "cave"
+                    ? "cave-floor.png"
+                    : "wood-floor.gif"
+                  : backgroundId
               }')`,
             }}
             suppressHydrationWarning
