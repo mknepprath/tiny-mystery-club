@@ -25,6 +25,8 @@ export const NPCS = [
 
 export const NPC_DIALOGUE = {
   fern: (state) => {
+    if (state.mystery4?.solved) return "the frost amulet is back in the lake where it belongs... the flowers are bloomin again. nature heals";
+    if (state.mystery4?.active) return "the flowers near my rocks r frozen solid... somethin cold passed thru here. the moss is cryin";
     if (state.mystery3?.solved) return "the forest is singin again... bubbles music is actually kinda nice when it aint stolen";
     if (state.mystery3?.active) return "i keep hearin music at nite... its comin from the lake. the rocks are vibin but im worried";
     if (state.mystery2.solved) return "the crystal came from deep in the forest... it belonged to the rocks. rex should return it";
@@ -33,6 +35,8 @@ export const NPC_DIALOGUE = {
     return "the forest is nice,,, i like the rocks they are my friends";
   },
   rex: (state) => {
+    if (state.mystery4?.solved) return "puddle had a FROST AMULET?? thats way cooler than my crystal honestly... pun intended";
+    if (state.mystery4?.active) return "the rocky hills r covered in frost... in the middle of summer?? somethin weird is goin on. i keep findin ice on my favorite sunbathin rock";
     if (state.mystery3?.solved) return "bubbles was stealin instruments?? and i thought MY crystal thing was bad lol";
     if (state.mystery3?.active) return "someones been takin stuff from the rocky hills... i saw scratch marks on the rocks where my drum used to sit";
     if (state.mystery2.solved) return "ok fine... i found the crystal in the forest. i just thought it was pretty... i didnt know it was scarin everyone. sorry...";
@@ -48,6 +52,8 @@ export const NPC_DIALOGUE = {
     return "i heard a loud noise last nite comin from the village... probably nothin tho";
   },
   bubbles: (state) => {
+    if (state.mystery4?.solved) return "puddle was freezin everything?? no wonder the pond was so cold lately!! mystery pengs strike again";
+    if (state.mystery4?.active) return "the pond is SO cold lately... like colder than normal. and theres frost on the lily pads?? in summer??";
     if (state.mystery3?.solved) return "ok ok i took the instruments... i just wanted to make a lil underwater orchestra... the acoustics down there r amazing tho";
     if (state.mystery3?.active) {
       const m3ClueCount = Object.values(state.mystery3.clues).filter(Boolean).length;
@@ -63,6 +69,8 @@ export const NPC_DIALOGUE = {
     return "the pond is nice today... wish the lake was this calm";
   },
   marlo: (state) => {
+    if (state.mystery4?.solved) return "FOUR mysteries?? im startin to think this town attracts trouble. at least we got u";
+    if (state.mystery4?.active) return "i saw ice patches on the path between the lake and the village this mornin... its the middle of summer!! someones walkin around freezin stuff";
     if (state.mystery3?.solved) return "three mysteries solved... this town needs to get it together honestly";
     if (state.mystery3?.active) return "i keep hearin music at nite comin from the lake... its actually kinda pretty but also... where r all the instruments goin??";
     if (state.mystery2.solved) return "mysteries keep happenin around here... good thing we got a detective";
@@ -75,6 +83,8 @@ export const NPC_DIALOGUE = {
     return "i saw somone waddling near town hall last nite... they were carryin somethin shiny. they went toward the lake";
   },
   pip: (state) => {
+    if (state.mystery4?.solved) return "a frost amulet from the bottom of the lake?? this town has the WILDEST artifacts";
+    if (state.mystery4?.active) return "i saw puddle walkin around late last nite near the village... she was wearin somethin shiny around her neck. it was glowin blue";
     if (state.mystery3?.solved) return "bubbles had a whole orchestra down there?? thats actually kinda cool... but also theft";
     if (state.mystery3?.active) return "i found a wet trail leadin from the village toward the lake... someone keeps draggin somethin heavy that way";
     if (state.mystery2.solved) return "rex had a CRYSTAL?? that explains the shadows!!";
@@ -83,6 +93,8 @@ export const NPC_DIALOGUE = {
     return "i dont know whats goin on but everyone seems upset... did somethin happen??";
   },
   grumbles: (state) => {
+    if (state.mystery4?.solved) return "puddle was freezin my nappin rocks?? no WONDER they were so cold. i thought i was gettin old";
+    if (state.mystery4?.active) return "theres ICE on my nappin rocks!! ICE!! its summer!! whoever is doin this is ruinin my naps and thats a CRIME";
     if (state.mystery3?.solved) return "an underwater concert?? pengs r weird. but i kinda wanna hear it ngl";
     if (state.mystery3?.active) return "my favorite nappin rock had a flute sittin on it and now its GONE. who takes a flute from a nappin rock??";
     if (state.mystery2.solved) return "rex and his shiny rocks... typical lion behavior honestly";
@@ -93,6 +105,13 @@ export const NPC_DIALOGUE = {
     return "haha wouldnt it be funny if i took the trophy... jk jk... unless?";
   },
   puddle: (state) => {
+    if (state.mystery4?.solved) return "i didnt mean to freeze anythin!! the amulet was so pretty... it made me feel sparkly inside. i didnt know it was freezin stuff behind me...";
+    if (state.mystery4?.active) {
+      const m4ClueCount = Object.values(state.mystery4.clues).filter(Boolean).length;
+      if (m4ClueCount >= 3) return "f-frozen flowers?? ice on the path?? t-thats so weird haha... i have NO idea whats causin that... *shivering*";
+      if (m4ClueCount >= 1) return "the lake has been extra cold lately... i found somethin pretty down there but its probably nothin... just a shiny rock...";
+      return "the lake is nice this time of year... i like to take late nite walks around the village. its so peaceful";
+    }
     if (state.mystery3?.solved) return "bubbles... i KNEW she was up to somethin. she kept askin me to cover for her swims";
     if (state.mystery3?.active) return "bubbles has been spendin a LOT of time underwater lately... like way more than normal. she keeps divin down and comin back up all happy";
     if (state.mystery2.solved) return "glad the shadow thing is over... i was havin nightmares";
@@ -105,6 +124,8 @@ export const NPC_DIALOGUE = {
     return "waddles has been actin real weird lately... she keeps goin behind the waterfall and wont tell me why";
   },
   waddles: (state) => {
+    if (state.mystery4?.solved) return "puddle freezin the whole town?? at least MY crime didnt involve magic artifacts lol";
+    if (state.mystery4?.active) return "frozen flowers everywhere... this town is WILD. glad its not my fault this time... again";
     if (state.mystery3?.solved) return "bubbles stealin stuff?? wow who woulda thought... *looks around nervously*";
     if (state.mystery3?.active) return "instruments goin missin?? ha well at least its not ME this time right... RIGHT??";
     if (state.mystery2.solved) return "at least im not the troublemaker this time haha... sorry rex";
@@ -120,6 +141,8 @@ export const NPC_DIALOGUE = {
   },
   // Interior NPCs
   rory: (state) => {
+    if (state.mystery4?.solved) return "FOUR mysteries!! this town owes u everything!! im namin a street after u!!";
+    if (state.mystery4?.active) return "flowers r freezin!! paths r icy!! its the middle of SUMMER!! someone or somethin is causin this and we need answers!!";
     if (state.mystery3?.solved) return "THREE mysteries solved!! u r officially the towns greatest detective!! i should make u a badge";
     if (state.mystery3?.active) return "instruments keep vanishin!! the town band cant practice!! pls figure out whats goin on";
     if (state.mystery2.solved) return "both mysteries solved!! ur the best detective this town has ever seen!!";
@@ -128,6 +151,8 @@ export const NPC_DIALOGUE = {
     return "the golden trophy is GONE!! someone stole it!! pls help us find who did it";
   },
   dusty: (state) => {
+    if (state.mystery4?.solved) return "frost amulets... ancient lake artifacts... i need to write a whole encyclopedia about this town";
+    if (state.mystery4?.active) return "my books r gettin damp from all the frost meltin... whoever is causin this needs to stop. the pages r wrinkling";
     if (state.mystery3?.solved) return "underwater acoustics... fascinatin. i should write a book about this case";
     if (state.mystery3?.active) return "my reading lamp keeps disappearin... wait thats not an instrument. but SOMETHIN is fishy around here";
     if (state.mystery2.solved) return "crystals that project shadows... i think i read about those once. ancient stuff";
@@ -323,10 +348,84 @@ export const NPC_REACTIONS_M3 = {
   },
 };
 
+export const NPC_REACTIONS_M4 = {
+  puddle: {
+    frozenFlowers: "f-frozen flowers?? thats so sad... i wonder what could cause that... *tugs at necklace nervously*",
+    coldTrail: "ice on the path?? w-well water freezes sometimes right?? totally normal...",
+    amulet: "t-thats... thats not mine!! i mean... whats an amulet?? i dont even know what that word means!!",
+    puddleSlip: "...ok u got me",
+    default: "i d-dont know anythin about any frost... *shivering intensifies*",
+  },
+  grumbles: {
+    frozenFlowers: "the flowers by my nappin spot r frozen!! FROZEN!! its ruinin the ambiance",
+    coldTrail: "ice on the path near the lake?? so the cold is comin FROM the lake direction... interesting",
+    amulet: "a glowin amulet?? thats some ancient magic stuff right there. who would wear that??",
+    default: "whoever is freezin my rocks needs to STOP",
+  },
+  pip: {
+    frozenFlowers: "frozen flowers in summer... thats not natural. somethin magical is goin on",
+    coldTrail: "the ice trail goes from the lake through the village... someone walks this path every nite",
+    amulet: "a frost amulet!! that must be what i saw puddle wearin!! it was glowin blue!!",
+    default: "i saw someone walkin around at nite with somethin glowin...",
+  },
+  fern: {
+    frozenFlowers: "the flowers... they r suffering. somethin cold and ancient is movin through the village at nite",
+    coldTrail: "the cold follows a path... a walking path. someone carries the frost with them",
+    amulet: "this amulet... it was buried in the lake for a reason. it was never meant to be worn",
+    default: "the frost is not natural... it comes from somethin old and powerful",
+  },
+  rex: {
+    frozenFlowers: "frozen flowers?? even the rocky hills have frost on em... in SUMMER",
+    coldTrail: "ice trail from the lake?? so whoever is doin this lives near the water",
+    amulet: "a magic amulet?? ok that makes my crystal thing look like nothin lol",
+    default: "i dunno about frost stuff... i prefer warm rocks",
+  },
+  marlo: {
+    frozenFlowers: "frozen flowers everywhere... the whole village looks like winter",
+    coldTrail: "ice on the path... so someone is walkin around at nite spreadin frost",
+    amulet: "a frost amulet from the lake?? who found it down there??",
+    default: "this frost mystery is givin me chills... literally",
+  },
+  waddles: {
+    frozenFlowers: "frozen flowers?? weird. at least no one is blamin ME this time",
+    coldTrail: "ice trail?? classic mystery stuff. ur gettin good at this",
+    amulet: "ooh shiny... wait that looks like the thing puddle was wearin the other day",
+    default: "not my problem this time hehe",
+  },
+  bubbles: {
+    frozenFlowers: "the frost is messin up my pond!! the water is too cold for my underwater practice",
+    coldTrail: "ice on the path?? ive seen puddle walkin around late at nite... she goes right past my pond",
+    amulet: "puddle showed me somethin shiny she found in the lake... it was really cold to touch",
+    default: "the cold is messin everything up...",
+  },
+  rory: {
+    frozenFlowers: "FROZEN FLOWERS!! in MY town!! in SUMMER!! this is an outrage of the highest order!!",
+    coldTrail: "an ice trail... followin someones nightly walk... keep investigatin!!",
+    amulet: "a FROST AMULET?? from the lake?? this is serious magical artifact stuff!! who has it??",
+    puddleSlip: "so puddle knows somethin about the amulet... very interesting...",
+    default: "find out whos freezin my town!!",
+  },
+  dusty: {
+    frozenFlowers: "unseasonable frost... fascinatin from a scientific perspective. terrible for the garden tho",
+    coldTrail: "a trail of ice... consistent with someone carryin a source of extreme cold",
+    amulet: "a frost amulet!! ive read about these. ancient artifacts that emit cold energy. very rare and very dangerous if worn",
+    default: "frost in summer... the books mention ancient ice artifacts buried in deep water...",
+  },
+};
+
 const MYSTERY_2_CLUE_KEYS = ["shadows", "flickering", "crystal", "confession"];
 const MYSTERY_3_CLUE_KEYS = ["melody", "instrument", "wetTrail", "underwater"];
+const MYSTERY_4_CLUE_KEYS = ["frozenFlowers", "coldTrail", "amulet", "puddleSlip"];
 
 export function getNpcReaction(npcId, clueKey) {
+  // Check if this is a mystery 4 clue
+  if (MYSTERY_4_CLUE_KEYS.includes(clueKey)) {
+    const reactions = NPC_REACTIONS_M4[npcId];
+    if (!reactions) return "hmm... i dont really know anythin about that";
+    if (reactions[clueKey]) return reactions[clueKey];
+    if (reactions.default) return reactions.default;
+    return "hmm... i dont really know anythin about that";
+  }
   // Check if this is a mystery 3 clue
   if (MYSTERY_3_CLUE_KEYS.includes(clueKey)) {
     const reactions = NPC_REACTIONS_M3[npcId];

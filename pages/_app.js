@@ -17,6 +17,9 @@ const SOLVE_MYSTERY_2 = "SOLVE_MYSTERY_2";
 const START_MYSTERY_3 = "START_MYSTERY_3";
 const DISCOVER_CLUE_3 = "DISCOVER_CLUE_3";
 const SOLVE_MYSTERY_3 = "SOLVE_MYSTERY_3";
+const START_MYSTERY_4 = "START_MYSTERY_4";
+const DISCOVER_CLUE_4 = "DISCOVER_CLUE_4";
+const SOLVE_MYSTERY_4 = "SOLVE_MYSTERY_4";
 
 export const INITIAL_MAP_SIZE = 59;
 
@@ -55,6 +58,16 @@ const initialState = {
       instrument: false,
       wetTrail: false,
       underwater: false,
+    },
+    solved: false,
+  },
+  mystery4: {
+    active: false,
+    clues: {
+      frozenFlowers: false,
+      coldTrail: false,
+      amulet: false,
+      puddleSlip: false,
     },
     solved: false,
   },
@@ -167,6 +180,33 @@ const reducer = (state, action) => {
           solved: true,
         },
       };
+    case START_MYSTERY_4:
+      return {
+        ...state,
+        mystery4: {
+          ...state.mystery4,
+          active: true,
+        },
+      };
+    case DISCOVER_CLUE_4:
+      return {
+        ...state,
+        mystery4: {
+          ...state.mystery4,
+          clues: {
+            ...state.mystery4.clues,
+            [action.payload]: true,
+          },
+        },
+      };
+    case SOLVE_MYSTERY_4:
+      return {
+        ...state,
+        mystery4: {
+          ...state.mystery4,
+          solved: true,
+        },
+      };
     default:
       return state;
   }
@@ -223,6 +263,21 @@ function MyApp({ Component, pageProps }) {
           dispatch({ type: SOLVE_MYSTERY_3 });
         }
       }
+      const savedMystery4 = localStorage.getItem("tmc_mystery4");
+      if (savedMystery4) {
+        const m4 = JSON.parse(savedMystery4);
+        if (m4.active) {
+          dispatch({ type: START_MYSTERY_4 });
+        }
+        Object.keys(m4.clues || {}).forEach((key) => {
+          if (m4.clues[key]) {
+            dispatch({ type: DISCOVER_CLUE_4, payload: key });
+          }
+        });
+        if (m4.solved) {
+          dispatch({ type: SOLVE_MYSTERY_4 });
+        }
+      }
     } catch (e) {
       // localStorage not available
     }
@@ -235,10 +290,11 @@ function MyApp({ Component, pageProps }) {
       localStorage.setItem("tmc_solved", String(state.solved));
       localStorage.setItem("tmc_mystery2", JSON.stringify(state.mystery2));
       localStorage.setItem("tmc_mystery3", JSON.stringify(state.mystery3));
+      localStorage.setItem("tmc_mystery4", JSON.stringify(state.mystery4));
     } catch (e) {
       // localStorage not available
     }
-  }, [state.clues, state.solved, state.mystery2, state.mystery3]);
+  }, [state.clues, state.solved, state.mystery2, state.mystery3, state.mystery4]);
 
   return (
     <GameContext.Provider value={[state, dispatch]}>

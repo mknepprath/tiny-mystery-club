@@ -51,6 +51,16 @@ export default React.memo(function App() {
           return;
         }
       }
+      // Special case: presenting amulet to Puddle triggers puddleSlip
+      if (id === "puddle" && state.presentingClue === "amulet" && state.mystery4?.active && !state.mystery4.clues.puddleSlip) {
+        const m4ClueCount = Object.values(state.mystery4.clues).filter(Boolean).length;
+        if (m4ClueCount >= 2 || state.mystery4.clues.amulet) {
+          setSpeech("t-thats... thats not mine!! i mean... whats an amulet?? ...ok fine i found it in the lake and its so pretty i couldnt help wearin it... i didnt know it was freezin stuff!!");
+          dispatch({ type: "DISCOVER_CLUE_4", payload: "puddleSlip" });
+          dispatch({ type: "CLEAR_PRESENTING" });
+          return;
+        }
+      }
       const reaction = getNpcReaction(id, state.presentingClue);
       setSpeech(reaction);
       dispatch({ type: "CLEAR_PRESENTING" });
@@ -76,6 +86,14 @@ export default React.memo(function App() {
     if (id === "pip" && state.mystery3?.active && !state.mystery3.clues.wetTrail) {
       dispatch({ type: "DISCOVER_CLUE_3", payload: "wetTrail" });
     }
+    // Discover mystery 4 clues
+    if (id === "grumbles" && state.mystery4?.active && !state.mystery4.clues.coldTrail) {
+      dispatch({ type: "DISCOVER_CLUE_4", payload: "coldTrail" });
+    }
+    // Presenting amulet to puddle triggers puddleSlip
+    if (id === "puddle" && state.presentingClue === "amulet" && state.mystery4?.active && !state.mystery4.clues.puddleSlip) {
+      // Already handled via presentation above, but ensure clue discovery
+    }
   }
 
   function handleCrystalClick() {
@@ -99,7 +117,21 @@ export default React.memo(function App() {
     setSpeech("u can hear faint music comin from under the water... its muffled but definitely instruments playin together. someone built somethin down there");
   }
 
-  const isNight = (state.mystery2.active && !state.mystery2.solved) || (state.mystery3?.active && !state.mystery3?.solved);
+  function handleFrozenFlowersClick() {
+    if (!state.mystery4.clues.frozenFlowers) {
+      dispatch({ type: "DISCOVER_CLUE_4", payload: "frozenFlowers" });
+    }
+    setSpeech("the flowers here r completely frozen... ice crystals all over the petals. in the middle of summer?? somethin unnatural passed thru here");
+  }
+
+  function handleAmuletClick() {
+    if (!state.mystery4.clues.amulet) {
+      dispatch({ type: "DISCOVER_CLUE_4", payload: "amulet" });
+    }
+    setSpeech("a strange amulet half-buried in the lake shore sand... its glowin faint blue and its ICE cold to the touch. someone dropped this recently");
+  }
+
+  const isNight = (state.mystery2.active && !state.mystery2.solved) || (state.mystery3?.active && !state.mystery3?.solved) || (state.mystery4?.active && !state.mystery4?.solved);
 
   return (
     <div style={{ position: "relative" }}>
@@ -230,6 +262,64 @@ export default React.memo(function App() {
               imageRendering: "pixelated",
             }}
             alt="underwater sounds"
+          />
+        </div>
+      )}
+
+      {/* Mystery 4: Frozen flowers near village */}
+      {state.mystery4?.active && !state.mystery4?.solved && (
+        <div
+          onClick={handleFrozenFlowersClick}
+          style={{
+            position: "absolute",
+            left: 18 * 100,
+            top: 18 * 100,
+            width: 100,
+            height: 100,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 4,
+          }}
+        >
+          <img
+            src="/static/evidence-frozen-flowers.svg"
+            style={{
+              width: 60,
+              height: 60,
+              imageRendering: "pixelated",
+            }}
+            alt="frozen flowers"
+          />
+        </div>
+      )}
+
+      {/* Mystery 4: Frost amulet at lake shore */}
+      {state.mystery4?.active && !state.mystery4?.solved && (
+        <div
+          onClick={handleAmuletClick}
+          style={{
+            position: "absolute",
+            left: 20 * 100,
+            top: 38 * 100,
+            width: 100,
+            height: 100,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 4,
+          }}
+        >
+          <img
+            src="/static/evidence-amulet.svg"
+            style={{
+              width: 60,
+              height: 60,
+              imageRendering: "pixelated",
+            }}
+            alt="frost amulet"
           />
         </div>
       )}

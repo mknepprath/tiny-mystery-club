@@ -57,9 +57,81 @@ export default React.memo(function TownHall() {
       return;
     }
 
-    // Mystery 3 solved
+    // Mystery 4 solved
+    if (state.mystery4?.solved) {
+      setSpeech("FOUR mysteries!! this town owes u everything!! im namin a street after u!!");
+      return;
+    }
+
+    // Mystery 4 accusation
+    const allM4CluesFound =
+      state.mystery4?.clues.frozenFlowers &&
+      state.mystery4?.clues.coldTrail &&
+      state.mystery4?.clues.amulet &&
+      state.mystery4?.clues.puddleSlip;
+
+    if (state.mystery4?.active && allM4CluesFound) {
+      setSpeech({
+        text: "who is freezin all the flowers and paths??",
+        choices: [
+          {
+            label: "puddle the peng",
+            onSelect: () => {
+              setSpeech({
+                text: "puddle?? how is she doin it??",
+                choices: [
+                  {
+                    label: "shes wearin a frost amulet from the lake",
+                    onSelect: () => {
+                      dispatch({ type: "SOLVE_MYSTERY_4" });
+                      setSpeech("A FROST AMULET!! case closed!! puddle found an ancient frost amulet at the bottom of the lake and has been wearin it on her nightly walks!! she didnt even know it was freezin everything she walked past!! mystery solved!!");
+                    },
+                  },
+                  {
+                    label: "shes usin ice magic",
+                    onSelect: () =>
+                      setSpeech("hmm not quite... think about the artifact u found near the lake"),
+                  },
+                  {
+                    label: "shes throwin ice cubes",
+                    onSelect: () =>
+                      setSpeech("hmm not quite... think about what pip saw her wearin"),
+                  },
+                ],
+              });
+            },
+          },
+          {
+            label: "bubbles the peng",
+            onSelect: () =>
+              setSpeech("bubbles learned her lesson after the instrument thing... think about who takes late nite walks"),
+          },
+          {
+            label: "fern the sprite",
+            onSelect: () =>
+              setSpeech("fern is upset about the frozen flowers... she wouldnt freeze her own friends. think about who was nervous about the amulet"),
+          },
+        ],
+      });
+      return;
+    }
+
+    // Mystery 4 active but not all clues
+    if (state.mystery4?.active) {
+      setSpeech("flowers r freezin!! paths r icy!! its the middle of SUMMER!! someone or somethin is causin this and we need answers!!");
+      return;
+    }
+
+    // Mystery 3 solved, trigger mystery 4
+    if (state.mystery3?.solved && !state.mystery4?.active) {
+      dispatch({ type: "START_MYSTERY_4" });
+      setSpeech("great work on the music case!! but NOW flowers r freezin all over town... in the middle of summer!! ice on the paths!! somethin cold is movin through the village at nite. pls investigate!!");
+      return;
+    }
+
+    // Mystery 3 solved (already triggered m4)
     if (state.mystery3?.solved) {
-      setSpeech("THREE mysteries solved!! u r officially the towns greatest detective!! i should make u a badge");
+      setSpeech("any leads on the frost situation?? the flowers cant take much more of this!!");
       return;
     }
 

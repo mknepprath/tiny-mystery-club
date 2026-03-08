@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" shape-rendering="crispEdges">
+  <!-- frozen flowers -->
+  <!-- stem 1 -->
+  <rect x="5" y="10" width="1" height="6" fill="#4a7a4a"/>
+  <!-- flower 1 (frozen) -->
+  <rect x="4" y="8" width="1" height="2" fill="#aaddff"/>
+  <rect x="5" y="7" width="1" height="1" fill="#aaddff"/>
+  <rect x="5" y="10" width="1" height="1" fill="#aaddff"/>
+  <rect x="6" y="8" width="1" height="2" fill="#aaddff"/>
+  <rect x="5" y="8" width="1" height="2" fill="#cceeFF"/>
+  <!-- stem 2 -->
+  <rect x="11" y="9" width="1" height="7" fill="#4a7a4a"/>
+  <!-- flower 2 (frozen) -->
+  <rect x="10" y="7" width="1" height="2" fill="#aaddff"/>
+  <rect x="11" y="6" width="1" height="1" fill="#aaddff"/>
+  <rect x="11" y="9" width="1" height="1" fill="#aaddff"/>
+  <rect x="12" y="7" width="1" height="2" fill="#aaddff"/>
+  <rect x="11" y="7" width="1" height="2" fill="#cceeFF"/>
+  <!-- stem 3 -->
+  <rect x="15" y="11" width="1" height="5" fill="#4a7a4a"/>
+  <!-- flower 3 (frozen) -->
+  <rect x="14" y="9" width="1" height="2" fill="#aaddff"/>
+  <rect x="15" y="8" width="1" height="1" fill="#aaddff"/>
+  <rect x="15" y="11" width="1" height="1" fill="#aaddff"/>
+  <rect x="16" y="9" width="1" height="2" fill="#aaddff"/>
+  <rect x="15" y="9" width="1" height="2" fill="#cceeFF"/>
+  <!-- ice crystals -->
+  <rect x="3" y="7" width="1" height="1" fill="#ddeeff"/>
+  <rect x="7" y="6" width="1" height="1" fill="#ddeeff"/>
+  <rect x="13" y="6" width="1" height="1" fill="#ddeeff"/>
+  <rect x="17" y="8" width="1" height="1" fill="#ddeeff"/>
+  <rect x="9" y="5" width="1" height="1" fill="#ddeeff"/>
+  <!-- ground frost -->
+  <rect x="2" y="16" width="2" height="1" fill="#ddeeff"/>
+  <rect x="6" y="17" width="3" height="1" fill="#ddeeff"/>
+  <rect x="12" y="16" width="2" height="1" fill="#ddeeff"/>
+  <rect x="15" y="17" width="2" height="1" fill="#ddeeff"/>
+</svg>

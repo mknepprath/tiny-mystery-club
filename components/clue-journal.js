@@ -24,6 +24,13 @@ const CLUE_DESCRIPTIONS_M3 = {
   underwater: "strange sounds comin from beneath the lake",
 };
 
+const CLUE_DESCRIPTIONS_M4 = {
+  frozenFlowers: "flowers near the village r frozen solid in summer",
+  coldTrail: "a trail of ice on the path between lake and village",
+  amulet: "a glowin frost amulet found at the lake shore",
+  puddleSlip: "puddle panicked when shown the amulet",
+};
+
 const MYSTERIES = [
   {
     key: "m1",
@@ -52,9 +59,19 @@ const MYSTERIES = [
     isActive: (state) => state.mystery3.active || state.mystery3.solved,
     total: 4,
   },
+  {
+    key: "m4",
+    title: "The Frozen Garden",
+    clueDescriptions: CLUE_DESCRIPTIONS_M4,
+    getClues: (state) => state.mystery4.clues,
+    isSolved: (state) => state.mystery4.solved,
+    isActive: (state) => state.mystery4.active || state.mystery4.solved,
+    total: 4,
+  },
 ];
 
 function getCurrentMysteryIndex(state) {
+  if (state.mystery4?.active && !state.mystery4?.solved) return 3;
   if (state.mystery3?.active && !state.mystery3?.solved) return 2;
   if (state.mystery2.active && !state.mystery2.solved) return 1;
   return 0;
@@ -69,7 +86,7 @@ export default function ClueJournal() {
     setOpen(false);
   }
 
-  const allClueDescriptions = { ...CLUE_DESCRIPTIONS, ...CLUE_DESCRIPTIONS_M2, ...CLUE_DESCRIPTIONS_M3 };
+  const allClueDescriptions = { ...CLUE_DESCRIPTIONS, ...CLUE_DESCRIPTIONS_M2, ...CLUE_DESCRIPTIONS_M3, ...CLUE_DESCRIPTIONS_M4 };
 
   // Determine current mystery for badge
   const currentIdx = getCurrentMysteryIndex(state);
@@ -78,8 +95,12 @@ export default function ClueJournal() {
   const currentClueCount = Object.values(currentClues).filter(Boolean).length;
 
   let badgeText;
-  if (state.mystery3?.solved) {
+  if (state.mystery4?.solved) {
     badgeText = "All Cases Solved!";
+  } else if (state.mystery4?.active) {
+    badgeText = `Case 4: ${currentClueCount}/${currentMystery.total}`;
+  } else if (state.mystery3?.solved) {
+    badgeText = "Cases 1-3 Solved!";
   } else if (state.mystery3?.active) {
     badgeText = `Case 3: ${currentClueCount}/${currentMystery.total}`;
   } else if (state.mystery2.active && !state.mystery2.solved) {
