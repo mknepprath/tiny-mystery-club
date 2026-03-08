@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import GameContext from "./game-context";
 import { coordsToIndex, indexToCoords } from "./utils";
-import { ROCKS, WATER } from "./constants";
+import { ROCKS, WATER, ENTRANCES } from "./constants";
 
 import styles from "./map.module.css";
 
@@ -43,18 +43,23 @@ export default function Map(props) {
     }
     setBackgroundIds(backgroundIds);
 
-    // block rocks, water, one-off link rock
-    // TODO: also this should not go here... I'm not sure where it should go
-    // - Eh
-    // - This shouldn't be a dispatch at all, these should get added when hydrating state
-    [...ROCKS, ...WATER, { spawn: { x: 6, y: 7 } }].forEach(({ spawn }) => {
-      dispatch({
-        type: "TOGGLE_TILES",
-        coordinates: spawn,
-        mapName: router.pathname,
-        unblocked: false,
+    // block rocks, water, entrances on the main overworld map only
+    if (router.pathname === "/") {
+      const blockedItems = [...ROCKS, ...WATER];
+      ENTRANCES.forEach(({ spawn }) => {
+        blockedItems.push({ spawn });
       });
-    });
+      blockedItems.forEach(({ spawn }) => {
+        if (spawn.y < props.mapSize && spawn.x < props.mapSize) {
+          dispatch({
+            type: "TOGGLE_TILES",
+            coordinates: spawn,
+            mapName: router.pathname,
+            unblocked: false,
+          });
+        }
+      });
+    }
   }, []);
 
   if (!backgroundIds) return null;

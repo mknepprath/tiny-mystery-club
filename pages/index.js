@@ -1,12 +1,17 @@
 import React from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 import Map from "components/map";
 import NPC from "components/npc";
 import Prize from "components/prize";
 import Rock from "components/rock";
+import SpeechBox from "components/speech-box";
+import ClueJournal from "components/clue-journal";
+import GameContext from "components/game-context";
 
-import { NPCS, ROCKS, WATER } from "components/constants";
+import { NPCS, NPC_DIALOGUE, ROCKS, WATER, ENTRANCES, getNpcReaction } from "components/constants";
+import useMapScroll from "../hooks/useMapScroll";
 import MapDebug from "../components/map-debug";
 
 import styles from "./index.module.css";
@@ -14,6 +19,7 @@ import styles from "./index.module.css";
 export const MAP_SIZE = 59;
 
 export default React.memo(function App() {
+  const [state, dispatch] = React.useContext(GameContext);
   const [devMode, setDevMode] = React.useState(false);
 
   const isClient = typeof window !== "undefined";
@@ -29,7 +35,59 @@ export default React.memo(function App() {
     }
   }, [isClient]);
 
+  useMapScroll();
   const [speech, setSpeech] = React.useState();
+
+  function handleNpcClick(id) {
+    // Evidence presentation mode
+    if (state.presentingClue) {
+      // Special case: presenting crystal to Rex triggers confession
+      if (id === "rex" && state.presentingClue === "crystal" && state.mystery2.active && !state.mystery2.clues.confession) {
+        const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
+        if (m2ClueCount >= 2 || state.mystery2.clues.crystal) {
+          setSpeech("w-where did u find that?! ...i mean... whats that... never seen it before...");
+          dispatch({ type: "DISCOVER_CLUE_2", payload: "confession" });
+          dispatch({ type: "CLEAR_PRESENTING" });
+          return;
+        }
+      }
+      const reaction = getNpcReaction(id, state.presentingClue);
+      setSpeech(reaction);
+      dispatch({ type: "CLEAR_PRESENTING" });
+      return;
+    }
+    const dialogue = NPC_DIALOGUE[id](state);
+    setSpeech(dialogue);
+    // Discover mystery 1 clues on first interaction
+    if (id === "marlo" && !state.clues.witness) {
+      dispatch({ type: "DISCOVER_CLUE", payload: "witness" });
+    }
+    if (id === "puddle" && !state.clues.gossip) {
+      dispatch({ type: "DISCOVER_CLUE", payload: "gossip" });
+    }
+    // Discover mystery 2 clues
+    if (id === "pip" && state.mystery2.active && !state.mystery2.clues.shadows) {
+      dispatch({ type: "DISCOVER_CLUE_2", payload: "shadows" });
+    }
+    // Rex confession when player has 2+ mystery 2 clues and talks to him
+    if (id === "rex" && state.mystery2.active && !state.mystery2.clues.confession) {
+      const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
+      if (m2ClueCount >= 2) {
+        // Rex's nervous dialogue is already handled in NPC_DIALOGUE
+        // but we don't auto-trigger confession from normal dialogue
+        // confession requires presenting crystal evidence specifically
+      }
+    }
+  }
+
+  function handleCrystalClick() {
+    if (!state.mystery2.clues.crystal) {
+      dispatch({ type: "DISCOVER_CLUE_2", payload: "crystal" });
+    }
+    setSpeech("u found a shard of some kind of crystal... its warm to the touch and catches the light in a weird way");
+  }
+
+  const isNight = state.mystery2.active && !state.mystery2.solved;
 
   return (
     <div style={{ position: "relative" }}>
@@ -40,22 +98,15 @@ export default React.memo(function App() {
         <link rel="stylesheet" type="text/css" href="./static/reset.css" />
       </Head>
 
-      {NPCS.map(({ spawn, spriteType }) => (
+      <ClueJournal />
+
+      {NPCS.map(({ id, name, spawn, spriteType }) => (
         <NPC
           devMode={devMode}
-          key={`npc_x${spawn.x}_y${spawn.y}`}
+          key={`npc_${id}`}
+          name={name}
           mapSize={MAP_SIZE}
-          onClick={() => {
-            if (spriteType === "sprite") {
-              setSpeech(
-                "I am talking to u now,,, can u find my trophy? its a tiny mystery"
-              );
-            } else if (spriteType === "peng") {
-              setSpeech("do u no where the magic teleporting rock is");
-            } else if (spriteType === "lion") {
-              setSpeech("roar hey");
-            }
-          }}
+          onClick={() => handleNpcClick(id)}
           spawn={spawn}
           spriteType={spriteType}
         />
@@ -69,23 +120,71 @@ export default React.memo(function App() {
         />
       ))}
 
-      <a data-cy="room-link" href="/room">
-        <Rock spawn={{ x: 6, y: 7 }} variant={1} />
-      </a>
+      {ENTRANCES.map(({ spawn, href, label, image }) => (
+        <Link key={`entrance_${href}`} href={href}>
+          <div
+            className={styles.entrance}
+            style={{
+              left: spawn.x * 100,
+              top: spawn.y * 100,
+            }}
+          >
+            <img src={image} alt={label} className={styles.entranceImage} />
+            <span className={styles.entranceLabel}>{label}</span>
+          </div>
+        </Link>
+      ))}
+
+      {/* Mystery 2: Crystal evidence in the forest area */}
+      {state.mystery2.active && !state.mystery2.solved && (
+        <div
+          onClick={handleCrystalClick}
+          style={{
+            position: "absolute",
+            left: 6 * 100,
+            top: 8 * 100,
+            width: 100,
+            height: 100,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 4,
+          }}
+        >
+          <img
+            src="/static/evidence-crystal.svg"
+            style={{
+              width: 60,
+              height: 60,
+              imageRendering: "pixelated",
+            }}
+            alt="crystal shard"
+          />
+        </div>
+      )}
 
       <Prize />
 
       {devMode ? <MapDebug mapSize={MAP_SIZE} /> : null}
       <Map cypressAttr="index-page" devMode={devMode} mapSize={MAP_SIZE} water={WATER} />
 
-      {speech ? (
-        <>
-          <div className={styles.overlay} onClick={() => setSpeech("")} />
-          <div className={styles.speech}>
-            <div className={styles.contents}>{speech}</div>
-          </div>
-        </>
-      ) : null}
+      {isNight && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: MAP_SIZE * 100,
+            height: MAP_SIZE * 100,
+            background: "rgba(15, 10, 40, 0.35)",
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      <SpeechBox speech={speech} onClose={() => setSpeech("")} />
     </div>
   );
 });

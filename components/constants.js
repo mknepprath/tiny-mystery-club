@@ -13,16 +13,258 @@ export const MOVE = {
 };
 
 export const NPCS = [
-  { spawn: { y: 8, x: 32 }, spriteType: "lion" },
-  { spawn: { y: 20, x: 20 }, spriteType: "peng" },
-  { spawn: { y: 40, x: 5 }, spriteType: "sprite" },
-  // { spawn: { y: 21, x: 21 }, spriteType: "lion" },
-  // { spawn: { y: 22, x: 19 }, spriteType: "peng" },
-  // { spawn: { y: 22, x: 20 }, spriteType: "sprite" },
-  // { spawn: { y: 22, x: 21 }, spriteType: "peng" },
+  { id: "fern", name: "Fern", spawn: { y: 5, x: 5 }, spriteType: "sprite" },
+  { id: "rex", name: "Rex", spawn: { y: 10, x: 8 }, spriteType: "lion" },
+  { id: "bubbles", name: "Bubbles", spawn: { y: 11, x: 16 }, spriteType: "peng" },
+  { id: "marlo", name: "Marlo", spawn: { y: 22, x: 22 }, spriteType: "lion" },
+  { id: "pip", name: "Pip", spawn: { y: 20, x: 28 }, spriteType: "sprite" },
+  { id: "grumbles", name: "Grumbles", spawn: { y: 8, x: 38 }, spriteType: "lion" },
+  { id: "puddle", name: "Puddle", spawn: { y: 40, x: 22 }, spriteType: "peng" },
+  { id: "waddles", name: "Waddles", spawn: { y: 42, x: 25 }, spriteType: "peng" },
 ];
 
+export const NPC_DIALOGUE = {
+  fern: (state) => {
+    if (state.mystery2.solved) return "the crystal came from deep in the forest... it belonged to the rocks. rex should return it";
+    if (state.mystery2.active) return "somethin feels off in the forest lately... the rocks are uneasy. i can feel it in the moss";
+    if (state.solved) return "the forest is peaceful again now that the mystery is solved";
+    return "the forest is nice,,, i like the rocks they are my friends";
+  },
+  rex: (state) => {
+    if (state.mystery2.solved) return "ok fine... i found the crystal in the forest. i just thought it was pretty... i didnt know it was scarin everyone. sorry...";
+    if (state.mystery2.active) {
+      const m2ClueCount = Object.values(state.mystery2.clues).filter(Boolean).length;
+      if (state.mystery2.clues.crystal || m2ClueCount >= 2)
+        return "the shadows?? oh those are nothin... probably just trees... definitely not caused by anythin in particular haha";
+      return "shadows?? haha what shadows i havent seen any shadows... nope... not me";
+    }
+    if (state.solved) return "good work detective... the forest rests easy tonite";
+    if (state.clues.witness)
+      return "marlo saw someone too?? so it wasnt just noises... this is serious";
+    return "i heard a loud noise last nite comin from the village... probably nothin tho";
+  },
+  bubbles: (state) => {
+    if (state.mystery2.solved) return "rex had a crystal?? lions are so weird sometimes...";
+    if (state.mystery2.active) return "have u seen the shadows at nite?? theyre super creepy... i stay in the pond now";
+    if (state.solved) return "wow cant believe it was waddles all along...";
+    if (state.clues.gossip)
+      return "waddles has been weird?? now that u mention it she did seem stressed lately...";
+    return "the pond is nice today... wish the lake was this calm";
+  },
+  marlo: (state) => {
+    if (state.mystery2.solved) return "mysteries keep happenin around here... good thing we got a detective";
+    if (state.mystery2.active) return "the shadows are freakin me out... i saw one near the forest last nite and almost fainted";
+    if (state.solved) return "i knew it!! i knew what i saw that nite";
+    if (state.clues.witness && state.clues.gossip)
+      return "like i said... i saw somone waddling toward the lake carryin somethin shiny... and now that u mention it puddle said waddles has been actin weird too... u might wanna check the lake area";
+    if (state.clues.witness)
+      return "like i said... i saw somone waddling toward the lake carryin somethin shiny";
+    return "i saw somone waddling near town hall last nite... they were carryin somethin shiny. they went toward the lake";
+  },
+  pip: (state) => {
+    if (state.mystery2.solved) return "rex had a CRYSTAL?? that explains the shadows!!";
+    if (state.mystery2.active) return "i saw weird shadows movin around last nite... they were comin from the forest direction. it was real creepy";
+    if (state.solved) return "u actually solved it!! ur like a real detective!!";
+    return "i dont know whats goin on but everyone seems upset... did somethin happen??";
+  },
+  grumbles: (state) => {
+    if (state.mystery2.solved) return "rex and his shiny rocks... typical lion behavior honestly";
+    if (state.mystery2.active) return "those shadows better stay away from me... i aint scared tho... ok maybe a lil scared";
+    if (state.solved) return "see i told u it wasnt me!! ...not that anyone accused me... right??";
+    if (state.clues.footprints)
+      return "wait webbed feet?? see i TOLD u it wasnt me! lions dont have webbed feet";
+    return "haha wouldnt it be funny if i took the trophy... jk jk... unless?";
+  },
+  puddle: (state) => {
+    if (state.mystery2.solved) return "glad the shadow thing is over... i was havin nightmares";
+    if (state.mystery2.active) return "the shadows are scarin everyone at the lake... even the fish are hidin";
+    if (state.solved) return "i cant believe waddles did that... but im glad the mystery is solved";
+    if (state.clues.gossip && state.clues.witness)
+      return "wait marlo SAW someone?? heading this way?? waddles was out that nite...";
+    if (state.clues.gossip)
+      return "i hope waddles is ok... she keeps disappearin behind the waterfall";
+    return "waddles has been actin real weird lately... she keeps goin behind the waterfall and wont tell me why";
+  },
+  waddles: (state) => {
+    if (state.mystery2.solved) return "at least im not the troublemaker this time haha... sorry rex";
+    if (state.mystery2.active) return "shadows?? finally someone else is in trouble and not me lol";
+    if (state.solved)
+      return "ok FINE i took it!! it belonged to us pengs first!!! we built it with our own flippers!!!";
+    const clueCount = Object.values(state.clues).filter(Boolean).length;
+    if (clueCount >= 4)
+      return "l-look i didnt do anythin ok?? stop lookin at me like that";
+    if (clueCount >= 2)
+      return "why are u askin so many questions... im just a normal peng mindin my own business";
+    return "im just a normal peng... nothin weird goin on here haha";
+  },
+  // Interior NPCs
+  rory: (state) => {
+    if (state.mystery2.solved) return "both mysteries solved!! ur the best detective this town has ever seen!!";
+    if (state.mystery2.active) return "any leads on the shadow situation?? ppl are gettin real nervous...";
+    if (state.solved) return "the trophy is back!! thank u so much!!";
+    return "the golden trophy is GONE!! someone stole it!! pls help us find who did it";
+  },
+  dusty: (state) => {
+    if (state.mystery2.solved) return "crystals that project shadows... i think i read about those once. ancient stuff";
+    if (state.mystery2.active) return "the lights in here keep flickerin... i cant read my books like this. somethin strange is goin on";
+    if (state.solved) return "the books always held the answer... history repeats itself";
+    return "i read a book once it said pengs used to live here before anyone else... interestin huh";
+  },
+};
+
+export const NPC_REACTIONS = {
+  marlo: {
+    footprints: "webbed feet?? hmm that rules me out at least... only pengs have webbed feet",
+    witness: "yea thats what i saw... i know what i saw",
+    note: "pengs built the trophy?? i had no idea... thats a pretty good motive",
+    gossip: "waddles goin behind the waterfall... and i saw someone heading toward the lake... thats suspicious",
+    caveEvidence: "sparkles in the cave behind the waterfall?? sounds like somone hid somethin there",
+  },
+  waddles: {
+    footprints: "w-webbed feet?? lots of animals have webbed feet haha... not just pengs...",
+    witness: "waddling?? i ALWAYS waddle thats just how i walk!! doesnt prove anythin",
+    note: "...where did u find that",
+    gossip: "puddle doesnt know what shes talkin about!! i go behind the waterfall to... uh... meditate",
+    caveEvidence: "...i dont know anythin about any sparkles",
+  },
+  puddle: {
+    footprints: "webbed feet like a peng... oh no... u dont think...",
+    witness: "someone heading toward the lake?? i was asleep by then... but waddles was still up",
+    note: "a note about pengs owning the trophy?? i mean we DID build it but stealing isnt the answer...",
+    gossip: "i already told u about waddles... im worried about her tbh",
+    caveEvidence: "the cave behind the waterfall?? thats exactly where waddles keeps goin!!",
+  },
+  grumbles: {
+    footprints: "webbed feet?? see it wasnt me!! lions dont have webbed feet!! ...not that i did it anyway",
+    witness: "waddling?? lions dont waddle we STRIDE. very different",
+    note: "a note from a peng?? sounds like u got ur suspect right there",
+    gossip: "waddles actin weird huh?? always thought she was up to somethin",
+    caveEvidence: "a cave?? i dont go near caves. too spooky",
+  },
+  pip: {
+    footprints: "footprints?? oh wow ur like a real detective huh",
+    note: "whoa thats a real clue... ur gettin close i can feel it",
+    default: "i dont know much about that sorry... im not very good at mysteries",
+  },
+  fern: {
+    default: "hmm thats interestin but i mostly just know about rocks and trees sorry",
+  },
+  rex: {
+    footprints: "webbed feet... that narrows it down. not many animals around here with those",
+    witness: "so marlo saw someone too?? i heard noises... maybe we both witnessed the same thing",
+    default: "hmm i dunno much about that... i was in the forest all night",
+  },
+  bubbles: {
+    footprints: "oh no webbed feet... thats a peng thing... but surely no peng would steal",
+    gossip: "waddles has been weird?? now that u mention it she did seem stressed lately...",
+    default: "sorry i was in the pond... i dont know much",
+  },
+  // Interior NPCs
+  rory: {
+    footprints: "WEBBED FEET?? in MY town hall?? this is an outrage!!",
+    witness: "someone heading toward the lake with somethin shiny... keep investigatin!!",
+    note: "the pengs built the trophy?? i... actually didnt know that... still doesnt justify theft tho!!",
+    gossip: "waddles... behind the waterfall... hmm very suspicious indeed...",
+    caveEvidence: "evidence in the cave?? ur gettin close i can feel it!! find all the clues!!",
+  },
+  dusty: {
+    note: "ah yes... the history of the trophy. pengs were the original craftspeople here. its all in the books",
+    footprints: "webbed feet would be consistent with what i read about peng anatomy...",
+    default: "hmm i might have read somethin about that... let me think... nah i forgot",
+  },
+};
+
+export const NPC_REACTIONS_M2 = {
+  rex: {
+    crystal: "w-where did u find that?! ...i mean... whats that... never seen it before...",
+    shadows: "shadows?? i havent seen any shadows... definitely not...",
+    flickering: "flickerin lights?? weird... nothin to do with me tho...",
+    confession: "...ok u got me",
+    default: "i dunno what ur talkin about haha",
+  },
+  pip: {
+    shadows: "yea thats what i saw!! creepy shadows from the forest direction",
+    crystal: "whoa a crystal?? thats so cool... and kinda spooky",
+    default: "i dont know much about that... but the shadows were def real",
+  },
+  fern: {
+    crystal: "that crystal... it belongs to the deep forest. someone took it from where it rested",
+    shadows: "the shadows disturb the rocks... they dont like it",
+    default: "the forest knows more than it tells...",
+  },
+  marlo: {
+    shadows: "yea those shadows are everywhere at nite... really freakin me out",
+    crystal: "a crystal?? never seen anythin like that before... looks magical",
+    default: "i just want the shadows to stop honestly",
+  },
+  grumbles: {
+    shadows: "shadows?? pff im not scared... ok maybe a little",
+    crystal: "whoa thats a weird rock... keep it away from me",
+    default: "i dunno about any of that stuff",
+  },
+  puddle: {
+    shadows: "the shadows keep showin up near the lake too... its terrifying",
+    crystal: "ooh pretty... but also kinda creepy vibes from that thing",
+    default: "i just want things to go back to normal...",
+  },
+  waddles: {
+    shadows: "haha shadows... glad its not about me this time",
+    crystal: "neat rock i guess... ask someone who cares about rocks",
+    default: "not my problem this time lol",
+  },
+  bubbles: {
+    shadows: "the shadows are so scary... i hide in the pond when they show up",
+    crystal: "ooh shiny... but also gives me bad vibes",
+    default: "sorry i dont know much about that...",
+  },
+  rory: {
+    shadows: "shadows in my town!! this is unacceptable!! find out whos behind it!!",
+    flickering: "the library lights too?? this is gettin worse...",
+    crystal: "a crystal?? maybe thats connected to the shadows somehow...",
+    confession: "so rex knows somethin... interesting...",
+    default: "keep investigatin!! we need answers!!",
+  },
+  dusty: {
+    flickering: "yes the lights keep flickerin... very annoyin when ur tryin to read",
+    crystal: "fascinatin... ive read about crystals like this. they can refract moonlight in unusual ways",
+    shadows: "shadows in the library too... the books dont like the dark",
+    default: "hmm let me check my books... actually i forgot what i was lookin for",
+  },
+};
+
+const MYSTERY_2_CLUE_KEYS = ["shadows", "flickering", "crystal", "confession"];
+
+export function getNpcReaction(npcId, clueKey) {
+  // Check if this is a mystery 2 clue
+  if (MYSTERY_2_CLUE_KEYS.includes(clueKey)) {
+    const reactions = NPC_REACTIONS_M2[npcId];
+    if (!reactions) return "hmm... i dont really know anythin about that";
+    if (reactions[clueKey]) return reactions[clueKey];
+    if (reactions.default) return reactions.default;
+    return "hmm... i dont really know anythin about that";
+  }
+  const reactions = NPC_REACTIONS[npcId];
+  if (!reactions) return "hmm... i dont really know anythin about that";
+  if (reactions[clueKey]) return reactions[clueKey];
+  if (reactions.default) return reactions.default;
+  return "hmm... i dont really know anythin about that";
+}
+
+export const ROOM_NPCS = {
+  "/townhall": [
+    { id: "rory", name: "Mayor Rory", spawn: { y: 1, x: 3 }, spriteType: "sprite" },
+  ],
+  "/library": [
+    { id: "dusty", name: "Dusty", spawn: { y: 2, x: 3 }, spriteType: "lion" },
+  ],
+  "/room": [
+    { id: "peng-room", name: "Peng", spawn: { y: 2, x: 2 }, spriteType: "peng" },
+    { id: "sprite-room", name: "Sprite", spawn: { y: 1, x: 0 }, spriteType: "sprite" },
+  ],
+};
+
 export const ROCKS = [
+  // Original village cluster
   { spawn: { y: 19, x: 19 }, variant: 2 },
   { spawn: { y: 19, x: 20 }, variant: 1 },
   { spawn: { y: 19, x: 21 }, variant: 1 },
@@ -35,9 +277,120 @@ export const ROCKS = [
   { spawn: { y: 23, x: 20 }, variant: 1 },
   { spawn: { y: 23, x: 21 }, variant: 1 },
   { spawn: { y: 38, x: 38 }, variant: 2 },
+
+  // Forest area (x:2-12, y:2-12) - dense with paths
+  { spawn: { y: 2, x: 2 }, variant: 1 },
+  { spawn: { y: 2, x: 3 }, variant: 2 },
+  { spawn: { y: 2, x: 5 }, variant: 1 },
+  { spawn: { y: 2, x: 7 }, variant: 2 },
+  { spawn: { y: 2, x: 8 }, variant: 1 },
+  { spawn: { y: 2, x: 10 }, variant: 2 },
+  { spawn: { y: 2, x: 11 }, variant: 1 },
+  { spawn: { y: 3, x: 2 }, variant: 2 },
+  { spawn: { y: 3, x: 4 }, variant: 1 },
+  { spawn: { y: 3, x: 8 }, variant: 2 },
+  { spawn: { y: 3, x: 10 }, variant: 1 },
+  { spawn: { y: 3, x: 12 }, variant: 2 },
+  { spawn: { y: 4, x: 3 }, variant: 1 },
+  { spawn: { y: 4, x: 6 }, variant: 2 },
+  { spawn: { y: 4, x: 7 }, variant: 1 },
+  { spawn: { y: 4, x: 9 }, variant: 2 },
+  { spawn: { y: 4, x: 11 }, variant: 1 },
+  { spawn: { y: 5, x: 2 }, variant: 2 },
+  { spawn: { y: 5, x: 8 }, variant: 1 },
+  { spawn: { y: 5, x: 10 }, variant: 2 },
+  { spawn: { y: 6, x: 3 }, variant: 1 },
+  { spawn: { y: 6, x: 4 }, variant: 2 },
+  { spawn: { y: 6, x: 6 }, variant: 1 },
+  { spawn: { y: 6, x: 9 }, variant: 2 },
+  { spawn: { y: 6, x: 11 }, variant: 1 },
+  { spawn: { y: 7, x: 2 }, variant: 2 },
+  { spawn: { y: 7, x: 5 }, variant: 1 },
+  { spawn: { y: 7, x: 8 }, variant: 2 },
+  { spawn: { y: 7, x: 10 }, variant: 1 },
+  { spawn: { y: 8, x: 3 }, variant: 2 },
+  { spawn: { y: 8, x: 4 }, variant: 1 },
+  { spawn: { y: 8, x: 7 }, variant: 2 },
+  { spawn: { y: 8, x: 9 }, variant: 1 },
+  { spawn: { y: 8, x: 11 }, variant: 2 },
+  { spawn: { y: 9, x: 2 }, variant: 1 },
+  { spawn: { y: 9, x: 5 }, variant: 2 },
+  { spawn: { y: 9, x: 6 }, variant: 1 },
+  { spawn: { y: 9, x: 10 }, variant: 2 },
+  { spawn: { y: 10, x: 3 }, variant: 1 },
+  { spawn: { y: 10, x: 4 }, variant: 2 },
+  { spawn: { y: 10, x: 7 }, variant: 1 },
+  { spawn: { y: 10, x: 11 }, variant: 2 },
+  { spawn: { y: 11, x: 2 }, variant: 1 },
+  { spawn: { y: 11, x: 5 }, variant: 2 },
+  { spawn: { y: 11, x: 9 }, variant: 1 },
+  { spawn: { y: 11, x: 10 }, variant: 2 },
+  { spawn: { y: 12, x: 3 }, variant: 1 },
+  { spawn: { y: 12, x: 6 }, variant: 2 },
+  { spawn: { y: 12, x: 8 }, variant: 1 },
+  { spawn: { y: 12, x: 11 }, variant: 2 },
+
+  // Rocky Hills (x:35-45, y:5-15)
+  { spawn: { y: 5, x: 35 }, variant: 2 },
+  { spawn: { y: 5, x: 37 }, variant: 1 },
+  { spawn: { y: 5, x: 40 }, variant: 2 },
+  { spawn: { y: 6, x: 36 }, variant: 1 },
+  { spawn: { y: 6, x: 39 }, variant: 2 },
+  { spawn: { y: 6, x: 42 }, variant: 1 },
+  { spawn: { y: 7, x: 35 }, variant: 2 },
+  { spawn: { y: 7, x: 37 }, variant: 1 },
+  { spawn: { y: 7, x: 41 }, variant: 2 },
+  { spawn: { y: 7, x: 44 }, variant: 1 },
+  { spawn: { y: 8, x: 36 }, variant: 2 },
+  { spawn: { y: 8, x: 40 }, variant: 1 },
+  { spawn: { y: 8, x: 43 }, variant: 2 },
+  { spawn: { y: 9, x: 35 }, variant: 1 },
+  { spawn: { y: 9, x: 39 }, variant: 2 },
+  { spawn: { y: 9, x: 42 }, variant: 1 },
+  { spawn: { y: 10, x: 37 }, variant: 2 },
+  { spawn: { y: 10, x: 40 }, variant: 1 },
+  { spawn: { y: 10, x: 44 }, variant: 2 },
+  { spawn: { y: 11, x: 36 }, variant: 1 },
+  { spawn: { y: 11, x: 39 }, variant: 2 },
+  { spawn: { y: 11, x: 43 }, variant: 1 },
+  { spawn: { y: 12, x: 35 }, variant: 2 },
+  { spawn: { y: 12, x: 38 }, variant: 1 },
+  { spawn: { y: 12, x: 41 }, variant: 2 },
+
+  // Cave entrance area (x:5-10, y:40-45)
+  { spawn: { y: 40, x: 5 }, variant: 1 },
+  { spawn: { y: 40, x: 7 }, variant: 2 },
+  { spawn: { y: 40, x: 9 }, variant: 1 },
+  { spawn: { y: 41, x: 6 }, variant: 2 },
+  { spawn: { y: 41, x: 10 }, variant: 1 },
+  { spawn: { y: 43, x: 6 }, variant: 2 },
+  { spawn: { y: 43, x: 7 }, variant: 1 },
+  { spawn: { y: 43, x: 9 }, variant: 2 },
+  { spawn: { y: 44, x: 5 }, variant: 1 },
+  { spawn: { y: 44, x: 10 }, variant: 2 },
+
+  // Village path framing rocks
+  { spawn: { y: 15, x: 24 }, variant: 1 },
+  { spawn: { y: 15, x: 26 }, variant: 2 },
+  { spawn: { y: 16, x: 23 }, variant: 1 },
+  { spawn: { y: 16, x: 27 }, variant: 2 },
+  { spawn: { y: 17, x: 24 }, variant: 1 },
+  { spawn: { y: 17, x: 26 }, variant: 2 },
+  { spawn: { y: 18, x: 25 }, variant: 1 },
+  { spawn: { y: 24, x: 24 }, variant: 2 },
+  { spawn: { y: 24, x: 26 }, variant: 1 },
+  { spawn: { y: 25, x: 23 }, variant: 2 },
+  { spawn: { y: 25, x: 27 }, variant: 1 },
+  { spawn: { y: 26, x: 31 }, variant: 2 },
+  { spawn: { y: 27, x: 30 }, variant: 1 },
+  { spawn: { y: 27, x: 33 }, variant: 2 },
+  { spawn: { y: 28, x: 31 }, variant: 1 },
+  { spawn: { y: 30, x: 31 }, variant: 2 },
+  { spawn: { y: 30, x: 33 }, variant: 1 },
 ];
 
 export const WATER = [
+  // Original pond
   { spawn: { x: 15, y: 12 } },
   { spawn: { x: 15, y: 13 } },
   { spawn: { x: 16, y: 13 } },
@@ -45,4 +398,85 @@ export const WATER = [
   { spawn: { x: 14, y: 14 } },
   { spawn: { x: 15, y: 14 } },
   { spawn: { x: 16, y: 14 } },
+
+  // Lake District (x:18-30, y:38-48)
+  { spawn: { x: 22, y: 38 } },
+  { spawn: { x: 23, y: 38 } },
+  { spawn: { x: 24, y: 38 } },
+  { spawn: { x: 21, y: 39 } },
+  { spawn: { x: 22, y: 39 } },
+  { spawn: { x: 23, y: 39 } },
+  { spawn: { x: 24, y: 39 } },
+  { spawn: { x: 25, y: 39 } },
+  { spawn: { x: 20, y: 40 } },
+  { spawn: { x: 21, y: 40 } },
+  { spawn: { x: 23, y: 40 } },
+  { spawn: { x: 24, y: 40 } },
+  { spawn: { x: 25, y: 40 } },
+  { spawn: { x: 26, y: 40 } },
+  { spawn: { x: 19, y: 41 } },
+  { spawn: { x: 20, y: 41 } },
+  { spawn: { x: 21, y: 41 } },
+  { spawn: { x: 23, y: 41 } },
+  { spawn: { x: 24, y: 41 } },
+  { spawn: { x: 25, y: 41 } },
+  { spawn: { x: 26, y: 41 } },
+  { spawn: { x: 27, y: 41 } },
+  { spawn: { x: 19, y: 42 } },
+  { spawn: { x: 20, y: 42 } },
+  { spawn: { x: 21, y: 42 } },
+  { spawn: { x: 22, y: 42 } },
+  { spawn: { x: 23, y: 42 } },
+  { spawn: { x: 24, y: 42 } },
+  { spawn: { x: 26, y: 42 } },
+  { spawn: { x: 27, y: 42 } },
+  { spawn: { x: 28, y: 42 } },
+  { spawn: { x: 19, y: 43 } },
+  { spawn: { x: 20, y: 43 } },
+  { spawn: { x: 21, y: 43 } },
+  { spawn: { x: 22, y: 43 } },
+  { spawn: { x: 23, y: 43 } },
+  { spawn: { x: 24, y: 43 } },
+  { spawn: { x: 25, y: 43 } },
+  { spawn: { x: 26, y: 43 } },
+  { spawn: { x: 27, y: 43 } },
+  { spawn: { x: 28, y: 43 } },
+  { spawn: { x: 29, y: 43 } },
+  { spawn: { x: 20, y: 44 } },
+  { spawn: { x: 21, y: 44 } },
+  { spawn: { x: 22, y: 44 } },
+  { spawn: { x: 23, y: 44 } },
+  { spawn: { x: 24, y: 44 } },
+  { spawn: { x: 25, y: 44 } },
+  { spawn: { x: 26, y: 44 } },
+  { spawn: { x: 27, y: 44 } },
+  { spawn: { x: 28, y: 44 } },
+  { spawn: { x: 29, y: 44 } },
+  { spawn: { x: 21, y: 45 } },
+  { spawn: { x: 22, y: 45 } },
+  { spawn: { x: 23, y: 45 } },
+  { spawn: { x: 24, y: 45 } },
+  { spawn: { x: 25, y: 45 } },
+  { spawn: { x: 26, y: 45 } },
+  { spawn: { x: 27, y: 45 } },
+  { spawn: { x: 28, y: 45 } },
+  { spawn: { x: 22, y: 46 } },
+  { spawn: { x: 23, y: 46 } },
+  { spawn: { x: 24, y: 46 } },
+  { spawn: { x: 25, y: 46 } },
+  { spawn: { x: 26, y: 46 } },
+  { spawn: { x: 27, y: 46 } },
+  { spawn: { x: 23, y: 47 } },
+  { spawn: { x: 24, y: 47 } },
+  { spawn: { x: 25, y: 47 } },
+  { spawn: { x: 26, y: 47 } },
+  { spawn: { x: 24, y: 48 } },
+  { spawn: { x: 25, y: 48 } },
+];
+
+export const ENTRANCES = [
+  { spawn: { x: 25, y: 20 }, href: "/townhall", label: "Town Hall", image: "/static/building-townhall.svg" },
+  { spawn: { x: 32, y: 29 }, href: "/library", label: "Library", image: "/static/building-library.svg" },
+  { spawn: { x: 8, y: 42 }, href: "/cave", label: "Cave", image: "/static/building-cave.svg" },
+  { spawn: { x: 6, y: 7 }, href: "/room", label: "House", image: "/static/building-house.svg" },
 ];

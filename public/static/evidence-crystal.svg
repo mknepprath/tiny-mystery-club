@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" shape-rendering="crispEdges">
+  <!-- Main crystal body -->
+  <rect x="8" y="3" width="4" height="12" fill="#6A3D9A"/>
+  <rect x="7" y="5" width="1" height="8" fill="#7B52AE"/>
+  <rect x="12" y="5" width="1" height="8" fill="#5A2D8A"/>
+  <rect x="6" y="7" width="1" height="5" fill="#7B52AE"/>
+  <rect x="13" y="7" width="1" height="5" fill="#4A1D7A"/>
+  <!-- Crystal top point -->
+  <rect x="9" y="2" width="2" height="1" fill="#8B6BB5"/>
+  <rect x="9" y="1" width="1" height="1" fill="#9B7BC5"/>
+  <!-- Crystal facets -->
+  <rect x="8" y="4" width="1" height="3" fill="#8B6BB5"/>
+  <rect x="11" y="6" width="1" height="4" fill="#5A2D8A"/>
+  <!-- Bright highlights -->
+  <rect x="9" y="4" width="1" height="1" fill="#E0D0FF"/>
+  <rect x="9" y="6" width="1" height="1" fill="#C8B8E8"/>
+  <rect x="8" y="8" width="1" height="1" fill="#FFFFFF"/>
+  <rect x="10" y="5" width="1" height="1" fill="#B0A0D8"/>
+  <!-- Cyan glow highlights -->
+  <rect x="7" y="9" width="1" height="1" fill="#00E5FF"/>
+  <rect x="12" y="7" width="1" height="1" fill="#00BCD4"/>
+  <rect x="9" y="3" width="1" height="1" fill="#80DEEA"/>
+  <!-- Glow around crystal -->
+  <rect x="5" y="8" width="1" height="1" fill="#D1C4E9"/>
+  <rect x="14" y="9" width="1" height="1" fill="#D1C4E9"/>
+  <rect x="10" y="0" width="1" height="1" fill="#D1C4E9"/>
+  <rect x="7" y="13" width="1" height="1" fill="#D1C4E9"/>
+  <rect x="12" y="13" width="1" height="1" fill="#D1C4E9"/>
+  <!-- Base -->
+  <rect x="7" y="15" width="6" height="1" fill="#4A1D7A"/>
+  <rect x="8" y="16" width="4" height="1" fill="#3D1566"/>
+</svg>

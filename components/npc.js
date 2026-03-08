@@ -14,6 +14,8 @@ export default function NPC(props) {
   const router = useRouter();
 
   const [clicked, setClicked] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+
   function onClickNPCHandler() {
     setClicked((clicked) => !clicked);
     props.onClick();
@@ -34,7 +36,9 @@ export default function NPC(props) {
   }, []);
 
   useInterval(() => {
-    // console.log('ping')
+    // Don't random walk if stationary
+    if (props.stationary) return;
+
     const nextCoordinates = {
       x: coordinates.x,
       y: coordinates.y,
@@ -85,19 +89,34 @@ export default function NPC(props) {
   }, 1000);
 
   return (
-    <img
-      className={styles.npc}
-      onClick={onClickNPCHandler}
-      src={`static/${props.spriteType}-${FACING[direction]}${
-        walking ? "-walk" : ""
-      }.gif`}
+    <div
       style={{
+        position: "absolute",
         left: coordinates.x * 100,
         top: coordinates.y * 100,
-        boxShadow: clicked && props.devMode ? "0 0 16px red" : null,
-        [`border${direction}`]: props.devMode ? "4px solid red" : "none",
+        width: 100,
+        height: 100,
+        transition: "top 1s linear, left 1s linear",
+        zIndex: 5,
       }}
-      suppressHydrationWarning
-    />
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {props.name && hovered && (
+        <div className={styles.nameLabel}>{props.name}</div>
+      )}
+      <img
+        className={styles.npc}
+        onClick={onClickNPCHandler}
+        src={`/static/${props.spriteType}-${FACING[direction]}${
+          walking ? "-walk" : ""
+        }.gif`}
+        style={{
+          boxShadow: clicked && props.devMode ? "0 0 16px red" : null,
+          [`border${direction}`]: props.devMode ? "4px solid red" : "none",
+        }}
+        suppressHydrationWarning
+      />
+    </div>
   );
 }

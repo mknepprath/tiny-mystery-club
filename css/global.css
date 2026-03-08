@@ -9,6 +9,10 @@
     url("/fonts/9c200a14-d264-405c-86bf-d27b840e86be.woff") format("woff");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   padding: 0;

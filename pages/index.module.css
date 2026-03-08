@@ -21,3 +21,37 @@
   left: 0;
   overflow: auto;
 }
+
+.entrance {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.entranceImage {
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+  transition: transform 0.15s ease;
+}
+
+.entrance:hover .entranceImage {
+  transform: scale(1.1);
+}
+
+.entranceLabel {
+  font-size: 0.8rem;
+  color: var(--black);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-top: -4px;
+  white-space: nowrap;
+  pointer-events: none;
+}

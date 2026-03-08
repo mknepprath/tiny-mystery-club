@@ -1,0 +1,146 @@
+.badge {
+  position: fixed;
+  top: calc(var(--pixel) * 2);
+  right: calc(var(--pixel) * 2);
+  background-color: #ffffff;
+  border: calc(var(--pixel) * 1) solid var(--black);
+  border-image: url(/static/speech-border.png) 6 round;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.4rem;
+  line-height: 1rem;
+  color: var(--black);
+  z-index: 900;
+}
+
+.badge:hover {
+  background-color: #f0f0f0;
+}
+
+.badgeHint {
+  display: block;
+  font-size: 0.9rem;
+  color: #999;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.modalOverlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  z-index: 1100;
+}
+
+.modal {
+  border: calc(var(--pixel) * 2) solid var(--black);
+  border-image: url(/static/speech-border.png) 10 round;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 240px;
+  max-width: 340px;
+  max-height: 70vh;
+  z-index: 1101;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContents {
+  background-color: #ffffff;
+  padding: 10px 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.title {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  line-height: 1.2rem;
+}
+
+.clueList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.clueItem {
+  padding: 4px 0;
+  font-size: 1.4rem;
+  line-height: 1.2rem;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.undiscovered {
+  color: #aaa;
+}
+
+.solvedClue {
+  color: #6a6;
+  text-decoration: line-through;
+}
+
+.showButton {
+  background-color: #ffffff;
+  border: calc(var(--pixel) * 1) solid var(--black);
+  border-image: url(/static/speech-border.png) 6 round;
+  color: var(--black);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.1rem;
+  line-height: 1rem;
+  padding: 3px 8px;
+  flex-shrink: 0;
+}
+
+.showButton:hover {
+  background-color: #f0f0f0;
+}
+
+.presentingBanner {
+  position: fixed;
+  top: calc(var(--pixel) * 2);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fffde0;
+  border: calc(var(--pixel) * 1) solid var(--black);
+  border-image: url(/static/speech-border.png) 6 round;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 1.2rem;
+  line-height: 1rem;
+  color: var(--black);
+  z-index: 901;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cancelPresent {
+  background: none;
+  border: none;
+  color: #c44;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.1rem;
+  margin-left: 8px;
+  padding: 0;
+  text-decoration: underline;
+}

@@ -1,17 +1,20 @@
 import React from "react";
 import Head from "next/head";
+import Link from "next/link";
 import Map from "components/map";
 import MapDebug from "components/map-debug";
 import NPC from "components/npc";
 import Prize from "components/prize";
 import GameContext from "components/game-context";
+import SpeechBox from "components/speech-box";
+import ClueJournal from "components/clue-journal";
 
 import styles from "./room.module.css";
 
 const MAP_SIZE = 4;
 
 export default React.memo(function Room() {
-  const [state] = React.useContext(GameContext);
+  const [state, dispatch] = React.useContext(GameContext);
   const [devMode, setDevMode] = React.useState(false);
   const isClient = typeof window !== "undefined";
   React.useEffect(() => {
@@ -33,7 +36,9 @@ export default React.memo(function Room() {
         <style>{`body {background-color: rgba(37, 35, 39, 1)}`}</style>
       </Head>
 
-      <a href="/">
+      <ClueJournal />
+
+      <Link href="/">
         <img
           onMouseEnter={() => setDoorSrc(`/static/wall-door-open.png`)}
           onMouseLeave={() => setDoorSrc(`/static/door.png`)}
@@ -46,7 +51,7 @@ export default React.memo(function Room() {
             width: 100,
           }}
         />
-      </a>
+      </Link>
 
       <img
         src={`/static/wall-picture.png`}
@@ -84,7 +89,16 @@ export default React.memo(function Room() {
       <NPC
         devMode={devMode}
         mapSize={MAP_SIZE}
-        onClick={() => setSpeech("aaaah why is there ppl in my house")}
+        name="Peng"
+        stationary
+        onClick={() => {
+          if (state.presentingClue) {
+            setSpeech("hmm... i dont really know anythin about that");
+            dispatch({ type: "CLEAR_PRESENTING" });
+            return;
+          }
+          setSpeech("have u heard?? the trophy got STOLEN from town hall!!");
+        }}
         spawn={{ x: 2, y: 2 }}
         spriteType="peng"
       />
@@ -92,9 +106,16 @@ export default React.memo(function Room() {
       <NPC
         devMode={devMode}
         mapSize={MAP_SIZE}
+        name="Sprite"
+        stationary
         onClick={() => {
+          if (state.presentingClue) {
+            setSpeech("hmm... i dont really know anythin about that");
+            dispatch({ type: "CLEAR_PRESENTING" });
+            return;
+          }
           if (state.points === 0) {
-            setSpeech("y is htere a peng in my house");
+            setSpeech("every1 is talkin about the missing trophy... u should check town hall");
           } else if (state.points < 3) {
             setSpeech("thx for finding the trophy but i lost it again");
           } else if (state.points < 100) {
@@ -114,14 +135,7 @@ export default React.memo(function Room() {
       {devMode ? <MapDebug mapSize={MAP_SIZE} /> : null}
       <Map cypressAttr="room-page" devMode={devMode} interior mapSize={MAP_SIZE} />
 
-      {speech ? (
-        <>
-          <div className={styles.overlay} onClick={() => setSpeech("")} />
-          <div className={styles.speech}>
-            <div className={styles.contents}>{speech}</div>
-          </div>
-        </>
-      ) : null}
+      <SpeechBox speech={speech} onClose={() => setSpeech("")} />
     </div>
   );
 });

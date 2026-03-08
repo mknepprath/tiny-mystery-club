@@ -1,0 +1,49 @@
+.speech {
+  border: calc(var(--pixel) * 2) solid var(--black);
+  border-image: url(/static/speech-border.png) 10 round;
+  position: fixed;
+  bottom: calc(var(--pixel) * 2);
+  left: calc(var(--pixel) * 2);
+  right: calc(var(--pixel) * 2);
+  z-index: 1001;
+}
+
+.contents {
+  background-color: #ffffff;
+  padding: 0 5px 10px;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.33);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  z-index: 1000;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.choiceButton {
+  background-color: #ffffff;
+  border: calc(var(--pixel) * 1) solid var(--black);
+  border-image: url(/static/speech-border.png) 6 round;
+  color: var(--black);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.4rem;
+  line-height: 1rem;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.choiceButton:hover {
+  background-color: #f0f0f0;
+}
