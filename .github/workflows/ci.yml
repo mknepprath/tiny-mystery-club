@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Run Cypress 🌲
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v7
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          CYPRESS_VERCEL_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
       # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#job-status-check-functions
       - name: Cypress tests ✅

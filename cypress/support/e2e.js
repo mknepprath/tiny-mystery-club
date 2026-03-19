@@ -16,5 +16,15 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Bypass Vercel deployment protection for preview deployments.
+// Requires VERCEL_AUTOMATION_BYPASS_SECRET to be set as a GitHub Actions secret.
+// See: https://vercel.com/docs/security/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation
+const vercelBypassSecret = Cypress.env('VERCEL_BYPASS_SECRET')
+
+if (vercelBypassSecret) {
+  Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
+    const separator = url.includes('?') ? '&' : '?'
+    const bypassUrl = `${url}${separator}x-vercel-protection-bypass=${vercelBypassSecret}&x-vercel-set-bypass-cookie=true`
+    return originalFn(bypassUrl, options)
+  })
+}
