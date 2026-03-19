@@ -165,7 +165,7 @@ export default React.memo(function App() {
       ))}
 
       {ENTRANCES.map(({ spawn, href, label, image }) => (
-        <Link key={`entrance_${href}`} href={href}>
+        <Link key={`entrance_${href}`} href={href} data-cy={`${href.replace("/", "")}-link`}>
           <div
             className={styles.entrance}
             style={{
