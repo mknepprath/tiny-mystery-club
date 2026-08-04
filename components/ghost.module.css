@@ -1,0 +1,31 @@
+.ghost {
+  position: absolute;
+
+  height: 100px;
+  width: 100px;
+  z-index: 4;
+
+  display: none;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+/* The ghost only haunts the overworld when the device is in dark mode. */
+@media (prefers-color-scheme: dark) {
+  .ghost {
+    display: block;
+    animation: haunt 4s ease-in-out infinite;
+  }
+}
+
+@keyframes haunt {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-10px);
+  }
+}
