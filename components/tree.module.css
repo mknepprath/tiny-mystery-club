@@ -1,0 +1,19 @@
+.canopy,
+.stump {
+  position: absolute;
+
+  height: 100px;
+  width: 100px;
+  image-rendering: pixelated;
+}
+
+/* Above characters (z-index 5), so they pass behind the leaves. */
+.canopy {
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Below characters, alongside the rocks. */
+.stump {
+  z-index: 3;
+}
