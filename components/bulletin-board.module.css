@@ -1,0 +1,8 @@
+.bulletinBoard {
+  position: absolute;
+
+  height: 100px;
+  width: 100px;
+  image-rendering: pixelated;
+  z-index: 3;
+}
