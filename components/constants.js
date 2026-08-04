@@ -695,3 +695,8 @@ export const ENTRANCES = [
   { spawn: { x: 8, y: 42 }, href: "/cave", label: "Cave", image: "/static/building-cave.svg" },
   { spawn: { x: 6, y: 7 }, href: "/room", label: "House", image: "/static/building-house.svg" },
 ];
+
+export const BULLETIN_BOARDS = [
+  // Village square, just south of the town hall
+  { spawn: { x: 27, y: 22 } },
+];
