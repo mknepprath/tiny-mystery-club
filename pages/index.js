@@ -7,10 +7,11 @@ import NPC from "components/npc";
 import Prize from "components/prize";
 import Rock from "components/rock";
 import SpeechBox from "components/speech-box";
+import Tree from "components/tree";
 import ClueJournal from "components/clue-journal";
 import GameContext from "components/game-context";
 
-import { NPCS, NPC_DIALOGUE, ROCKS, WATER, ENTRANCES, getNpcReaction } from "components/constants";
+import { NPCS, NPC_DIALOGUE, ROCKS, TREES, WATER, ENTRANCES, getNpcReaction } from "components/constants";
 import useMapScroll from "../hooks/useMapScroll";
 import MapDebug from "../components/map-debug";
 
@@ -162,6 +163,10 @@ export default React.memo(function App() {
           spawn={spawn}
           variant={variant}
         />
+      ))}
+
+      {TREES.map(({ spawn }) => (
+        <Tree key={`tree_x${spawn.x}_y${spawn.y}`} spawn={spawn} />
       ))}
 
       {ENTRANCES.map(({ spawn, href, label, image }) => (
