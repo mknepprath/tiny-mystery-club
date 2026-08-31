@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" shape-rendering="crispEdges">
+  <!-- Door frame -->
+  <rect x="0" y="0" width="10" height="8" fill="#8B5E3C"/>
+  <!-- Room beyond the doorway -->
+  <rect x="1" y="0" width="8" height="8" fill="#3A2E2A"/>
+  <rect x="3" y="3" width="6" height="5" fill="#A9703F"/>
+  <rect x="3" y="3" width="6" height="1" fill="#C08850"/>
+  <!-- Door swung open against the left jamb -->
+  <rect x="1" y="0" width="2" height="8" fill="#4A7549"/>
+  <rect x="2" y="2" width="1" height="2" fill="#3D5C3A"/>
+  <rect x="2" y="5" width="1" height="1" fill="#E8C15C"/>
+  <!-- Step -->
+  <rect x="0" y="8" width="10" height="2" fill="#6B5B4F"/>
+  <rect x="0" y="8" width="10" height="1" fill="#7D6B5D"/>
+</svg>

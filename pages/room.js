@@ -38,7 +38,7 @@ export default React.memo(function Room() {
 
       <ClueJournal />
 
-      <Link href="/">
+      <Link href="/house" data-cy="house-link">
         <img
           onMouseEnter={() => setDoorSrc(`/static/wall-door-open.png`)}
           onMouseLeave={() => setDoorSrc(`/static/door.png`)}
