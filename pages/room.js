@@ -28,7 +28,7 @@ export default React.memo(function Room() {
   const [doorSrc, setDoorSrc] = React.useState(`/static/door.png`);
 
   return (
-    <div className={styles.mapContainer}>
+    <div className={styles.mapContainer} data-cy="room-page">
       <Head>
         <title>{`Tiny Mystery ${devMode ? "Sandbox" : "Club"}`}</title>
         <meta property="og:title" content="Tiny Mystery Club - Room" />
