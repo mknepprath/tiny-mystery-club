@@ -17,7 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-typescript": "^8.0.1",
-    "@types/node": "^26.3.0",
+    "@types/node": "^26.4.0",
     "@types/react": "^19.2.18",
     "cypress": "^15.21.0",
     "typescript": "^7.0.2"
