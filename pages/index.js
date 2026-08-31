@@ -135,7 +135,7 @@ export default React.memo(function App() {
   const isNight = (state.mystery2.active && !state.mystery2.solved) || (state.mystery3?.active && !state.mystery3?.solved) || (state.mystery4?.active && !state.mystery4?.solved);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} data-cy="index-page">
       <Head>
         <title>{`Tiny Mystery ${devMode ? "Sandbox" : "Club"}`}</title>
         <meta property="og:title" content="Tiny Mystery Club" />
