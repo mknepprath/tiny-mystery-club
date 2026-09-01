@@ -4,8 +4,13 @@ on: [deployment_status]
 jobs:
   e2e:
     name: "Tests"
-    # only runs this job on successful deploy
-    if: github.event.deployment_status.state == 'success'
+    # This repo is linked to two Vercel projects, so every commit fires two
+    # deployment_status events. Both used to run and race to write the same
+    # "e2e" commit status. open-world serves tinymystery.club, so it is the
+    # one worth testing; the tiny-mystery-club deployment is skipped.
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      contains(github.event.deployment_status.environment, 'open-world')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
