@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import GameContext from "./game-context";
 import { coordsToIndex, indexToCoords } from "./utils";
-import { ROCKS, WATER, ENTRANCES } from "./constants";
+import { ROCKS, TREES, WATER, ENTRANCES } from "./constants";
 
 import styles from "./map.module.css";
 
@@ -43,9 +43,9 @@ export default function Map(props) {
     }
     setBackgroundIds(backgroundIds);
 
-    // block rocks, water, entrances on the main overworld map only
+    // block rocks, tree stumps, water, entrances on the main overworld map only
     if (router.pathname === "/") {
-      const blockedItems = [...ROCKS, ...WATER];
+      const blockedItems = [...ROCKS, ...TREES, ...WATER];
       ENTRANCES.forEach(({ spawn }) => {
         blockedItems.push({ spawn });
       });
