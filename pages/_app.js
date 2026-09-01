@@ -26,6 +26,7 @@ export const INITIAL_MAP_SIZE = 59;
 const initialState = {
   maps: {
     "/": generateBooleanMap(INITIAL_MAP_SIZE),
+    "/house": generateBooleanMap(5),
     "/room": generateBooleanMap(4),
     "/townhall": generateBooleanMap(6),
     "/library": generateBooleanMap(5),
