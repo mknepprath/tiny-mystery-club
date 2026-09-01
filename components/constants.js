@@ -588,6 +588,12 @@ export const ROCKS = [
   { spawn: { y: 30, x: 33 }, variant: 1 },
 ];
 
+// Spawn is the stump's tile, which is blocked. The canopy hangs over the tile
+// above it, which stays walkable so characters can pass behind the leaves.
+export const TREES = [
+  { spawn: { y: 22, x: 24 } },
+];
+
 export const WATER = [
   // Waterfall stream near cave (cave entrance at x:8, y:42)
   { spawn: { x: 8, y: 40 } },

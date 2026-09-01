@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" shape-rendering="crispEdges">
+  <!-- Trunk -->
+  <rect x="8" y="0" width="4" height="15" fill="#7A5230"/>
+  <rect x="8" y="0" width="1" height="15" fill="#8B6039"/>
+  <rect x="11" y="0" width="1" height="15" fill="#5E3D22"/>
+  <!-- Bark texture -->
+  <rect x="10" y="3" width="1" height="2" fill="#5E3D22"/>
+  <rect x="9" y="8" width="1" height="2" fill="#5E3D22"/>
+  <rect x="10" y="11" width="1" height="1" fill="#8B6039"/>
+  <!-- Roots -->
+  <rect x="6" y="13" width="2" height="2" fill="#7A5230"/>
+  <rect x="12" y="13" width="2" height="2" fill="#5E3D22"/>
+  <rect x="5" y="15" width="10" height="1" fill="#6B4A2F"/>
+  <!-- Base shadow -->
+  <rect x="5" y="16" width="10" height="1" fill="#2C5E31" opacity="0.5"/>
+  <!-- Grass tufts around the stump -->
+  <rect x="4" y="15" width="2" height="1" fill="#3E7C42"/>
+  <rect x="14" y="15" width="2" height="1" fill="#3E7C42"/>
+  <rect x="5" y="14" width="1" height="1" fill="#55A65A"/>
+  <rect x="15" y="14" width="1" height="1" fill="#55A65A"/>
+</svg>
