@@ -6,12 +6,13 @@ import Map from "components/map";
 import NPC from "components/npc";
 import Prize from "components/prize";
 import Rock from "components/rock";
+import BulletinBoard from "components/bulletin-board";
 import SpeechBox from "components/speech-box";
 import Tree from "components/tree";
 import ClueJournal from "components/clue-journal";
 import GameContext from "components/game-context";
 
-import { NPCS, NPC_DIALOGUE, ROCKS, TREES, WATER, ENTRANCES, getNpcReaction } from "components/constants";
+import { NPCS, NPC_DIALOGUE, ROCKS, TREES, WATER, ENTRANCES, BULLETIN_BOARDS, getNpcReaction } from "components/constants";
 import useMapScroll from "../hooks/useMapScroll";
 import MapDebug from "../components/map-debug";
 
@@ -167,6 +168,12 @@ export default React.memo(function App() {
 
       {TREES.map(({ spawn }) => (
         <Tree key={`tree_x${spawn.x}_y${spawn.y}`} spawn={spawn} />
+      ))}
+      {BULLETIN_BOARDS.map(({ spawn }) => (
+        <BulletinBoard
+          key={`bulletin_board_x${spawn.x}_y${spawn.y}`}
+          spawn={spawn}
+        />
       ))}
 
       {ENTRANCES.map(({ spawn, href, label, image }) => (
