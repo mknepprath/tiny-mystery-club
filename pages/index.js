@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 
+import Ghost from "components/ghost";
 import Map from "components/map";
 import NPC from "components/npc";
 import Prize from "components/prize";
@@ -175,6 +176,9 @@ export default React.memo(function App() {
           spawn={spawn}
         />
       ))}
+
+      {/* Haunts the rocks by the cave stream, but only in dark mode */}
+      <Ghost spawn={{ x: 6, y: 42 }} />
 
       {ENTRANCES.map(({ spawn, href, label, image }) => (
         <Link key={`entrance_${href}`} href={href} data-cy={`${href.replace("/", "")}-link`}>
