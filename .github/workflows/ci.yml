@@ -8,9 +8,17 @@ jobs:
     # deployment_status events. Both used to run and race to write the same
     # "e2e" commit status. open-world serves tinymystery.club, so it is the
     # one worth testing; the tiny-mystery-club deployment is skipped.
+    #
+    # Matched on target_url, not environment. Vercel named the project in
+    # `environment` when this filter was written and stopped doing so the next
+    # day: every preview now reports `environment: Preview` whichever project
+    # built it, so the filter matched nothing and `e2e` was never posted. As
+    # `e2e` is a required check, that blocked every pull request in the repo —
+    # not only Dependabot's — from 2026-09-01. `target_url` still carries the
+    # project: https://open-world-<hash>-....vercel.app
     if: >-
       github.event.deployment_status.state == 'success' &&
-      contains(github.event.deployment_status.environment, 'open-world')
+      contains(github.event.deployment_status.target_url, 'open-world')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
