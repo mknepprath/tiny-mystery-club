@@ -10,7 +10,8 @@ jobs:
     # one worth testing; the tiny-mystery-club deployment is skipped.
     if: >-
       github.event.deployment_status.state == 'success' &&
-      contains(github.event.deployment_status.environment, 'open-world')
+      (contains(github.event.deployment_status.environment, 'open-world') ||
+       contains(github.event.deployment_status.target_url, 'open-world'))
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
