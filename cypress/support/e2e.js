@@ -19,12 +19,12 @@ import './commands'
 // Bypass Vercel deployment protection for preview deployments.
 // Requires VERCEL_AUTOMATION_BYPASS_SECRET to be set as a GitHub Actions secret.
 // See: https://vercel.com/docs/security/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation
-const vercelBypassSecret = Cypress.env('VERCEL_BYPASS_SECRET')
-
-if (vercelBypassSecret) {
-  Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
+// Cypress 16 removed Cypress.env(); secrets are read with cy.env(), which only runs in a command chain.
+Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
+  return cy.env(['VERCEL_BYPASS_SECRET'], { log: false }).then(({ VERCEL_BYPASS_SECRET: secret }) => {
+    if (!secret) return originalFn(url, options)
     const separator = url.includes('?') ? '&' : '?'
-    const bypassUrl = `${url}${separator}x-vercel-protection-bypass=${vercelBypassSecret}&x-vercel-set-bypass-cookie=true`
+    const bypassUrl = `${url}${separator}x-vercel-protection-bypass=${secret}&x-vercel-set-bypass-cookie=true`
     return originalFn(bypassUrl, options)
   })
-}
+})
