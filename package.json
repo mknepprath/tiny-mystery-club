@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "next": "16.4.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.3.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-typescript": "^8.0.7",
     "@types/node": "^26.6.5",
-    "@types/react": "^19.2.18",
+    "@types/react": "^19.3.0",
     "cypress": "^16.2.0",
     "typescript": "^7.0.2"
   }
