@@ -19,7 +19,7 @@
     "@babel/preset-typescript": "^8.0.7",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
-    "cypress": "^16.2.0",
+    "cypress": "^16.2.1",
     "typescript": "^7.0.2"
   }
 }
